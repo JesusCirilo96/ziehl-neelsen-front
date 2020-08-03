@@ -1,0 +1,153 @@
+/* You can add global styles to this file, and also import other style files */
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+@import "~bootstrap/dist/css/bootstrap.min.css";
+@import "./assets/login/css/main.css";
+
+body,html{
+    height:100%; /*Siempre es necesario cuando trabajamos con alturas*/
+}
+.hijo {
+    height: 14rem;
+  width: 16rem;
+  position: absolute;
+  left: calc(50% - 7rem);
+  top: calc(50% - 6rem);
+   }
+
+.primary{
+    color: #fff;
+    background-color: #007bff;
+    border-color: #007bff;
+}
+.secondary{
+    color: #fff;
+    background-color: #6c757d;
+    border-color: #6c757d;
+}
+.success{
+    color: #fff;
+    background-color: #28a745;
+    border-color: #28a745;
+}
+.danger{
+    color: #fff;
+    background-color: #dc3545;
+    border-color: #dc3545;
+}
+.warning{
+    color: #000;
+    background-color: #ffc107;
+    border-color: #ffc107;
+}
+.info{
+    color: #fff;
+    background-color: #17a2b8;
+    border-color:#17a2b8;
+}
+.light{
+    color: #000;
+    background-color: #f8f9fa;
+    border-color:#f8f9fa;
+}
+
+.contenedor{
+    width: 85%;
+    margin: auto;
+    padding-bottom: 3em;
+}
+
+.form-edit{
+    margin-top: 2em;
+}
+
+.title-catalogos{
+    font-size: 1.7em;
+    font-weight: bold;
+    color: #4B4B4B;
+}
+
+.add-new{
+    padding: 0px;
+    margin-top: 1em;
+    margin-bottom: 1em;
+}
+
+.accion a span{
+    margin-right: 1em;
+}
+
+.buttons-catalogo button{
+    margin-right: .5em;
+}
+
+.input-full-width{
+    width: 100%;
+}
+
+.all-table{
+    margin-top: 2em;
+}
+
+.thead{
+    color: #000 !important;
+    font-size: 1em;
+    font-weight: bold;
+}
+
+.table-filter{
+    width: 30%;
+}
+
+.bold{
+    font-weight: bold;
+}
+.width-5{
+    width: 5%;
+}
+
+.width-6{
+    width: 6%;
+}
+
+.width-7{
+    width: 7%;
+}
+
+.width-8{
+    width: 8%;
+}
+
+.width-9{
+    width: 9%;
+}
+
+.width-10{
+    width: 10%;
+}
+.width-20{
+    width: 20%;
+}
+.width-30{
+    width: 30%;
+}
+.width-40{
+    width: 40%;
+}
+.width-50{
+    width: 50%;
+}
+.width-60{
+    width: 60%;
+}
+.width-70{
+    width: 70%;
+}
+.width-80{
+    width: 80%;
+}
+.width-90{
+    width: 90%;
+}
+.width-100{
+    width: 100%;
+}

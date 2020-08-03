@@ -1,0 +1,80 @@
+<div class="col-md-12 all-table">
+  <div class="row">
+    <div class="title-catalogos">
+      <span>Paciente</span>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12 add-new">
+      <a routerLink="/paciente/add" class="">Crear Nuevo</a>
+    </div>
+  </div>
+  <div class="row mat-elevation-z8">
+    <div class="col-md-12 text-right">
+      <mat-form-field class="table-filter">
+        <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filtrar">
+      </mat-form-field>
+    </div>
+    <div class="col-md-12">
+      <table mat-table [dataSource]="dataSource" class="input-full-width">
+        <!-- nombre-->
+        <ng-container matColumnDef="nombre">
+          <th mat-header-cell class="width-10 thead" *matHeaderCellDef> Nombre </th>
+          <td mat-cell class="width-10" *matCellDef="let element"> {{element.nombre}} </td>
+        </ng-container>
+
+        <!-- apellido_paterno -->
+        <ng-container matColumnDef="apellido_paterno">
+          <th mat-header-cell class="width-10 thead" *matHeaderCellDef> Apellido Paterno</th>
+          <td mat-cell class="width-10" *matCellDef="let element"> {{element.apellido_paterno}} </td>
+        </ng-container>
+
+        <!-- apellido materno -->
+        <ng-container matColumnDef="apellido_materno">
+          <th mat-header-cell class="width-10 thead" *matHeaderCellDef> Apellido Materno </th>
+          <td mat-cell class="width-10" *matCellDef="let element"> {{element.apellido_materno}} </td>
+        </ng-container>
+
+        <!-- Fecha de nacimiento -->
+        <ng-container matColumnDef="fecha_nacimiento">
+          <th mat-header-cell class="width-10 thead" *matHeaderCellDef> Fecha de Nacimiento </th>
+          <td mat-cell class="width-10" *matCellDef="let element"> {{element.fecha_nacimiento}} </td>
+        </ng-container>
+
+        <!-- sexo -->
+        <ng-container matColumnDef="sexo">
+          <th mat-header-cell class="width-10 width-5 thead" *matHeaderCellDef> Sexo </th>
+          <td mat-cell class="width-10 width-5" *matCellDef="let element"> {{masculinoOfemenio(element.sexo)}} </td>
+        </ng-container>
+
+        <!-- telefono -->
+        <ng-container matColumnDef="telefono">
+          <th mat-header-cell class="width-5 thead" *matHeaderCellDef> Telefono </th>
+          <td mat-cell class="width-5" *matCellDef="let element"> {{element.telefono}} </td>
+        </ng-container>
+
+        <!-- email Column -->
+        <ng-container matColumnDef="email">
+          <th mat-header-cell class="width-5 thead" *matHeaderCellDef> Correo </th>
+          <td mat-cell class="width-5" *matCellDef="let element"> {{element.email}} </td>
+        </ng-container>
+
+        <!-- accion -->
+        <ng-container matColumnDef="accion">
+          <th mat-header-cell class="width-10" *matHeaderCellDef></th>
+          <td mat-cell class="width-10" *matCellDef="let element">
+            <a [routerLink]="['/paciente/edit/', element.paciente_id]">Editar</a>
+            |
+            <a [routerLink]="['/paciente/historial/', element.paciente_id]">Historial</a>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="pacienteColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: pacienteColumns;" [ngClass]="{'table-danger': row.estado == 0}"></tr>
+      </table>
+    </div>
+    <div class="col-md-12">
+      <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+    </div>
+  </div>
+</div>

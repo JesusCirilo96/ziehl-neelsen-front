@@ -1,0 +1,33 @@
+.titulo-card{
+    margin-bottom: 1em;
+}
+
+.container {
+    position: relative;
+    width: 100%;
+    flex: 1 0 auto;
+    margin: 0 auto;
+    text-align: left;
+  }
+  #content {
+    box-sizing: content-box;
+    margin: 0 auto;
+    padding: 15px;
+    width: 1264px;
+    background-color: #fff;
+  }
+  #content {
+    max-width: 1100px;
+    width: 100%;
+    background-color: #fff;
+    padding: 24px;
+    box-sizing: border-box;
+  }
+  #content::before, #main-content::before, #content::after, #main-content::after {
+    content: "";
+    display: table;
+  }
+  #content::after, #main-content::after {
+    clear: both;
+  }
+  

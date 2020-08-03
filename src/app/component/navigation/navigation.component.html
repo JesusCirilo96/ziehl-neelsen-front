@@ -1,0 +1,53 @@
+<div class="row version" *ngIf="currentUser">
+   <div class="col-md-6 text-left">
+         Ziehl Neelsen. <span class="numero">Beta 1.0</span>
+   </div>
+   <div class="col-md-6 text-right"> 
+         Jesus alberto Martinez cirilo | Administrador        
+         <button mat-icon-button color="#fff" [matMenuTriggerFor]="menu">
+               <mat-icon>more_vert</mat-icon>
+         </button>
+         <mat-menu #menu="matMenu">
+           <button mat-menu-item>Cerrar Sesion</button>
+         </mat-menu>         
+   </div>
+</div>
+<div id='cssmenu'>
+   <ul>
+      <li><a routerLink='home'>Inicio</a></li>
+      <li><a routerLink='recepcion'>Recepción</a></li>
+      <li><a routerLink='resultado'>Resultado</a></li>
+      <li><a routerLink='cotizar'>Cotizar</a></li>
+      <li><a routerLink='paciente'>Pacientes</a></li>
+      <li class='active has-sub'><a routerLink='#'>Examenes</a>
+         <ul>
+               <li><a routerLink='examengeneral'>Examen</a></li>
+               <li><a routerLink='subseccion'>Sub-Seccion</a></li>
+               <li><a routerLink='subexamen'>Sub-Examen</a></li>
+         </ul>
+         <!--<ul>
+            <li class='has-sub'><a routerLink='#'>Examen</a>
+               <ul>
+                  <li><a routerLink='examen'>Examen</a></li>
+               </ul>
+            </li>
+            <li class='has-sub'><a routerLink='#'>Examen General</a>
+               <ul>
+                  <li><a routerLink='examengeneral'>Examen General</a></li>
+                  <li><a routerLink='subseccion'>Sub-Seccion</a></li>
+                  <li><a routerLink='subexamen'>Sub-Examen</a></li>
+               </ul>
+            </li>
+
+         </ul>-->
+      </li>
+      <li class='active has-sub'><a routerLink='#'>Catalogos</a>
+         <ul>
+            <li><a routerLink='seccion'>Seccion</a></li>
+            <li><a routerLink='metodo'>Metodos</a></li>
+            <li><a routerLink='atencion'>Atencion</a></li>
+            <li><a routerLink='usuario'>Usuarios</a></li>
+         </ul>
+      </li>
+   </ul>
+</div>

@@ -1,0 +1,59 @@
+<div class="col-md-12 all-table">
+  <div class="row">
+    <div class="title-catalogos">
+      <span>Resultados</span>
+    </div>
+  </div>
+  <div class="row form-edit">
+    <div class="col-md-3">
+      <mat-form-field class="input-full-width">
+        <input matInput [matDatepicker]="picker" [(ngModel)]="Fecha" (ngModelChange)="filtrarPorDia($event)" placeholder="Filtrar por dia">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker touchUi #picker></mat-datepicker>
+      </mat-form-field>
+    </div>
+  </div>
+  <div class="row mat-elevation-z8">
+    <div class="col-md-12 text-right">
+      <mat-form-field class="table-filter">
+        <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filtrar">
+      </mat-form-field>
+    </div>
+    <div class="col-md-12">
+      <table mat-table [dataSource]="dataSource" class="input-full-width">
+
+        <!-- ficha -->
+        <ng-container matColumnDef="ficha">
+          <th mat-header-cell class="width-5 thead" *matHeaderCellDef> Folio</th>
+          <td mat-cell class="width-5" *matCellDef="let element"> {{element.ficha}} </td>
+        </ng-container>
+
+        <!-- nombre-->
+        <ng-container matColumnDef="paciente">
+          <th mat-header-cell class="width-20 width-5 thead" *matHeaderCellDef> Nombre </th>
+          <td mat-cell class="width-20 width-5" *matCellDef="let element">{{element.paciente}} </td>
+        </ng-container>
+
+        <!-- Hora ingreso -->
+        <ng-container matColumnDef="hora_ingreso">
+          <th mat-header-cell class="width-10 thead" *matHeaderCellDef> Hora de Ingreso</th>
+          <td mat-cell class="width-10" *matCellDef="let element"> {{element.hora_ingreso}} </td>
+        </ng-container>
+
+        <!-- accion -->
+        <ng-container matColumnDef="accion">
+          <th mat-header-cell class="width-10" *matHeaderCellDef></th>
+          <td mat-cell class="width-10" *matCellDef="let element">
+            <a [routerLink]="['/resultado/edit/', element.recepcion_id]">ver</a>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="recepcionColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: recepcionColumns;"></tr>
+      </table>
+    </div>
+    <div class="col-md-12">
+      <mat-paginator [pageSizeOptions]="[10, 20,30]" showFirstLastButtons></mat-paginator>
+    </div>
+  </div>
+</div>

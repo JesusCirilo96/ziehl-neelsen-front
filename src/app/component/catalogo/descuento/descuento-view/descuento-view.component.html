@@ -1,0 +1,52 @@
+<div class="col-md-12 all-table">
+    <div class="row">
+      <div>
+        <span class="title-catalogos">Descuentos</span>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12 add-new">
+        <a routerLink="/descuento/add" class="">Crear Nuevo</a>
+      </div>
+    </div>
+    <div class="row mat-elevation-z8">
+      <div class="col-md-12 text-right">
+        <mat-form-field class="table-filter">
+          <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filtrar">
+        </mat-form-field>
+      </div>
+      <div class="col-md-12">      
+        <table mat-table [dataSource]="dataSource" class="input-full-width">
+          <!-- examen general-->
+          <ng-container matColumnDef="examen_general">
+            <th mat-header-cell class="width-40 thead" *matHeaderCellDef> Examenes </th>
+            <td mat-cell class="width-40" *matCellDef="let element"><span *ngFor="let examen of element.examen_general">{{examen.nombre}}, </span></td>
+          </ng-container>
+          <!-- descuento-->
+          <ng-container matColumnDef="descuento">
+            <th mat-header-cell class="width-20 thead" *matHeaderCellDef> Descuento </th>
+            <td mat-cell class="width-10" *matCellDef="let element"> {{element.descuento}} </td>
+          </ng-container>
+          <!-- accion -->
+          <ng-container matColumnDef="dias">
+              <th mat-header-cell class="width-40 thead" *matHeaderCellDef> Dias </th>
+              <td mat-cell class="width-40" *matCellDef="let element"><span *ngFor="let dia of element.dias">{{dia.dia}}, </span> </td>
+            </ng-container>
+
+          <!-- accion -->
+          <ng-container matColumnDef="accion" class="width-20">
+            <th mat-header-cell class="width-10" *matHeaderCellDef></th>
+            <td mat-cell class="width-10" *matCellDef="let element">
+              <a [routerLink]="['/descuento/edit/', element.descuento_id]">Editar</a>
+            </td>
+          </ng-container>
+  
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;" [ngClass]="{'table-danger': row.estado == 0}"></tr>
+        </table>
+      </div>
+      <div class="col-md-12">
+          <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+      </div>
+    </div>
+  </div>

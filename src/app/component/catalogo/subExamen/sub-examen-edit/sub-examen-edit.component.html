@@ -1,0 +1,129 @@
+<div class="row all-table">
+  <div class="col-md-12">
+    <div class="row">
+      <div class="col-md-6">
+        <span class="title-catalogos">{{edit ? 'Editar Sub-Examen': 'Agregar Sub-Examen'}}</span>
+      </div>
+      <div class="col-md-6 text-right buttons-catalogo">
+        <button mat-button id="subExamenEstado" (click)="activarInactivar()"></button>
+        <button mat-button id="subExamenGuardar" [disabled]="!subExamen.estado" class="primary"
+          (click)="edit ? updateSubExamen(): saveNewSubExamen()">Guardar</button>
+        <button mat-button class="danger" (click)="cancelarEdicion()">Cancelar</button>
+      </div>
+    </div>
+    <div class="row form-edit">
+      <div class="col-md-4">
+        <mat-form-field class="input-full-width">
+          <input matInput placeholder="Nombre" [(ngModel)]="subExamen.nombre" ng-required="Requerido" type="text"
+            class="validate">
+        </mat-form-field>
+      </div>
+      <div class="col-md-4">
+        <mat-form-field class="input-full-width">
+          <input matInput placeholder="Orden" [(ngModel)]="subExamen.orden" ng-required="Requerido" type="text"
+            class="validate">
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="row form-edit">
+      <div class="col-md-4">
+        <mat-form-field class="input-full-width">
+          <input matInput placeholder="Referencia Hombre" [(ngModel)]="subExamen.vr_hombre" ng-required="Requerido"
+            type="text" class="validate">
+        </mat-form-field>
+      </div>
+      <div class="col-md-4">
+        <mat-form-field class="input-full-width">
+          <input matInput placeholder="Referencia Mujer" [(ngModel)]="subExamen.vr_mujer" ng-required="Requerido"
+            type="text" class="validate">
+        </mat-form-field>
+      </div>
+      <div class="col-md-4">
+        <mat-form-field class="input-full-width">
+          <input matInput placeholder="Referencia General" [(ngModel)]="subExamen.vr_general" ng-required="Requerido"
+            type="text" class="validate">
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="row form-edit">
+      <div class="col-md-4">
+        <mat-form-field class="input-full-width">
+          <input matInput placeholder="Referencia Niño" [(ngModel)]="subExamen.vr_ninos" ng-required="Requerido"
+            type="text" class="validate">
+        </mat-form-field>
+      </div>
+      <div class="col-md-4">
+        <mat-form-field class="input-full-width">
+          <input matInput placeholder="Referencia Niña" [(ngModel)]="subExamen.vr_ninas" ng-required="Requerido"
+            type="text" class="validate">
+        </mat-form-field>
+      </div>
+      <div class="col-md-4">
+        <mat-form-field class="input-full-width">
+          <input matInput placeholder="Referencia Niño/Niña" [(ngModel)]="subExamen.vr_general_n"
+            ng-required="Requerido" type="text" class="validate">
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <mat-tab-group>
+          <mat-tab label="Referencia personalizada">
+            <div class="col-md-12 form-edit">
+              <div class="row">
+                <div class="col-md-4">
+                  <mat-form-field class="input-full-width">
+                    <input matInput placeholder="Referencia Perzonalizada"
+                      [(ngModel)]="referenciaPersonalizada" ng-required="Requerido" type="text"
+                      class="validate">
+                  </mat-form-field>
+                  <mat-form-field class="input-full-width">
+                    <input matInput placeholder="Orden"
+                      [(ngModel)]="ordenReferencia" ng-required="Requerido" type="text"
+                      class="validate">
+                  </mat-form-field>
+                  <button mat-stroked-button color="primary"
+                    (click)="agregarReferencia()">Añadir
+                    Referencia</button>
+
+                    <div class="form-edit">
+                        <h6>Referencia personalizada:</h6>
+                        <mat-list role="list">
+                          <mat-list-item role="listitem" *ngFor="let referencia of subExamen.referencia_personalizada">
+                            {{referencia.nombre}}</mat-list-item>
+                        </mat-list>
+                      </div>
+                </div>
+              </div>
+            </div>
+
+          </mat-tab>
+          <mat-tab label="Metodos">
+            <div class="col-md-12 form-edit">
+              <div class="row">
+                <div class="col-md-4">
+                  <mat-form-field class="input-full-width">
+                    <mat-select placeholder="Metodo" [(ngModel)]="metodoEscogido">
+                      <mat-option *ngFor="let metodo of Metodo" [value]="metodo.metodo_id">{{metodo.nombre}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                  <button mat-stroked-button color="primary" (click)="guardarMetodo()">
+                    Añadir
+                  </button>
+                  <div class="form-edit">
+                      <h6>Metodo del examen:</h6>
+                      <mat-list role="list">
+                        <mat-list-item role="listitem" *ngFor="let metodo of subExamen.metodo">{{metodo.nombre}}</mat-list-item>
+                      </mat-list>
+                    </div>
+                </div>
+              </div>
+            </div>
+
+          </mat-tab>
+        </mat-tab-group>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,67 @@
+<div class="col-md-12 all-table">
+        <div class="row">
+          <div class="title-catalogos">
+            <span>Examen</span>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12 add-new">
+            <a routerLink="/examengeneral/add" class="">Crear Nuevo</a>
+          </div>
+        </div>
+        <div class="row mat-elevation-z8">
+          <div class="col-md-12 text-right">
+            <mat-form-field class="table-filter">
+              <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filtrar">
+            </mat-form-field>
+          </div>
+          <div class="col-md-12">
+            <table mat-table [dataSource]="dataSource" class="input-full-width">
+
+              <!-- examen_gen_id-->
+              <ng-container matColumnDef="examen_gen_id">
+                  <th mat-header-cell class="width-10 thead" *matHeaderCellDef> Clave </th>
+                  <td mat-cell class="width-10" *matCellDef="let element"> {{element.examen_gen_id}} </td>
+                </ng-container>
+
+              <!-- nombre-->
+              <ng-container matColumnDef="nombre">
+                <th mat-header-cell class="width-50 thead" *matHeaderCellDef> Nombre </th>
+                <td mat-cell class="width-50" *matCellDef="let element"> {{element.nombre}} </td>
+              </ng-container>
+      
+              <!-- alias Column -->
+              <ng-container matColumnDef="alias">
+                <th mat-header-cell class="width-10 width-5 thead" *matHeaderCellDef> Alias </th>
+                <td mat-cell class="width-10 width-5" *matCellDef="let element"> {{element.alias}} </td>
+              </ng-container>
+      
+              <!-- Precio Column -->
+              <ng-container matColumnDef="precio">
+                <th mat-header-cell class="width-5 thead" *matHeaderCellDef> Precio </th>
+                <td mat-cell class="width-5" *matCellDef="let element"> {{element.precio}} </td>
+              </ng-container>
+      
+              <!-- seccion Column -->
+              <ng-container matColumnDef="seccion">
+                <th mat-header-cell class="width-10 thead" *matHeaderCellDef> Sección </th>
+                <td mat-cell class="width-10" *matCellDef="let element"> {{element.seccionExGen.nombre}} </td>
+              </ng-container>
+      
+              <!-- accion -->
+              <ng-container matColumnDef="accion">
+                <th mat-header-cell class="width-10" *matHeaderCellDef></th>
+                <td mat-cell class="width-10 text-center" *matCellDef="let element">
+                  <a [routerLink]="['/examengeneral/edit/', element.examen_gen_id]">Editar</a>
+                </td>
+              </ng-container>
+      
+              <tr mat-header-row *matHeaderRowDef="examenGeneralColumns"></tr>
+              <tr mat-row *matRowDef="let row; columns: examenGeneralColumns;" [ngClass]="{'table-danger': row.estado == 0}"></tr>
+            </table>
+          </div>
+          <div class="col-md-12">
+            <mat-paginator [pageSizeOptions]="[10, 20, 30]" showFirstLastButtons></mat-paginator>
+          </div>
+        </div>
+      </div>

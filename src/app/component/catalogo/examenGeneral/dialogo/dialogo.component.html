@@ -1,0 +1,17 @@
+<!--Cuadro de dialogo-->
+
+<h1 mat-dialog-title>Selecciona El Examen</h1>
+<div mat-dialog-content>
+  <p>Buscar:</p>
+  <mat-form-field class="input-full-width">
+    <mat-select placeholder="Examen" [(ngModel)]="examenId">
+      <mat-option *ngFor="let subExamen of SubExamen" [value]="subExamen.sub_examen_id">
+        {{subExamen.nombre}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">Cancelar</button>
+  <button mat-button [mat-dialog-close]="[{'examenId':examenId}]" cdkFocusInitial>Ok</button>
+</div>

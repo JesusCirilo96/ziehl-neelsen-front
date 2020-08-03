@@ -1,0 +1,66 @@
+.row-edit-recepcion{
+    margin-top: .1em;
+}
+
+.total{
+    width: 85%;
+    margin: auto;
+}
+
+.precio{
+    width: 20%;
+    float: right;
+    margin-bottom: 2em;
+}
+
+.precio button{
+    float: right;
+}
+
+.tabla{
+    width: 100%;
+}
+
+.example-button-row button,
+.example-button-row a {
+  margin-right: 8px;
+}
+
+@media (max-width: 450px) {
+    .precio{
+        width: 100%;
+        float: none;
+    }
+
+}
+
+@media (max-width: 768px) {
+    .precio{
+        width: 100%;
+        float: none;
+    }
+}
+
+@media (max-width: 992px) {
+    .precio{
+        width: 100%;
+        float: none;
+    }
+ }
+
+@media (min-width: 1200px) {
+    .precio{
+        width: 25%;
+        float: right;
+    }
+ }
+
+ .example-headers-align .mat-expansion-panel-header-title,
+ .example-headers-align .mat-expansion-panel-header-description {
+   flex-basis: 0;
+ }
+ 
+ .example-headers-align .mat-expansion-panel-header-description {
+   justify-content: space-between;
+   align-items: center;
+ }

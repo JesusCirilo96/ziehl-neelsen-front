@@ -1,0 +1,26 @@
+<!--Cuadro de dialogo-->
+
+<h2 mat-dialog-title class="text-center bold">Selecciona</h2>
+<div mat-dialog-content>
+  <mat-form-field class="input-full-width">
+    <ng-template [ngIf]="data.opcion == 'dia'">
+      <mat-select placeholder="Seleccionar el dia" [(ngModel)]="id">
+        <mat-option *ngFor="let dia of diaDescuento" [value]="dia.dia_descuento_id">
+          {{dia.dia}}
+        </mat-option>
+      </mat-select>
+    </ng-template>
+    <ng-template [ngIf]="data.opcion == 'examen'">
+      <mat-select placeholder="Seleccionar examen" [(ngModel)]="id">
+        <mat-option *ngFor="let examen of examenGeneral" [value]="examen.examen_gen_id">
+          {{examen.nombre}}
+        </mat-option>
+      </mat-select>
+    </ng-template>
+
+  </mat-form-field>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">Cancelar</button>
+  <button mat-button [mat-dialog-close]="[{'id':id}]" cdkFocusInitial>Ok</button>
+</div>

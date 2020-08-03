@@ -1,0 +1,29 @@
+<div class="row all-table">
+  <div class="col-md-12">
+    <div class="row">
+      <div class="col-md-6">
+        <span class="title-catalogos">{{edit ? 'Editar Sección': 'Agregar Sección'}}</span>
+      </div>
+      <div class="col-md-6 text-right buttons-catalogo">
+        <button mat-button id="seccionEstado" (click)="activarInactivar()"></button>
+        <button mat-button id="seccionGuardar" [disabled]="!seccion.estado" class="primary"
+          (click)="edit ? updateSeccion(): saveNewSeccion()">Guardar</button>
+        <button mat-button class="danger" (click)="cancelarEdicion()">Cancelar</button>
+      </div>
+    </div> 
+    <div class="row form-edit">
+      <div class="col-md-3">
+        <mat-form-field class="input-full-width">
+          <input matInput placeholder="Nombre" [(ngModel)]="seccion.nombre" ng-required="Requerido" type="text"
+            class="validate">
+        </mat-form-field>
+      </div>
+      <div class="col-md-3">
+        <mat-form-field class="input-full-width">
+          <input matInput placeholder="Orden" [(ngModel)]="seccion.orden" ng-required="Requerido" type="text"
+            class="validate">
+        </mat-form-field>
+      </div>
+    </div>
+  </div>
+</div>

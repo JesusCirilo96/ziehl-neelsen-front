@@ -1,0 +1,613 @@
+<div class="row form-edit">
+  <div class="col-md-12">
+    <mat-card *ngFor="let recepcion of recepcionDatos">
+      <div class="row">
+        <div class="col-md-12">
+          <table class="table table-sm table-borderless">
+            <tbody>
+              <tr>
+                <td>Nombre:</td>
+                <td>{{recepcion.paciente}}</td>
+                <td class="text-right">Folio:</td>
+                <td class="bold">{{recepcion.ficha}}</td>
+              </tr>
+              <tr>
+                <td>Edad:</td>
+                <td class="text-left">{{calcularEdad(recepcion.fecha_nacimiento)}}</td>
+                <td colspan="2"></td>
+              </tr>
+              <tr>
+                <td>Sexo:</td>
+                <td class="text-left">{{masculinoOfemenio(recepcion.sexo)}}</td>
+                <td colspan="2"></td>
+              </tr>
+              <tr>
+                <td>Atencion:</td>
+                <td class="text-left">{{recepcion.atencion}}</td>
+                <td colspan="2"></td>
+              </tr>
+              <tr>
+                <td>F. de Ingreso:</td>
+                <td>{{recepcion.fecha_ingreso}}</td>
+                <td class="text-right">H. de Ingreso:</td>
+                <td>{{recepcion.hora_ingreso}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </mat-card>
+  </div>
+</div>
+<mat-tab-group class="form-edit">
+  <mat-tab *ngFor="let examenGeneral of resultadoExamenGeneral" label="{{examenGeneral.resultado.NOMBRE}}">
+    <div class="col-md-12 form-edit" *ngFor="let informe of informes">
+      <ng-template [ngIf]="informe.examen_gen_id == examenGeneral.examen_gen_id">
+        <div class="row">
+          <div class="col-md-4">
+            <p class="bold">Informe creado por:</p>{{informe.informeUsuario.nombre}}
+            {{informe.informeUsuario.apellido_paterno}} {{informe.informeUsuario.apellido_materno}}
+          </div>
+          <div class="col-md-2">
+            <p class="bold">Fecha:</p> {{informe.fecha_informe}}
+          </div>
+          <div class="col-md-2">
+            <p class="bold">Hora:</p> {{informe.hora_informe}}
+          </div>
+          <div class="col-md-2">
+            <p class="bold">Terminado:</p>
+            <mat-slide-toggle [color]="primary"
+              (change)="realizado(examenGeneral.realizado,examenGeneral.resultado, examenGeneral.examen_gen_id)"
+              [checked]="examenGeneral.realizado" [disabled]="disabled">
+              {{examenGeneral.realizado ? 'Si': 'No'}}
+            </mat-slide-toggle>
+          </div>
+          <div class="col-md-2">
+            <p class="bold">Impreso:</p> {{examenGeneral.impreso ? 'Si': 'No'}}
+          </div>
+        </div>
+      </ng-template>
+    </div>
+    <div class="col-md-12 form-edit">
+      <button mat-icon-button color="primary" matTooltip="Imprimir"
+        (click)="actualizarInforme(examenGeneral.examen_gen_id, examenGeneral.impreso,examenGeneral.resultado)"
+        [useExistingCss]="true" sprintTitle="Examen" printSectionId="examenGeneral.examen_gen_id" ngxPrint>
+        <mat-icon>print</mat-icon>
+      </button>
+      <button mat-icon-button color="primary" matTooltip="Guardar Resultados" [swal]="guardarResultado">
+        <mat-icon>save</mat-icon>
+      </button>
+      <swal #guardarResultado title="Guardar Resultado" text="¿Actualizar los resultados de este examen?"
+        type="question" [showCancelButton]="true"
+        (confirm)="guardarResultados(examenGeneral.resultado, examenGeneral.examen_gen_id)"
+        [options]="{ cancelButtonText: 'Cancelar' }">
+      </swal>
+    </div>
+    <div class="col-md-12">
+      <mat-card class="form-edit">
+
+        <!--EXAMEN DE RUTINA 1-->
+
+        <ng-template [ngIf]="examenGeneral.resultado.TIPO_EXAMEN == 1">
+          <ng-template [ngIf]="examenGeneral.resultado.SUB_EXAMEN.length == false">
+            <div class="row">
+              <div class="col-md-12">
+                <div>
+                  <table class="table table-sm table-borderless">
+                    <tbody>
+                      <tr>
+                        <td class="width-20">
+                          <button mat-icon-button color="warn" aria-label="Example icon-button with a heart icon"
+                            (click)="removerSubExamenSubSeccion(seleccion.EXAMEN_GEN_ID, subSeccion.NOMBRE, estudio.NOMBRE)">
+                            <mat-icon>remove</mat-icon>
+                          </button>
+                          {{examenGeneral.resultado.NOMBRE}}
+                        </td>
+                        <td class="width-20">
+                          <input type="text" class="form-control form-control-sm" id="examen"
+                            [(ngModel)]="examenGeneral.resultado.RESULTADO">
+                        </td>
+                        <td colspan="1" class="with-60"></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </ng-template>
+          <ng-template [ngIf]="examenGeneral.resultado.SUB_EXAMEN">
+            <div class="titleSubexamen">{{examenGeneral.resultado.NOMBRE}}</div>
+            <div class="form-group row" *ngFor="let estudio of examenGeneral.resultado.SUB_EXAMEN">
+              <label for="examen" class="col-sm-4 col-form-label">{{estudio.NOMBRE}}</label>
+              <div class="">
+                <input type="text" class="form-control form-control-sm" id="examen" [(ngModel)]="estudio.RESULTADO">
+              </div>
+            </div>
+          </ng-template>
+        </ng-template>
+
+        <!--EXAMEN ESPECIAL 2-->
+
+        <ng-template [ngIf]="examenGeneral.resultado.TIPO_EXAMEN == 2">
+          <div class="row">
+            <div class="col-md-12">
+              <div>
+                <!--table-borderless-->
+                <table class="table table-sm table-borderless">
+                  <tbody *ngFor="let subSeccion of examenGeneral.resultado.SUB_SECCION">
+                    <ng-template [ngIf]="subSeccion.ALINEACION !=2">
+                      <tr *ngFor="let estudio of subSeccion.EXAMEN">
+                        <td class="width-30">{{estudio.NOMBRE}}</td>
+                        <td class="width-20">
+                          <input type="text" class="form-control form-control-sm" [(ngModel)]="estudio.RESULTADO">
+                        </td>
+                        <td class="width-50"></td>
+                      </tr>
+                    </ng-template>
+                  </tbody>
+                </table>
+              </div>
+              <mat-checkbox [(ngModel)]="examenGeneral.resultado.DESARROLLO">{{textCheked}}</mat-checkbox>
+              <ng-template [ngIf]="examenGeneral.resultado.DESARROLLO == false">
+                <div class="row" *ngFor="let subSeccion of examenGeneral.resultado.SUB_SECCION">
+                  <ng-template [ngIf]="subSeccion.ALINEACION ==2">
+                    <div class="col-md-2">
+                      {{subSeccion.NOMBRE}}
+                    </div>
+                    <div class="col-md-5">
+                      <div class="form-group row" *ngFor="let estudio of subSeccion.EXAMEN">
+                        <label for="examen" class="col-sm-4 col-form-label">{{estudio.NOMBRE}}</label>
+                        <div class="col-sm-6">
+                          <input type="text" class="form-control form-control-sm" id="examen"
+                            [(ngModel)]="estudio.RESULTADO">
+                        </div>
+                      </div>
+                    </div>
+                  </ng-template>
+                </div>
+              </ng-template>
+            </div>
+          </div>
+          <ng-template [ngIf]="examenGeneral.resultado.DESARROLLO == true">
+            <div class="row">
+              <div class="col-md-12">
+                <div>
+                  <table class="table table-sm table-borderless">
+                    <tbody>
+                      <tr>
+                        <td>INFORMACION DE SUSCEPTIBILIDAD</td>
+                        <td>ANTIBIOTICO</td>
+                        <td>INTERPRETACION</td>
+                      </tr>
+                      <tr *ngFor="let subExamen of examenGeneral.resultado.SUB_EXAMEN">
+                        <td></td>
+                        <td>{{subExamen.NOMBRE}}</td>
+                        <td>
+                          <input type="text" class="form-control form-control-sm width-10" id="examen"
+                            [(ngModel)]="subExamen.RESULTADO">
+                        </td>
+                      </tr>
+                      <tr>
+                        <td colspan="3">Interpretacion S: Susceptible I:Intermedio R:Resistente</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </ng-template>
+        </ng-template>
+
+        <!--EXAMEN DE U. CONVENCIONALES 3-->
+
+        <ng-template [ngIf]="examenGeneral.resultado.TIPO_EXAMEN == 3">
+          <ng-template [ngIf]="examenGeneral.resultado.SUB_EXAMEN.length == false">
+            <div class="row">
+              <div class="col-md-12">
+                <div>
+                  <table class="table table-sm table-borderless">
+                    <tbody>
+                      <tr>
+                        <td class="width-20">
+                          <button mat-icon-button color="warn" aria-label="Example icon-button with a heart icon"
+                            (click)="removerSubExamenSubSeccion(seleccion.EXAMEN_GEN_ID, subSeccion.NOMBRE, estudio.NOMBRE)">
+                            <mat-icon>remove</mat-icon>
+                          </button>
+                          {{examenGeneral.resultado.NOMBRE}}
+                        </td>
+                        <td class="width-20">
+                          <input type="text" class="form-control form-control-sm" id="examen"
+                            [(ngModel)]="examenGeneral.resultado.RESULTADO">
+                        </td>
+                        <td colspan="1" class="with-60"></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </ng-template>
+        </ng-template>
+
+        <!--EXAMEN GENERAL DE ORINA 4-->
+
+        <ng-template [ngIf]="examenGeneral.resultado.TIPO_EXAMEN == 4">
+          <div class="row">
+            <div class="col-md-12">
+              <div>
+                <!--table-borderless-->
+                <table class="table table-sm table-borderless">
+                  <tbody *ngFor="let subSeccion of examenGeneral.resultado.SUB_SECCION">
+                    <tr>
+                      <td colspan="4">{{subSeccion.NOMBRE}} </td>
+                    </tr>
+                    <tr *ngFor="let estudio of subSeccion.EXAMEN">
+                      <td class="width-30">
+                        <button mat-icon-button color="warn" aria-label="Example icon-button with a heart icon"
+                          (click)="removerSubExamenSubSeccion(examenGeneral.resultado,examenGeneral.resultado.EXAMEN_GEN_ID, subSeccion.NOMBRE, estudio.NOMBRE)">
+                          <mat-icon>remove</mat-icon>
+                        </button>
+                        {{estudio.NOMBRE}}
+                      </td>
+                      <ng-template
+                        [ngIf]="estudio.NOMBRE != '(N: 1,010 - 1,025)' && estudio.NOMBRE != '(Normal: 3,5 umol/L)'">
+                        <td class="width-20">
+                          <input type="text" class="form-control form-control-sm" [(ngModel)]="estudio.RESULTADO">
+                        </td>
+                        <td class="width-50"></td>
+                      </ng-template>
+                    </tr>
+                  </tbody>
+                </table>
+                <span *ngFor="let metodo of examenGeneral.resultado.METODO_EXAMEN_GENERAL" class="metodo">Metodo:
+                  {{metodo.nombre}}</span>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+
+        <!--EXAMEN CITOMETRIA HEMATICA 5-->
+
+        <ng-template [ngIf]="examenGeneral.resultado.TIPO_EXAMEN == 5">
+          <div class="row">
+            <div class="col-md-12">
+              <div>
+                <!--table-borderless-->
+                <table class="table table-sm table-borderless">
+                  <tbody *ngFor="let subSeccion of examenGeneral.resultado.SUB_SECCION">
+                    <tr class="titleSubexamen">{{subSeccion.NOMBRE}}</tr>
+                    <tr *ngFor="let estudio of subSeccion.EXAMEN">
+                      <td class="width-30">{{estudio.NOMBRE}}</td>
+                      <td class="width-20">
+                        <input type="text" class="form-control form-control-sm" [(ngModel)]="estudio.RESULTADO">
+                      </td>
+                      <td class="width-50"></td>
+                    </tr>
+                  </tbody>
+                </table>
+                <span *ngFor="let metodo of examenGeneral.resultado.METODO_EXAMEN_GENERAL" class="metodo">Metodo:
+                  {{metodo.nombre}}</span>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+      </mat-card>
+    </div>
+
+    <!--INICIO DE ZONA DE IMPRESION-->
+    <div class="no-margin" style="font-size: 12pt;
+      font-family: Arial, Helvetica, sans-serif;
+      width: 22.5cm;
+      height: 1080px;
+      display: none;
+      " id="examenGeneral.examen_gen_id">
+      <div class="width-100">
+        <img class="header-image" src="../../../../assets/img/header.PNG" alt="header">
+      </div>
+      <div id="borderInforme">
+        <div class="form-edit">
+          <table class="width-100" *ngFor="let recepcion of recepcionDatos">
+            <tbody>
+              <tr>
+                <td>Nombre:</td>
+                <td>{{recepcion.paciente}}</td>
+                <td colspan="2"></td>
+              </tr>
+              <tr>
+                <td>Edad:</td>
+                <td class="text-left">{{calcularEdad(recepcion.fecha_nacimiento)}}</td>
+                <td colspan="2"></td>
+              </tr>
+              <tr>
+                <td>Sexo:</td>
+                <td class="text-left">{{masculinoOfemenio(recepcion.sexo)}}</td>
+                <td colspan="2"></td>
+              </tr>
+              <tr>
+                <td>Atencion:</td>
+                <td class="text-left">{{recepcion.atencion}}</td>
+                <td colspan="2"></td>
+              </tr>
+              <tr>
+                <td>F. de Ingreso:</td>
+                <td>{{recepcion.fecha_ingreso}}</td>
+                <td class="text-right">H. de Ingreso:</td>
+                <td>{{recepcion.hora_ingreso}}</td>
+              </tr>
+              <tr>
+                <td>F. de Informe:</td>
+                <td>{{getToday()}}</td>
+                <td class="text-right">H. de Informe:</td>
+                <td>{{getHour()}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="form-edit">
+          <!--TITULOS-->
+          <!--EXAMEN DE RUTINA 1-->
+          <ng-template [ngIf]="examenGeneral.resultado.TIPO_EXAMEN == 1 ||  examenGeneral.resultado.TIPO_EXAMEN == 2">
+            <table class="width-100">
+              <tbody>
+                <tr id="title-resultado-normal">
+                  <td class="width-30">Nombre del Examen</td>
+                  <td class="width-40 text-center">Resultado</td>
+                  <td class="width-30">Valores de Referencia</td>
+                </tr>
+              </tbody>
+            </table>
+          </ng-template>
+          <ng-template [ngIf]="examenGeneral.resultado.TIPO_EXAMEN == 3">
+            <table class="width-100">
+              <tbody>
+                <tr id="title-resultado-normal">
+                  <td class="width-30">Nombre del Examen</td>
+                  <td class="width-40 text-center">Resultado</td>
+                  <td class="width-30">Valores de Referencia</td>
+                </tr>
+              </tbody>
+            </table>
+          </ng-template>
+          <ng-template [ngIf]="examenGeneral.resultado.TIPO_EXAMEN == 4 || examenGeneral.resultado.TIPO_EXAMEN == 5 ">
+            <div id="title-resultado" class="text-center bold">
+              <p>{{convertToUpper(examenGeneral.resultado.NOMBRE)}}</p>
+            </div>
+          </ng-template>
+
+
+          <div class="col-md-12 form-edit">
+            <!--EXAMEN DE RUTINA 1-->
+            <ng-template [ngIf]="examenGeneral.resultado.TIPO_EXAMEN == 1">
+              <ng-template [ngIf]="examenGeneral.resultado.SUB_EXAMEN.length == false">
+                <div class="row">
+                  <div class="col-md-12">
+                    <div>
+                      <table class="table table-sm table-borderless">
+                        <tbody>
+                          <tr>
+                            <td class="width-30">{{examenGeneral.resultado.NOMBRE}}</td>
+                            <td class="width-40">
+                              {{examenGeneral.resultado.RESULTADO}}
+                            </td>
+                            <td class="width-30">
+                              {{examenGeneral.resultado.VR_HOMBRE}}
+                              {{examenGeneral.resultado.VR_MUJER}}
+                              {{examenGeneral.resultado.VR_GENERAL}}
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </ng-template>
+            </ng-template>
+            <!--EXAMEN ESPECIAL 2-->
+            <ng-template [ngIf]="examenGeneral.resultado.TIPO_EXAMEN == 2">
+              <div class="row">
+                <div class="col-md-12">
+                  <div>
+                    <!--table-borderless-->
+                    <table class="table table-sm table-borderless">
+                      <tbody *ngFor="let subSeccion of examenGeneral.resultado.SUB_SECCION">
+                        <ng-template [ngIf]="subSeccion.ALINEACION !=2">
+                          <tr *ngFor="let estudio of subSeccion.EXAMEN">
+                            <td class="width-30">{{estudio.NOMBRE}}</td>
+                            <td class="width-50 text-left">
+                              <span>{{estudio.RESULTADO}}</span>
+                            </td>
+                            <td class="width-20"></td>
+                          </tr>
+                        </ng-template>
+                      </tbody>
+                    </table>
+                  </div>
+                  <ng-template [ngIf]="examenGeneral.resultado.DESARROLLO == false">
+                    <div class="row" *ngFor="let subSeccion of examenGeneral.resultado.SUB_SECCION">
+                      <ng-template [ngIf]="subSeccion.ALINEACION ==2">
+                        <div class="col-md-4">
+                          {{subSeccion.NOMBRE}}
+                        </div>
+                        <div class="col-md-5">
+                          <p class="no-margin" *ngFor="let estudio of subSeccion.EXAMEN">
+                            {{estudio.NOMBRE}} {{estudio.RESULTADO}}
+                          </p>
+                        </div>
+                      </ng-template>
+                    </div>
+                  </ng-template>
+                </div>
+              </div>
+              <ng-template [ngIf]="examenGeneral.resultado.DESARROLLO == true">
+                <div class="row">
+                  <div class="col-md-12">
+                    <div>
+                      <table class="table table-sm table-borderless width-100">
+                        <tbody>
+                          <tr>
+                            <td class="width-40">INFORMACION DE SUSCEPTIBILIDAD</td>
+                            <td class="width-20">ANTIBIOTICO</td>
+                            <td class="width-30 text-center">INTERPRETACION</td>
+                            <td class="width-10"></td>
+                          </tr>
+                          <tr *ngFor="let subExamen of examenGeneral.resultado.SUB_EXAMEN">
+                            <td class="width-40 " colspan="1"></td>
+                            <td class="width-30">{{subExamen.NOMBRE}}</td>
+                            <td class="width-10 text-center">
+                              <span>{{subExamen.RESULTADO}}</span>
+                            </td>
+                            <td class="width-10"></td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+                <p>Interpretacion S: Susceptible I:Intermedio R:Resistente</p>
+              </ng-template>
+            </ng-template>
+
+            <!--EXAMEN U CONVENCIONALES 3-->
+
+
+            <!--EXAMEN GENERAL DE ORINA 4-->
+
+            <ng-template [ngIf]="examenGeneral.resultado.TIPO_EXAMEN == 4">
+              <div class="row">
+                <div class="col-md-12">
+                  <div>
+                    <!--table-borderless-->
+                    <table class="table table-sm table-borderless">
+                      <tbody *ngFor="let subSeccion of examenGeneral.resultado.SUB_SECCION">
+                        <ng-template [ngIf]="subSeccion.ALINEACION == 1">
+                          <tr colspan="4"></tr>
+                          <tr>
+                            <td colspan="4" class="no-margin titleSubexamen">{{subSeccion.NOMBRE}}</td>
+                          </tr>
+                          <tr *ngFor="let estudio of subSeccion.EXAMEN">
+                            <td colspan="4" class="width-30 no-margin">{{estudio.NOMBRE}}
+                              <span>{{estudio.RESULTADO}}</span></td>
+                          </tr>
+                        </ng-template>
+                        <ng-template [ngIf]="subSeccion.ALINEACION == 2">
+                          <tr>
+                            <td class="no-margin" colspan="4">{{subSeccion.NOMBRE}}</td>
+                          </tr>
+                          <tr>
+                            <td colspan="3"></td>
+                          </tr>
+                          <tr *ngFor="let estudio of subSeccion.EXAMEN">
+                            <td class="width-30 no-margin">{{estudio.NOMBRE}}</td>
+                            <td class="width-20 no-margin">
+                              <span>{{estudio.RESULTADO}}</span>
+                            </td>
+                            <td class="width-50 no-margin"></td>
+                          </tr>
+                          <tr>
+                            <td colspan="3"></td>
+                          </tr>
+                        </ng-template>
+                      </tbody>
+                    </table>
+                    <span *ngFor="let metodo of examenGeneral.resultado.METODO_EXAMEN_GENERAL" class="metodo">Metodo:
+                      {{metodo.nombre}}</span>
+                  </div>
+                </div>
+              </div>
+            </ng-template>
+
+
+            <!--EXAMEN CITOMETRIA HEMATICA 5-->
+
+            <ng-template [ngIf]="examenGeneral.resultado.TIPO_EXAMEN == 5">
+              <div class="row">
+                <div class="col-md-12">
+                  <!--table-borderless-->
+                  <table class="table table-sm table-borderless">
+                    <tbody *ngFor="let subSeccion of examenGeneral.resultado.SUB_SECCION">
+                      <ng-template [ngIf]="subSeccion.NOMBRE == 'FORMULA ROJA'">
+                        <tr>
+                          <td class="width-30 no-margin titleSubexamen">{{subSeccion.NOMBRE}}</td>
+                          <td class="width-20 no-margin"></td>
+                          <td class="width-50 text-center titleSubexamen no-margin">VALORES DE REFERENCIA</td>
+                        </tr>
+                        <tr>
+                          <td class="width-30 no-margin titleSubexamen"></td>
+                          <td class="width-20 no-margin"></td>
+                          <td class="width-50 text-center no-margin"><span
+                              class="titleSubexamen">Hombre</span>&nbsp;&nbsp;&nbsp;<span
+                              class="titleSubexamen">Mujer</span>
+                          </td>
+                        </tr>
+                        <tr *ngFor="let estudio of subSeccion.EXAMEN">
+                          <td class="width-30 no-margin">{{estudio.NOMBRE}}</td>
+                          <td class="width-20 no-margin text-center">
+                            <span>{{estudio.RESULTADO}}</span>
+                          </td>
+                          <td class="width-50 text-center no-margin">
+                            <span>{{estudio.VR_HOMBRE}}</span>&nbsp;&nbsp;&nbsp;<span>{{estudio.VR_HOMBRE}}</span></td>
+                        </tr>
+                        <tr>
+                          <td colspan="3"></td>
+                        </tr>
+                      </ng-template>
+                      <ng-template [ngIf]="subSeccion.NOMBRE == 'FORMULA BLANCA'">
+                        <tr>
+                          <td class="width-30 no-margin titleSubexamen">{{subSeccion.NOMBRE}}</td>
+                          <td class="width-20 no-margin"></td>
+                          <td class="width-50 text-center titleSubexamen no-margin"></td>
+                        </tr>
+                        <tr>
+                          <td class="width-30 no-margin titleSubexamen"></td>
+                          <td class="width-20 no-margin"></td>
+                          <td class="width-50 text-center no-margin"></td>
+                        </tr>
+                        <tr *ngFor="let estudio of subSeccion.EXAMEN">
+                          <td class="width-30 no-margin">{{estudio.NOMBRE}}</td>
+                          <td class="width-20 no-margin text-center">
+                            <span>{{estudio.RESULTADO}}</span>
+                          </td>
+                          <td class="width-50 text-center no-margin">{{estudio.VR_GENERAL}}</td>
+                        </tr>
+                        <tr>
+                          <td colspan="3"></td>
+                        </tr>
+                      </ng-template>
+                    </tbody>
+                  </table>
+                  <span *ngFor="let metodo of examenGeneral.resultado.METODO_EXAMEN_GENERAL" class="metodo">Metodo:
+                    {{metodo.nombre}}</span>
+                </div>
+              </div>
+            </ng-template>
+          </div>
+        </div>
+
+        <div class="footer">
+          <table class="width-100">
+            <tbody>
+              <tr>
+                <td class="width-20">Resp Sanitario</td>
+                <td class="width-50"></td>
+                <td class="width-30">ATTE</td>
+              </tr>
+              <tr>
+                <td class="width-20">QB Carlos Antonio Zarate</td>
+                <td class="width-50"></td>
+                <td class="width-30">{{currentUser.nombre}} {{currentUser.apellido_paterno}}
+                  {{currentUser.apellido_materno}}</td>
+              </tr>
+              <tr>
+                <td class="width-20">CP 1923021</td>
+                <td class="width-50"></td>
+                <td class="width-30">CP {{currentUser.cedula}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!--FIN DE ZONA DE IMPRESION-->
+  </mat-tab>
+</mat-tab-group>

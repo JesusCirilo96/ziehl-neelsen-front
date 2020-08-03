@@ -1,0 +1,66 @@
+<div class="row all-table">
+  <div class="col-md-12">
+    <div class="row">
+      <div class="col-md-6">
+        <span class="title-catalogos">{{edit ? 'Editar Paciente': 'Agregar Paciente'}}</span>
+      </div>
+      <div class="col-md-6 text-right buttons-catalogo">
+        <button mat-button id="pacienteEstado" (click)="activarInactivar()"></button>
+        <button mat-button id="pacienteGuardar" [disabled]="!paciente.estado" class="primary"
+          (click)="edit ? updatePaciente(): saveNewPaciente()">Guardar</button>
+        <button mat-button class="danger" (click)="cancelarEdicion()">Cancelar</button>
+      </div>
+    </div>
+    <div class="row form-edit">
+      <div class="col-md-4">
+        <mat-form-field class="input-full-width">
+          <input matInput placeholder="Nombre" required [(ngModel)]="paciente.nombre" ng-required="Requerido" type="text"
+            class="validate">
+        </mat-form-field>
+      </div>
+      <div class="col-md-4">
+        <mat-form-field class="input-full-width">
+          <input matInput placeholder="Apellido Paterno" required [(ngModel)]="paciente.apellido_paterno" ng-required="Requerido"
+            type="text" class="validate">
+        </mat-form-field>
+      </div>
+      <div class="col-md-4">
+        <mat-form-field class="input-full-width">
+          <input matInput placeholder="Apellido Materno" [(ngModel)]="paciente.apellido_materno" ng-required="Requerido"
+            type="text" class="validate">
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="row form-edit">
+      <div class="col-md-4">
+        <mat-form-field class="input-full-width">
+          <input matInput [matDatepicker]="picker" required [(ngModel)]="paciente.fecha_nacimiento"
+            placeholder="Fecha de Nacimiento">
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+      </div>
+      <div class="col-md-4">
+        <mat-form-field class="input-full-width">
+          <mat-select placeholder="Sexo" [(ngModel)]="paciente.sexo" required name="sexo">
+            <mat-option *ngFor="let sexo of Sexo" [value]="sexo.value">{{sexo.viewValue}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="col-md-4">
+        <mat-form-field class="input-full-width">
+          <input matInput placeholder="Correo" [(ngModel)]="paciente.email" ng-required="Requerido" type="text"
+            class="validate">
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="row form-edit">
+      <div class="col-md-4">
+        <mat-form-field class="input-full-width">
+          <input matInput placeholder="Telefono" maxlength="10" [(ngModel)]="paciente.telefono" ng-required="Requerido" type="tel"
+            class="validate">
+        </mat-form-field>
+      </div>
+    </div>
+  </div>
+</div>

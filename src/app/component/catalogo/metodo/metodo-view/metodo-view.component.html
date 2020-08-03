@@ -1,0 +1,42 @@
+<div class="col-md-12 all-table">
+  <div class="row">
+    <div>
+      <span class="title-catalogos">Metodos</span>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12 add-new">
+      <a routerLink="/metodo/add" class="">Crear Nuevo</a>
+    </div>
+  </div>
+  <div class="row mat-elevation-z8">
+    <div class="col-md-12 text-right">
+      <mat-form-field class="table-filter">
+        <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+      </mat-form-field>
+    </div>
+    <div class="col-md-12">      
+      <table mat-table [dataSource]="dataSource" class="input-full-width">
+        <!-- nombre-->
+        <ng-container matColumnDef="nombre">
+          <th mat-header-cell class="width-50 thead" *matHeaderCellDef> Nombre </th>
+          <td mat-cell class="width-50" *matCellDef="let element"> {{element.nombre}} </td>
+        </ng-container>
+
+        <!-- accion -->
+        <ng-container matColumnDef="accion" class="width-20">
+          <th mat-header-cell class="width-10" *matHeaderCellDef></th>
+          <td mat-cell class="width-10" *matCellDef="let element">
+            <a [routerLink]="['/metodo/edit/', element.metodo_id]">Editar</a>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;" [ngClass]="{'table-danger': row.estado == 0}"></tr>
+      </table>
+    </div>
+    <div class="col-md-12">
+        <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+    </div>
+  </div>
+</div>
