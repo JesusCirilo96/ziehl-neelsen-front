@@ -1,5 +1,5 @@
 export interface Metodo{
-    metodo_id?:number;
+    metodoId?:number;
     nombre?:string;    
     estado?:boolean;
     createdAt?:string;

@@ -16,11 +16,11 @@ export class MetodoService {
   }
 
   getMetodos(){
-    return this.http.get(`${this.API_URI}/metodo`);
+    return this.http.get(`${this.API_URI}/metodo/get/all`);
   }
 
   getMetodo(id: number){
-    return this.http.get(`${this.API_URI}/metodo/${id}`);
+    return this.http.get(`${this.API_URI}/metodo/get/id/${id}`);
   }
 
   deleteMetodo(id:number){
@@ -28,11 +28,11 @@ export class MetodoService {
   }
 
   saveMetodo(metodo: Metodo){
-    return this.http.post(`${this.API_URI}/metodo`, metodo);
+    return this.http.post(`${this.API_URI}/metodo/save`, metodo);
   }
 
-  updateMetodo(metodo_id:number, updatedMetodo:Metodo): Observable<Metodo>{
-    return this.http.put(`${this.API_URI}/metodo/${metodo_id}`, updatedMetodo);
+  updateMetodo(updatedMetodo:Metodo): Observable<Metodo>{
+    return this.http.post(`${this.API_URI}/metodo/save/`, updatedMetodo);
   }
 
 }

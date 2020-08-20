@@ -28,7 +28,7 @@ export class AtencionService {
   }
 
   saveAtencion(atencion: Atencion){
-    return this.http.post(`${this.API_URI}/medico`, atencion);
+    return this.http.post(`${this.API_URI}/medico/save`, atencion);
   }
 
   updateAtencion(updatedAtencion:Atencion): Observable<Atencion>{

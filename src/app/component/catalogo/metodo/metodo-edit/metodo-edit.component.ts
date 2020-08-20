@@ -19,7 +19,7 @@ export class MetodoEditComponent implements OnInit {
   edit: boolean = false;
 
   metodo: Metodo = {
-    metodo_id:null,
+    metodoId:null,
     nombre:'',
     estado:true
   }
@@ -53,7 +53,7 @@ export class MetodoEditComponent implements OnInit {
   }
 
   updateMetodo(){
-    this.metodoService.updateMetodo(this.metodo.metodo_id, this.metodo).subscribe(
+    this.metodoService.updateMetodo(this.metodo).subscribe(
       res=>{
         this.router.navigate(['/metodo'])
         this.edit = false;
