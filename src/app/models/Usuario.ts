@@ -1,9 +1,9 @@
 export interface Usuario {
-    usuario_id?:number;
+    usuarioId?:number;
     nombre?:string;
-    apellido_paterno?:string;
-    apellido_materno?:string;
-    nombre_usuario?:string;
+    apellidoPaterno?:string;
+    apellidoMaterno?:string;
+    nombreUsuario?:string;
     cedula?:string;
     contrasena?:string;
     rol?:JSON;

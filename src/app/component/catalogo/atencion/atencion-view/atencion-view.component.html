@@ -24,22 +24,22 @@
         </ng-container>
 
         <!-- apellido_paterno -->
-        <ng-container matColumnDef="apellido_paterno">
+        <ng-container matColumnDef="apellidoPaterno">
           <th mat-header-cell class="width-10 thead" *matHeaderCellDef> Apellido Paterno</th>
-          <td mat-cell class="width-10" *matCellDef="let element"> {{element.apellido_paterno}} </td>
+          <td mat-cell class="width-10" *matCellDef="let element"> {{element.apellidoPaterno}} </td>
         </ng-container>
 
         <!-- apellido materno -->
-        <ng-container matColumnDef="apellido_materno">
+        <ng-container matColumnDef="apellidoMaterno">
           <th mat-header-cell class="width-10 thead" *matHeaderCellDef> Apellido Materno </th>
-          <td mat-cell class="width-10" *matCellDef="let element"> {{element.apellido_materno}} </td>
+          <td mat-cell class="width-10" *matCellDef="let element"> {{element.apellidoMaterno}} </td>
         </ng-container>
 
         <!-- accion -->
         <ng-container matColumnDef="accion">
           <th mat-header-cell class="width-10" *matHeaderCellDef></th>
           <td mat-cell class="width-10" *matCellDef="let element">
-            <a [routerLink]="['/atencion/edit/', element.atencion_id]">Editar</a>
+            <a [routerLink]="['/atencion/edit/', element.medicoId]">Editar</a>
           </td>
         </ng-container>
 

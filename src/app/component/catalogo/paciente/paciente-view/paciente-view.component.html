@@ -23,22 +23,22 @@
           <td mat-cell class="width-10" *matCellDef="let element"> {{element.nombre}} </td>
         </ng-container>
 
-        <!-- apellido_paterno -->
-        <ng-container matColumnDef="apellido_paterno">
+        <!-- apellido paterno -->
+        <ng-container matColumnDef="apellidoPaterno">
           <th mat-header-cell class="width-10 thead" *matHeaderCellDef> Apellido Paterno</th>
-          <td mat-cell class="width-10" *matCellDef="let element"> {{element.apellido_paterno}} </td>
+          <td mat-cell class="width-10" *matCellDef="let element"> {{element.apellidoPaterno}} </td>
         </ng-container>
 
         <!-- apellido materno -->
-        <ng-container matColumnDef="apellido_materno">
+        <ng-container matColumnDef="apellidoMaterno">
           <th mat-header-cell class="width-10 thead" *matHeaderCellDef> Apellido Materno </th>
-          <td mat-cell class="width-10" *matCellDef="let element"> {{element.apellido_materno}} </td>
+          <td mat-cell class="width-10" *matCellDef="let element"> {{element.apellidoMaterno}} </td>
         </ng-container>
 
         <!-- Fecha de nacimiento -->
-        <ng-container matColumnDef="fecha_nacimiento">
+        <ng-container matColumnDef="fechaNacimiento">
           <th mat-header-cell class="width-10 thead" *matHeaderCellDef> Fecha de Nacimiento </th>
-          <td mat-cell class="width-10" *matCellDef="let element"> {{element.fecha_nacimiento}} </td>
+          <td mat-cell class="width-10" *matCellDef="let element"> {{element.fechaNacimiento}} </td>
         </ng-container>
 
         <!-- sexo -->
@@ -63,9 +63,9 @@
         <ng-container matColumnDef="accion">
           <th mat-header-cell class="width-10" *matHeaderCellDef></th>
           <td mat-cell class="width-10" *matCellDef="let element">
-            <a [routerLink]="['/paciente/edit/', element.paciente_id]">Editar</a>
+            <a [routerLink]="['/paciente/edit/', element.pacienteId]">Editar</a>
             |
-            <a [routerLink]="['/paciente/historial/', element.paciente_id]">Historial</a>
+            <a [routerLink]="['/paciente/historial/', element.pacienteId]">Historial</a>
           </td>
         </ng-container>
 

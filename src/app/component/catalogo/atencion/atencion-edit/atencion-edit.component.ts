@@ -16,10 +16,10 @@ export class AtencionEditComponent implements OnInit {
   }
   edit: boolean = false;
   atencion: Atencion = {
-    atencion_id:null,
+    medicoId:null,
     nombre:'',
-    apellido_paterno:'',
-    apellido_materno:'',
+    apellidoPaterno:'',
+    apellidoMaterno:'',
     estado:true,
     createdAt:'',
     updatedAt:'',
@@ -55,7 +55,7 @@ export class AtencionEditComponent implements OnInit {
   }
 
   updateAtencion(){
-    this.atencionService.updateAtencion(this.atencion.atencion_id, this.atencion).subscribe(
+    this.atencionService.updateAtencion(this.atencion).subscribe(
       res=>{
         this.router.navigate(['/atencion'])
         this.edit = false;

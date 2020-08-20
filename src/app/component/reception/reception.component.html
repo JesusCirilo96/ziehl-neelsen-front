@@ -34,7 +34,7 @@
         </div>
         <div class="col-md-3">
           <mat-form-field class="input-full-width">
-            <input matInput [(ngModel)]="fecha_nacimiento" placeholder="Fecha de Nacimiento">
+            <input matInput [(ngModel)]="fechaNacimiento" placeholder="Fecha de Nacimiento">
           </mat-form-field>
         </div>
         <div class="col-md-3">
@@ -59,7 +59,7 @@
         <div class="col-md-6">
           <form class="form-atencion">
             <mat-form-field class="input-full-width">
-              <input type="text" placeholder="Nombre del Doctor (a)" matInput [formControl]="controlAtencion" required
+              <input type="text" placeholder="Nombre del Medico" matInput [formControl]="controlAtencion" required
                 [matAutocomplete]="autoAtencion">
               <mat-autocomplete #autoAtencion="matAutocomplete" (optionSelected)="obtenerAtencion($event.option.value)">
                 <mat-option *ngFor="let optionAtencion of filteredOptionsAtencion | async" [value]="optionAtencion">

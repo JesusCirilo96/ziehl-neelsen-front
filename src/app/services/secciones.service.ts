@@ -9,14 +9,14 @@ import { Observable } from 'rxjs';
 })
 export class SeccionesService {
 
-  API_URI = 'http://localhost:8090';
+  API_URI = 'http://localhost:8888';
 
   constructor(private http: HttpClient) { 
 
   }
 
   getSecciones(){
-    return this.http.get(`${this.API_URI}/seccion/getAll`);
+    return this.http.get(`${this.API_URI}/seccion/get/all`);
   }
   
   getSeccionExamen(){
@@ -24,7 +24,7 @@ export class SeccionesService {
   }
 
   getSeccion(id: number){
-    return this.http.get(`${this.API_URI}/seccion/${id}`);
+    return this.http.get(`${this.API_URI}/seccion/get/id/${id}`);
   }
 
   deleteSeccion(id:number){
@@ -35,8 +35,8 @@ export class SeccionesService {
     return this.http.post(`${this.API_URI}/seccion/save`, seccion);
   }
 
-  updateSeccion(seccion_id:number, updatedSeccion:Seccion): Observable<Seccion>{
-    return this.http.put(`${this.API_URI}/seccion/${seccion_id}`, updatedSeccion);
+  updateSeccion(updatedSeccion:Seccion): Observable<Seccion>{
+    return this.http.post(`${this.API_URI}/seccion/save`, updatedSeccion);
   }
 
 }

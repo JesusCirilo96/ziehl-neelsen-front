@@ -20,9 +20,9 @@ export class PacienteViewComponent implements OnInit {
 
   pacienteColumns: string[] = [
     'nombre',
-    'apellido_paterno',
-    'apellido_materno',
-    'fecha_nacimiento',
+    'apellidoPaterno',
+    'apellidoMaterno',
+    'fechaNacimiento',
     'sexo',
     'telefono',
     'email',

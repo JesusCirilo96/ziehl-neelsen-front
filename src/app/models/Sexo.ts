@@ -1,4 +1,4 @@
 export interface Sexo {
-    value: string;
+    value: boolean;
     viewValue: string;
   }

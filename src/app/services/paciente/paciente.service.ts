@@ -17,11 +17,11 @@ export class PacienteService {
   }
 
   getPacientes(){
-    return this.http.get(`${this.API_URI}/paciente`);
+    return this.http.get(`${this.API_URI}/paciente/get/all`);
   }
 
   getPaciente(id: number){
-    return this.http.get(`${this.API_URI}/paciente/${id}`);
+    return this.http.get(`${this.API_URI}/paciente/get/id/${id}`);
   }
 
   deletePaciente(id:number){
@@ -29,11 +29,11 @@ export class PacienteService {
   }
 
   savePaciente(paciente: Paciente){
-    return this.http.post(`${this.API_URI}/paciente`, paciente);
+    return this.http.post(`${this.API_URI}/paciente/save`, paciente);
   }
 
-  updatePaciente(paciente_id:number, updatedPaciente:Paciente): Observable<Paciente>{
-    return this.http.put(`${this.API_URI}/paciente/${paciente_id}`, updatedPaciente);
+  updatePaciente(updatedPaciente:Paciente): Observable<Paciente>{
+    return this.http.post(`${this.API_URI}/paciente/save`, updatedPaciente);
   }
   
 }

@@ -96,9 +96,9 @@ export class ReceptionComponent implements OnInit {
   examenGeneralEscogido: string;
 
   //datos paciente
-  fecha_nacimiento: string;
-  apellido_paterno: string;
-  apellido_materno: string;
+  fechaNacimiento: string;
+  apellidoPaterno: string;
+  apellidoMaterno: string;
   Sexo: string;
 
 
@@ -126,8 +126,8 @@ export class ReceptionComponent implements OnInit {
   restante: number = 0;
 
   sexo: Sexo[] = [
-    { value: '1', viewValue: 'Masculino' },
-    { value: '0', viewValue: 'Femenino' }
+    { value: true, viewValue: 'Masculino' },
+    { value: false, viewValue: 'Femenino' }
   ];
   recepcion: Recepcion = {
     recepcion_id: null,
@@ -140,8 +140,8 @@ export class ReceptionComponent implements OnInit {
     anticipo: 0.0,
     restante: 0.0,
     muestra:'',
-    paciente_id: null,
-    atencion_id: null
+    pacienteId: null,
+    medicoId: null
   }
 
   examenGeneralRecepcion: ExamenGeneralRecepcion = {
@@ -193,7 +193,7 @@ export class ReceptionComponent implements OnInit {
     this.recepcion.fecha_ingreso = this.getToday();
     this.recepcion.hora_ingreso = this.obtenerHora();
 
-    if (this.recepcion.paciente_id == null || this.recepcion.atencion_id == null) {
+    if (this.recepcion.pacienteId == null || this.recepcion.medicoId == null) {
       this.errorRecepcion('Faltan algunos datos');
     } else if (Object.keys(this.ExamenGeneralRecepcion).length === 0) {
       this.errorRecepcion('Debes elegir al menos un Examen');
@@ -255,8 +255,8 @@ export class ReceptionComponent implements OnInit {
       anticipo: 0.0,
       restante: 0.0,
       muestra:'',
-      paciente_id: null,
-      atencion_id: null
+      pacienteId: null,
+      medicoId: null
     }
     this.examenGeneralRecepcion = {
       examen_gen_id: null,
@@ -274,9 +274,9 @@ export class ReceptionComponent implements OnInit {
 
     this.ExamenGeneralRecepcion = []; //formato para guardar en la base de datos EXAMEN GENERAL
 
-    this.fecha_nacimiento = '';
-    this.apellido_paterno = '';
-    this.apellido_materno = '';
+    this.fechaNacimiento = '';
+    this.apellidoPaterno = '';
+    this.apellidoMaterno = '';
     this.Sexo = '';
     //vaciar autocompletes
     this.controlAtencion.setValue('');
@@ -557,20 +557,20 @@ export class ReceptionComponent implements OnInit {
 
   legibleAutocompletePaciente(response) {//formateamos el resultado del JSON paciente legible para el autocomplete
     for (var key in response) {
-      this.paciente.push(response[key].nombre + " " + response[key].apellido_paterno + " " + response[key].apellido_materno);
+      this.paciente.push(response[key].nombre + " " + response[key].apellidoPaterno + " " + response[key].apellidoMaterno);
     }
   }
 
   obtenerPaciente(value) {//obtenemos el paciente del input autocomplete lo comparamos con el json y seteamos los valores a los inputs
     var paciente = this.Paciente;
     for (var key in paciente) {
-      var nombre = paciente[key].nombre + " " + paciente[key].apellido_paterno + " " + paciente[key].apellido_materno
+      var nombre = paciente[key].nombre + " " + paciente[key].apellidoPaterno + " " + paciente[key].apellidoMaterno
       if (nombre == value) {
-        this.recepcion.paciente_id = paciente[key].paciente_id;//setear paciente_id al modelo de recepcion  
-        this.apellido_paterno = paciente[key].apellido_paterno;
-        this.apellido_materno = paciente[key].apellido_materno;
+        this.recepcion.pacienteId = paciente[key].paciente_id;//setear paciente_id al modelo de recepcion  
+        this.apellidoPaterno = paciente[key].apellidoPaterno;
+        this.apellidoMaterno = paciente[key].apellidoMaterno;
         this.Sexo = paciente[key].sexo;
-        this.fecha_nacimiento = paciente[key].fecha_nacimiento;
+        this.fechaNacimiento = paciente[key].fechaNacimiento;
         break;
       }
 
@@ -594,16 +594,16 @@ export class ReceptionComponent implements OnInit {
 
   legibleAutocompleteAtencion(response) {
     for (var key in response) {
-      this.atencion.push(response[key].nombre + " " + response[key].apellido_paterno + " " + response[key].apellido_materno);
+      this.atencion.push(response[key].nombre + " " + response[key].apellidoPaterno + " " + response[key].apellidoMaterno);
     }
   }
 
   obtenerAtencion(value) {
     var atencion = this.Atencion;
     for (var key in atencion) {
-      var nombre = atencion[key].nombre + " " + atencion[key].apellido_paterno + " " + atencion[key].apellido_materno
+      var nombre = atencion[key].nombre + " " + atencion[key].apellidoPaterno + " " + atencion[key].apellidoMaterno
       if (value == nombre) {
-        this.recepcion.atencion_id = atencion[key].atencion_id;
+        this.recepcion.medicoId = atencion[key].medicoId;
         break;
       }
     }

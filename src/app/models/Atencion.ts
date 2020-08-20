@@ -1,8 +1,8 @@
 export interface Atencion{
-    atencion_id?:number;
+    medicoId?:number;
     nombre?:string;    
-    apellido_paterno?:string;
-    apellido_materno?:string;
+    apellidoPaterno?:string;
+    apellidoMaterno?:string;
     estado?:boolean;
     createdAt?:string;
     updatedAt?:string;

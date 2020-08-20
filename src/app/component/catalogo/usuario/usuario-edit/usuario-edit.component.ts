@@ -27,13 +27,13 @@ export class UsuarioEditComponent implements OnInit {
   rolEscogido: number;
 
   usuario: Usuario = {
-    usuario_id: null,
+    usuarioId: null,
     nombre: '',
-    apellido_paterno: '',
-    apellido_materno: '',
+    apellidoPaterno: '',
+    apellidoMaterno: '',
     cedula: '',
     contrasena: '',
-    nombre_usuario: '',
+    nombreUsuario: '',
     rol: null,
     estado: true
   }
@@ -49,10 +49,10 @@ export class UsuarioEditComponent implements OnInit {
     if (parametros.id) {
       this.usuarioService.getUsuario(parametros.id).subscribe(
         res => {
-          this.usuario = res[0];
+          this.usuario = res;
           this.edit = true;
           this.mostrarEstado(this.usuario.estado);
-          this.getRol(this.usuario.rol);
+          //this.getRol(this.usuario.rol);
         },
         err => {
           console.log(err);
@@ -97,7 +97,7 @@ export class UsuarioEditComponent implements OnInit {
   }
 
   updateUsuario() {
-    this.usuarioService.updateUsuario(this.usuario.usuario_id, this.usuario).subscribe(
+    this.usuarioService.updateUsuario(this.usuario).subscribe(
       res => {
         this.router.navigate(['/usuario'])
         this.edit = false;

@@ -16,22 +16,22 @@ export class AtencionService {
   }
 
   getAtenciones(){
-    return this.http.get(`${this.API_URI}/atencion`);
+    return this.http.get(`${this.API_URI}/medico/get/all`);
   }
 
   getAtencion(id: number){
-    return this.http.get(`${this.API_URI}/atencion/${id}`);
+    return this.http.get(`${this.API_URI}/medico/get/id/${id}`);
   }
 
   deleteAtencion(id:number){
-    return this.http.delete(`${this.API_URI}/atencion/${id}`);
+    return this.http.delete(`${this.API_URI}/medico/${id}`);
   }
 
   saveAtencion(atencion: Atencion){
-    return this.http.post(`${this.API_URI}/atencion`, atencion);
+    return this.http.post(`${this.API_URI}/medico`, atencion);
   }
 
-  updateAtencion(atencion_id:number, updatedAtencion:Atencion): Observable<Atencion>{
-    return this.http.put(`${this.API_URI}/atencion/${atencion_id}`, updatedAtencion);
+  updateAtencion(updatedAtencion:Atencion): Observable<Atencion>{
+    return this.http.post(`${this.API_URI}/medico/save`, updatedAtencion);
   }
 }

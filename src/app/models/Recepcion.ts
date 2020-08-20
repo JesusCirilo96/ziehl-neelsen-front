@@ -8,8 +8,8 @@ export interface Recepcion{
     total?:number;
     anticipo?:number;
     restante?:number;
-    paciente_id?:number;
-    atencion_id?:number;
+    pacienteId?:number;
+    medicoId?:number;
     muestra?:string;
     createdAt?:string;
     updatedAt?:string;

@@ -37,14 +37,14 @@ export class HistorialPacienteComponent implements OnInit {
   dataSource = new MatTableDataSource<Element>();
 
   paciente: Paciente = {
-    paciente_id: null,
+    pacienteId: null,
     nombre: '',
-    apellido_materno: '',
-    apellido_paterno: '',
+    apellidoMaterno: '',
+    apellidoPaterno: '',
     email: '',
     estado: true,
     sexo: null,
-    fecha_nacimiento: '',
+    fechaNacimiento: '',
     telefono: ''
   }
 

@@ -20,8 +20,8 @@ export class AtencionViewComponent implements OnInit {
 
   atencionColumns: string[] = [
     'nombre',
-    'apellido_paterno',
-    'apellido_materno',
+    'apellidoPaterno',
+    'apellidoMaterno',
     'accion'
   ];
   dataSource = new MatTableDataSource<Element>();

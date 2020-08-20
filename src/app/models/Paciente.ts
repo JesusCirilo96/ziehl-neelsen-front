@@ -1,9 +1,9 @@
 export interface Paciente {
-    paciente_id?:number;
+    pacienteId?:number;
     nombre?:string;
-    apellido_paterno?:string;
-    apellido_materno?:string;
-    fecha_nacimiento?:string;
+    apellidoPaterno?:string;
+    apellidoMaterno?:string;
+    fechaNacimiento?:string;
     sexo?:boolean;
     telefono?:string;
     email?:string;

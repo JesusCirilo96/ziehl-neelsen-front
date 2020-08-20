@@ -19,11 +19,11 @@ export class UsuarioService {
   API_URI = AppSettings.API_ENDPOINT;
 
   getUsuarios(){
-    return this.http.get(`${this.API_URI}/usuario`);
+    return this.http.get(`${this.API_URI}/usuario/get/all`);
   }
 
   getUsuario(id: number){
-    return this.http.get(`${this.API_URI}/usuario/${id}`);
+    return this.http.get(`${this.API_URI}/usuario/get/id/${id}`);
   }
 
   deleteUsuario(id:number){
@@ -34,7 +34,7 @@ export class UsuarioService {
     return this.http.post(`${this.API_URI}/usuario`, usuario);
   }
 
-  updateUsuario(usuario_id:number, updatedUsuario:Usuario): Observable<Usuario>{
-    return this.http.put(`${this.API_URI}/usuario/${usuario_id}`, updatedUsuario);
+  updateUsuario(updatedUsuario:Usuario): Observable<Usuario>{
+    return this.http.post(`${this.API_URI}/usuario/`, updatedUsuario);
   }
 }

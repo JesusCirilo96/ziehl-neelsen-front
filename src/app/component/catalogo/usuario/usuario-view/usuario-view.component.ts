@@ -20,9 +20,9 @@ export class UsuarioViewComponent implements OnInit {
 
   displayedColumns: string[] = [
     'nombre',
-    'apellido_paterno', 
-    'apellido_materno',
-    'nombre_usuario',
+    'apellidoPaterno', 
+    'apellidoMaterno',
+    'nombreUsuario',
     'accion'
   ];
   dataSource = new MatTableDataSource<Element>();

@@ -27,11 +27,11 @@ export class PacienteEditComponent implements OnInit {
   }
   edit: boolean = false;
   paciente: Paciente = {
-    paciente_id:null,
+    pacienteId:null,
     nombre:'',
-    apellido_paterno:'',
-    apellido_materno:'',
-    fecha_nacimiento:'',
+    apellidoPaterno:'',
+    apellidoMaterno:'',
+    fechaNacimiento:'',
     sexo:true,
     email:null,
     telefono:'',
@@ -41,8 +41,8 @@ export class PacienteEditComponent implements OnInit {
   }
 
   Sexo: Sexo[] = [
-    {value: '1', viewValue: 'Masculino'},
-    {value: '0', viewValue: 'Femenino'}
+    {value: true, viewValue: 'Masculino'},
+    {value: false, viewValue: 'Femenino'}
   ];
 
   ngOnInit() {
@@ -63,6 +63,7 @@ export class PacienteEditComponent implements OnInit {
   }
 
   saveNewPaciente(){
+    this.getDate(this.paciente.fechaNacimiento);
     this.pacienteService.savePaciente(this.paciente).subscribe(
       res=>{
         this.router.navigate(['/paciente'])
@@ -75,7 +76,7 @@ export class PacienteEditComponent implements OnInit {
   }
 
   updatePaciente(){
-    this.pacienteService.updatePaciente(this.paciente.paciente_id, this.paciente).subscribe(
+    this.pacienteService.updatePaciente(this.paciente).subscribe(
       res=>{
         this.router.navigate(['/paciente'])
         this.edit = false;
@@ -112,14 +113,6 @@ export class PacienteEditComponent implements OnInit {
     }
   }
 
-  sexoFormat(sexo){
-    var sex = 0;
-    if(sexo){
-      sex = 1;
-    }
-    return sex;
-  }
-
   getDate(val) {
     console.log(val);
     var mes = parseInt(val._i.month + 1);
@@ -132,7 +125,7 @@ export class PacienteEditComponent implements OnInit {
       dia = "0" + dia;
     }
     var fecha = val._i.year + "-" + formatMes +"-" + dia ;
-    this.paciente.fecha_nacimiento = fecha;
+    this.paciente.fechaNacimiento = fecha;
   }
   
 }

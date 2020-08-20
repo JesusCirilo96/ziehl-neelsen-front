@@ -53,7 +53,7 @@ export class SeccionEditComponent implements OnInit {
   }
 
   updateSeccion(){
-    this.seccionService.updateSeccion(this.seccion.seccionId, this.seccion).subscribe(
+    this.seccionService.updateSeccion(this.seccion).subscribe(
       res=>{
         this.router.navigate(['/seccion'])
         this.edit = false;

@@ -20,13 +20,13 @@
       </div>
       <div class="col-md-4">
         <mat-form-field class="input-full-width">
-          <input matInput placeholder="Apellido Paterno" required [(ngModel)]="paciente.apellido_paterno" ng-required="Requerido"
+          <input matInput placeholder="Apellido Paterno" required [(ngModel)]="paciente.apellidoPaterno" ng-required="Requerido"
             type="text" class="validate">
         </mat-form-field>
       </div>
       <div class="col-md-4">
         <mat-form-field class="input-full-width">
-          <input matInput placeholder="Apellido Materno" [(ngModel)]="paciente.apellido_materno" ng-required="Requerido"
+          <input matInput placeholder="Apellido Materno" [(ngModel)]="paciente.apellidoMaterno" ng-required="Requerido"
             type="text" class="validate">
         </mat-form-field>
       </div>
@@ -34,7 +34,7 @@
     <div class="row form-edit">
       <div class="col-md-4">
         <mat-form-field class="input-full-width">
-          <input matInput [matDatepicker]="picker" required [(ngModel)]="paciente.fecha_nacimiento"
+          <input matInput [matDatepicker]="picker" required [(ngModel)]="paciente.fechaNacimiento"
             placeholder="Fecha de Nacimiento">
           <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
           <mat-datepicker #picker></mat-datepicker>
