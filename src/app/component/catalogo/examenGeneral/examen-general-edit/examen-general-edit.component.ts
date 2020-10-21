@@ -90,20 +90,16 @@ export class ExamenGeneralEditComponent implements OnInit {
   }
 
   examenGeneral: ExamenGeneral = {
-    examen_gen_id: null,
-    nombre: '',
-    alias: '',
-    precio: null,
-    vr_ninos: '',
-    vr_ninas: '',
-    vr_general_n: '',
-    vr_hombre: '',
-    vr_mujer: '',
-    vr_general: '',
-    estado: true,
-    createdAt: '',
-    updatedAt: '',
-    seccion_id: null
+    examenGeneralId:null,
+    nombre:'',
+    alias:'',
+    titulo:'',
+    estado:true,
+    precio:0.0,
+    clave:'',
+    categoriaId:null,
+    fechaCreacion:'',
+    fechaActualizacion:''
   }
 
   subExamen: SubExamen = {
@@ -147,14 +143,14 @@ export class ExamenGeneralEditComponent implements OnInit {
   SubExamenReferencia: any = [];//alamacenar referencias perzonalizadas del SUBEXAMEN
 
   ngOnInit() {
-    this.getReferenciaId();
+    //this.getReferenciaId();
     $("#examenEstado").hide();
     $("#addExamenes").hide();
-    this.getMetodo();
-    this.getSecciones();
-    this.getSubsecciones();
-    this.getSubExamenes();
-    this.getTipoExamen();
+    //this.getMetodo();
+    //this.getSecciones();
+    //this.getSubsecciones();
+    //this.getSubExamenes();
+    //this.getTipoExamen();
     this.getExamenGeneral();
   }
 
@@ -163,11 +159,12 @@ export class ExamenGeneralEditComponent implements OnInit {
     if (parametros.id) {
       this.examenGeneralService.getExamenGeneral(parametros.id).subscribe(
         res => {
-          this.examenGeneral = res[0];
+          console.log(res);
+          this.examenGeneral = res;
           this.edit = true;
           this.mostrarEstado(this.examenGeneral.estado);
-          this.getExamenGeneralSubSeccion(parametros.id);
-          this.getExamenGeneralSubExamen(parametros.id);
+          //this.getExamenGeneralSubSeccion(parametros.id);
+          //this.getExamenGeneralSubExamen(parametros.id);
         },
         err => {
           console.log(err);
@@ -227,7 +224,7 @@ export class ExamenGeneralEditComponent implements OnInit {
 
   guardarExamenGeneralReferencia(Referencia) {
     this.examenGeneralReferencia.referencia_id = Referencia.referencia_id;
-    this.examenGeneralReferencia.examen_gen_id = this.examenGeneral.examen_gen_id;
+    this.examenGeneralReferencia.examen_gen_id = this.examenGeneral.examenGeneralId;
     this.examenGeneralReferenciaService.saveExamenGeneralReferencia(this.examenGeneralReferencia).subscribe(
       res => {
         this.referenciaPersonalizada = '';
@@ -334,12 +331,12 @@ export class ExamenGeneralEditComponent implements OnInit {
   }
 /**FIN GAURDAR SUBEXAMEN Y REFERENCIAS PERSONALIZADAS */
   saveExamenGeneralSubExamen() {
-    this.examenGeneralSubExamen.examen_gen_id = this.examenGeneral.examen_gen_id;
+    this.examenGeneralSubExamen.examen_gen_id = this.examenGeneral.examenGeneralId;
     this.examenGeneralSubExamenService.saveExamenGeneralSubexamen(this.examenGeneralSubExamen).subscribe(
       res => {
         //this.subTotal = 0;
-        this.getExamenGeneralSubExamen(this.examenGeneral.examen_gen_id);
-        this.getExamenGeneralSubSeccion(this.examenGeneral.examen_gen_id);
+        this.getExamenGeneralSubExamen(this.examenGeneral.examenGeneralId);
+        this.getExamenGeneralSubSeccion(this.examenGeneral.examenGeneralId);
         this.subExamen = {
           sub_examen_id: null,
           nombre: '',
@@ -363,13 +360,13 @@ export class ExamenGeneralEditComponent implements OnInit {
   }
 
   saveExamenGeneralSubSeccion() {
-    this.examenGeneralSubSeccion.examen_gen_id = this.examenGeneral.examen_gen_id;
+    this.examenGeneralSubSeccion.examen_gen_id = this.examenGeneral.examenGeneralId;
     this.examenGeneralSubSeccion.sub_seccion_id = this.subEstudio;
     this.examenGeneralSubseccionService.saveExamenGeneralSubseccion(this.examenGeneralSubSeccion).subscribe(
       res => {
         //this.subTotal = 0;
-        this.getExamenGeneralSubSeccion(this.examenGeneral.examen_gen_id);
-        this.getExamenGeneralSubExamen(this.examenGeneral.examen_gen_id);
+        this.getExamenGeneralSubSeccion(this.examenGeneral.examenGeneralId);
+        this.getExamenGeneralSubExamen(this.examenGeneral.examenGeneralId);
         this.examenGeneralSubSeccion = {
           examen_gen_id: null,
           sub_seccion_id: null
@@ -382,7 +379,7 @@ export class ExamenGeneralEditComponent implements OnInit {
   }
 
   updateExamenGeneral() {
-    this.examenGeneralService.updateExamenGeneral(this.examenGeneral.examen_gen_id, this.examenGeneral).subscribe(
+    this.examenGeneralService.updateExamenGeneral(this.examenGeneral.examenGeneralId, this.examenGeneral).subscribe(
       res => {
         this.router.navigate(['/examengeneral'])
         this.edit = false;
@@ -497,7 +494,7 @@ export class ExamenGeneralEditComponent implements OnInit {
   }
 
   guardarMetodo() {
-    this.examenGeneralMetodo.examen_gen_id = this.examenGeneral.examen_gen_id;
+    this.examenGeneralMetodo.examen_gen_id = this.examenGeneral.examenGeneralId;
     this.examenGeneralMetodo.metodo_id = this.metodoEscogido;
 
     this.examenGeneralMetodoService.saveExamenGenMetodo(this.examenGeneralMetodo).subscribe(

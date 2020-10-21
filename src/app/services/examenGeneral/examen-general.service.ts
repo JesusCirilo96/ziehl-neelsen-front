@@ -16,23 +16,15 @@ export class ExamenGeneralService {
   }
 
   getExamenesGenerales(){
-    return this.http.get(`${this.API_URI}/examengeneral`);
+    return this.http.get(`${this.API_URI}/examen/get/all`);
   }
 
   getExamenGeneral(id: number){
-    return this.http.get(`${this.API_URI}/examengeneral/${id}`);
-  }
-
-  getMaxId(){
-    return this.http.get(`${this.API_URI}/examengeneral/getlastid`);
-  }
-
-  deleteExamenGeneral(id:number){
-    return this.http.delete(`${this.API_URI}/examengeneral/${id}`);
+    return this.http.get(`${this.API_URI}/examen/get/${id}`);
   }
 
   saveExamenGeneral(examenGeneral: ExamenGeneral){
-    return this.http.post(`${this.API_URI}/examengeneral`, examenGeneral);
+    return this.http.post(`${this.API_URI}/examen`, examenGeneral);
   }
 
   updateExamenGeneral(examen_gen_id:number, updatedExamenGeneral:ExamenGeneral): Observable<ExamenGeneral>{

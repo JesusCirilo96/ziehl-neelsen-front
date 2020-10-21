@@ -19,9 +19,9 @@
             <table mat-table [dataSource]="dataSource" class="input-full-width">
 
               <!-- examen_gen_id-->
-              <ng-container matColumnDef="examen_gen_id">
-                  <th mat-header-cell class="width-10 thead" *matHeaderCellDef> Clave </th>
-                  <td mat-cell class="width-10" *matCellDef="let element"> {{element.examen_gen_id}} </td>
+              <ng-container matColumnDef="examenGeneralId">
+                  <th mat-header-cell class="width-10 thead" *matHeaderCellDef> Id </th>
+                  <td mat-cell class="width-10" *matCellDef="let element"> {{element.examenGeneralId}} </td>
                 </ng-container>
 
               <!-- nombre-->
@@ -43,16 +43,16 @@
               </ng-container>
       
               <!-- seccion Column -->
-              <ng-container matColumnDef="seccion">
+              <ng-container matColumnDef="categoriaId">
                 <th mat-header-cell class="width-10 thead" *matHeaderCellDef> Sección </th>
-                <td mat-cell class="width-10" *matCellDef="let element"> {{element.seccionExGen.nombre}} </td>
+                <td mat-cell class="width-10" *matCellDef="let element"> {{element.categoriaId}} </td>
               </ng-container>
       
               <!-- accion -->
               <ng-container matColumnDef="accion">
                 <th mat-header-cell class="width-10" *matHeaderCellDef></th>
                 <td mat-cell class="width-10 text-center" *matCellDef="let element">
-                  <a [routerLink]="['/examengeneral/edit/', element.examen_gen_id]">Editar</a>
+                  <a [routerLink]="['/examengeneral/edit/', element.examenGeneralId]">Editar</a>
                 </td>
               </ng-container>
       

@@ -128,7 +128,7 @@ export class ResultadoEditComponent implements OnInit {
   guardarInforme(examen_gen_id) {
     this.informe.fecha_informe = this.getToday();
     this.informe.hora_informe = this.getHour();
-    this.informe.usuario_id = this.currentUser.usuario_id;
+    this.informe.usuario_id = this.currentUser.usuarioId;
     this.informe.examen_gen_id = examen_gen_id;
     this.informe.recepcion_id = this.resultadoExamenGeneral[0].recepcion_id;
     var informes = this.informes;

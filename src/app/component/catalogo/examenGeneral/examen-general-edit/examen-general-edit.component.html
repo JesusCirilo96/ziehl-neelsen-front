@@ -35,30 +35,34 @@
         </div>
       </div>
       <div class="row">
-        <!--<div class="col-md-4">
-          <mat-form-field class="input-full-width">
-            <input matInput placeholder="Clave" [(ngModel)]="examenGeneral.examen_gen_id" ng-required="Requerido"
-              type="text" class="validate">
-          </mat-form-field>
-        </div>-->
         <div class="col-md-4">
           <mat-form-field class="input-full-width">
-            <mat-select placeholder="Sección" required [(ngModel)]="examenGeneral.seccion_id">
-              <mat-option *ngFor="let seccion of Seccion" [value]="seccion.seccion_id">{{seccion.nombre}}
-              </mat-option>
-            </mat-select>
+            <input matInput placeholder="Clave" [(ngModel)]="examenGeneral.clave" required ng-required="Requerido"
+              type="text" class="validate">
           </mat-form-field>
         </div>
         <div class="col-md-4">
           <mat-form-field class="input-full-width">
-            <mat-select placeholder="Tipo de examen" required [(ngModel)]="examenGeneral.tipo_examen_id">
-              <mat-option *ngFor="let tipoExamen of TipoExamen" [value]="tipoExamen.tipo_examen_id">
-                {{tipoExamen.nombre}}
+            <input matInput placeholder="Titulo" [(ngModel)]="examenGeneral.titulo" required ng-required="Requerido"
+              type="text" class="validate">
+          </mat-form-field>
+        </div>
+        <div class="col-md-4">
+          <mat-form-field class="input-full-width">
+            <mat-select placeholder="Categoria" required [(ngModel)]="examenGeneral.caregoriaId">
+              <mat-option *ngFor="let seccion of Seccion" [value]="seccion.categoriaId">{{seccion.nombre}}
               </mat-option>
             </mat-select>
           </mat-form-field>
         </div>
       </div>
+      <div class="row">
+        <small>Fecha creación: {{examenGeneral.fechaCreacion}}</small>
+      </div>
+      <div class="row">
+        <small>Fecha actualización: {{examenGeneral.fechaActualizacion}} </small>
+      </div>
+      <!--
       <ng-template [ngIf]="edit">
         <div class="row">
           <div class="col-md-12">
@@ -161,10 +165,11 @@
             </mat-tab-group>
           </div>
         </div>
-      </ng-template>
+      </ng-template> -->
 
     </mat-card>
   </div>
+  <!--
   <ng-template [ngIf]="edit">
   <div class="form-edit col-md-12">
     <mat-accordion>
@@ -393,5 +398,5 @@
       </table>
     </mat-card>
   </div>
-  </ng-template>
+  </ng-template> -->
 </div>

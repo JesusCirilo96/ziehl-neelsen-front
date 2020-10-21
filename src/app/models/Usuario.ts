@@ -5,7 +5,8 @@ export interface Usuario {
     apellidoMaterno?:string;
     nombreUsuario?:string;
     cedula?:string;
-    contrasena?:string;
-    rol?:JSON;
+    password?:string;
     estado?:boolean;
+    fechaCreacion?:string,
+    fechaActualizacion?: string
 }

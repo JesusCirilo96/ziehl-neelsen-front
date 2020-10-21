@@ -4,7 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { Rol } from '../../models/Rol';
 import { Observable } from 'rxjs';
 
-import {AppSettings} from 'src/assets/js/messages';
+import {environment} from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -14,20 +14,35 @@ export class RolService {
 
   }
 
-  API_URI = AppSettings.API_ENDPOINT;
+  API_URI = environment.apiUrl;
 
+  /**
+   * Obetenemos todos los roles de usuario
+   */
   getRoles(){
-    return this.http.get(`${this.API_URI}/rol`);
+    return this.http.get(`${this.API_URI}/rol/get/all`);
   }
 
+  /**
+   * Obtenemos el Rol por ID
+   * @param id El ID del rol
+   */
   getRol(id: number){
     return this.http.get(`${this.API_URI}/rol/${id}`);
   }
 
-  deleteRol(id:number){
-    return this.http.delete(`${this.API_URI}/rol/${id}`);
+  /**
+   * Obtener los roles del usuario
+   * @param id El ID del usuario
+   */
+  getRolByUsuario(id: number){
+    return this.http.get(`${this.API_URI}/usuario/get/rol/${id}`);
   }
 
+  /**
+   * Guarda el rol en BD
+   * @param rol El rol a guardar
+   */
   saveRol(rol: Rol){
     return this.http.post(`${this.API_URI}/rol`, rol);
   }

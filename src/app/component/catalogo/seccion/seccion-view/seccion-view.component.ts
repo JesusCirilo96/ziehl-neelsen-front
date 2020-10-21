@@ -27,6 +27,7 @@ export class SeccionViewComponent implements OnInit {
 
   ngOnInit() {
     this.getAllSeccion();
+    this.dataSource.paginator = this.paginator;
   }
 
   getAllSeccion(){
@@ -39,17 +40,6 @@ export class SeccionViewComponent implements OnInit {
     )
   }
 
-  deleteSeccion(id:number){
-    this.seccionesService.deleteSeccion(id).subscribe(
-      res=>{
-        console.log(res);
-        this.getAllSeccion();
-      },
-      err=>{
-        console.log(err);
-      }
-    )
-  }
 
   activoOinactivo(estado){
     var aux = 'Inactivo';

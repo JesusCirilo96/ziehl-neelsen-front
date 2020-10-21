@@ -29,6 +29,7 @@ export class UsuarioViewComponent implements OnInit {
 
   ngOnInit() {
     this.getAllSeccion();
+    this.dataSource.paginator = this.paginator;
   }
 
   getAllSeccion(){

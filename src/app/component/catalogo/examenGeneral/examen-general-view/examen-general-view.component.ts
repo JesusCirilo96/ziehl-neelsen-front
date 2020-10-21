@@ -18,13 +18,14 @@ export class ExamenGeneralViewComponent implements OnInit {
   cols: any[];
 
   examenGeneralColumns: string[] = [
-    'examen_gen_id',
+    'examenGeneralId',
     'nombre',
     'alias',
     'precio',
-    'seccion',
+    'categoriaId',
     'accion'
   ];
+
   dataSource = new MatTableDataSource<Element>();
 
 
@@ -40,18 +41,6 @@ export class ExamenGeneralViewComponent implements OnInit {
         this.dataSource.data = this.examenGeneral;
       },
       err => console.error(err)
-    )
-  }
-
-  deleteExamen(id: number) {
-    this.examenService.deleteExamenGeneral(id).subscribe(
-      res => {
-        console.log(res);
-        this.getAllExamenGeneral();
-      },
-      err => {
-        console.log(err);
-      }
     )
   }
 

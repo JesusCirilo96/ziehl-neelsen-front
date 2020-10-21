@@ -6,13 +6,17 @@
 body,html{
     height:100%; /*Siempre es necesario cuando trabajamos con alturas*/
 }
+.margin-top {
+    margin-top: 2em ;
+}
+
 .hijo {
     height: 14rem;
   width: 16rem;
   position: absolute;
   left: calc(50% - 7rem);
   top: calc(50% - 6rem);
-   }
+}
 
 .primary{
     color: #fff;
@@ -101,6 +105,27 @@ body,html{
 .bold{
     font-weight: bold;
 }
+
+.margin-up-down{
+    margin-top: 1em;
+    margin-bottom: 1em;
+}
+
+.margin-up{
+  margin-top: 1em;
+}
+.margin-down{
+  margin-bottom: 1em;
+}
+
+.margin-right{
+  margin-right: 1em;
+}
+
+.margin-left{
+  margin-left: 1em;
+}
+
 .width-5{
     width: 5%;
 }

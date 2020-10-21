@@ -1,5 +1,5 @@
 export interface Seccion{
-    seccionId?:number;
+    categoriaId?:number;
     nombre?:string;
     orden?:number;
     estado?:boolean;

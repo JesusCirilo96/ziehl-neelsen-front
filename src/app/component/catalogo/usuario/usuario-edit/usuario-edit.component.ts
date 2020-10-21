@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 import { Usuario } from 'src/app/models/Usuario';
+import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { UsuarioService } from 'src/app/services/usuario/usuario.service';
@@ -18,7 +19,8 @@ export class UsuarioEditComponent implements OnInit {
     private usuarioService: UsuarioService,
     private router: Router,
     private activateRoute: ActivatedRoute,
-    private rolService: RolService
+    private rolService: RolService,
+    private _formBuilder: FormBuilder
   ) { }
 
   edit: boolean = false;
@@ -26,19 +28,48 @@ export class UsuarioEditComponent implements OnInit {
   Roles: any = [];
   rolEscogido: number;
 
+  formUsuario: FormGroup;
+
+  usuarioIdCtrl = new FormControl(null);
+  nombreCtrl = new FormControl('',[Validators.required]);
+  apellidoPaternoCtrl = new FormControl('',[Validators.required]);
+  apellidoMaternoCtrl = new FormControl('');
+  nombreUsuarioCtrl = new FormControl('',Validators.required);
+  cedulaCtrl = new FormControl('');
+  passwordCtrl = new FormControl('');
+  estadoCtrl = new FormControl(true);
+  fechaCreacionCtrl = new FormControl(null);
+  fechaActualizacionCtrl = new FormControl(null);
+  
   usuario: Usuario = {
     usuarioId: null,
     nombre: '',
     apellidoPaterno: '',
     apellidoMaterno: '',
     cedula: '',
-    contrasena: '',
+    password: '',
     nombreUsuario: '',
-    rol: null,
-    estado: true
+    estado: true,
+    fechaCreacion:null,
+    fechaActualizacion: null
   }
 
+  rolUsuario: any =[];
+
   ngOnInit() {
+    this.formUsuario = this._formBuilder.group({
+      usuarioId: this.usuarioIdCtrl,
+      nombre: this.nombreCtrl,
+      apellidoPaterno: this.apellidoPaternoCtrl,
+      apellidoMaterno: this.apellidoMaternoCtrl,
+      cedula: this.cedulaCtrl,
+      password: this.passwordCtrl,
+      nombreUsuario: this.nombreUsuarioCtrl,
+      estado: this.estadoCtrl,
+      fechaCreacion: this.fechaCreacionCtrl,
+      fechaActualizacion: this.fechaActualizacionCtrl
+    });
+
     $("#usuarioEstado").hide();
     this.getUsuario();
     this.getRoles();
@@ -47,9 +78,22 @@ export class UsuarioEditComponent implements OnInit {
   getUsuario() {
     const parametros = this.activateRoute.snapshot.params;//<---Contiene los parametros que se pasan
     if (parametros.id) {
-      this.usuarioService.getUsuario(parametros.id).subscribe(
+      this.rolService.getRolByUsuario(parametros.id).subscribe(
         res => {
-          this.usuario = res;
+          this.usuario = res['usuario'];
+          this.rolUsuario = res['rol'];
+          this.formUsuario.patchValue({
+            usuarioId: this.usuario.usuarioId,
+            nombre: this.usuario.nombre,
+            apellidoPaterno: this.usuario.apellidoPaterno,
+            apellidoMaterno: this.usuario.apellidoMaterno,
+            cedula: this.usuario.cedula,
+            password: this.usuario.password,
+            nombreUsuario: this.usuario.nombreUsuario,
+            estado: this.usuario.estado,
+            fechaCreacion: this.usuario.fechaCreacion,
+            fechaActualizacion: this.usuario.fechaActualizacion
+          });
           this.edit = true;
           this.mostrarEstado(this.usuario.estado);
           //this.getRol(this.usuario.rol);
@@ -71,22 +115,9 @@ export class UsuarioEditComponent implements OnInit {
       }
     )
   }
-  rolUsuario: any = [];
-  getRol(usuarioRol) {
-    for (var key in usuarioRol) {
-      this.rolService.getRol(usuarioRol[key].rol_id).subscribe(
-        response => {
-          this.rolUsuario.push({MENU:response});
-          console.log(this.rolUsuario);
-        }, error => {
-          console.log(error);
-        }
-      )
-    }
-  }
 
   saveNewUsuario() {
-    this.usuarioService.saveUsuario(this.usuario).subscribe(
+    this.usuarioService.saveUsuario(this.formUsuario.value).subscribe(
       res => {
         this.router.navigate(['/usuario'])
       },
@@ -97,7 +128,8 @@ export class UsuarioEditComponent implements OnInit {
   }
 
   updateUsuario() {
-    this.usuarioService.updateUsuario(this.usuario).subscribe(
+    console.log(this.formUsuario.value)
+    this.usuarioService.updateUsuario(this.formUsuario.value).subscribe(
       res => {
         this.router.navigate(['/usuario'])
         this.edit = false;
@@ -109,14 +141,18 @@ export class UsuarioEditComponent implements OnInit {
   }
 
   cancelarEdicion() {
-    this.router.navigate(['/metodo']);
+    this.router.navigate(['/usuario']);
   }
 
   activarInactivar() {
     if (this.usuario.estado === false) {
-      this.usuario.estado = true;
+      this.formUsuario.patchValue({
+        estado: true
+      });
     } else if (this.usuario.estado === true) {
-      this.usuario.estado = false;
+      this.formUsuario.patchValue({
+        estado: false
+      });
     }
     this.updateUsuario();
   }

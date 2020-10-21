@@ -32,7 +32,7 @@
           Catalogos
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item" routerLink='seccion'>Seccion</a>
+          <a class="dropdown-item" routerLink='categoria'>Categoria</a>
           <a class="dropdown-item" routerLink='metodo'>Metodos</a>
           <a class="dropdown-item" routerLink='atencion'>Atencion</a>
           <a class="dropdown-item" routerLink='usuario'>Usuarios</a>
@@ -46,7 +46,7 @@
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
             aria-haspopup="true" aria-expanded="false">
-            {{currentUser.nombre}} {{currentUser.apellido_paterno}} {{currentUser.apellido_materno}}
+            {{currentUser.nombre}} {{currentUser.apellidoPaterno}} {{currentUser.apellidoMaterno}}
           </a>
           <div class="dropdown-menu" aria-labelledby="navbarDropdown">
             <a class="dropdown-item" routerLink='seccion' (click)="logout()">Salir</a>

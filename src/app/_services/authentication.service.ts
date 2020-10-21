@@ -4,13 +4,12 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { environment } from '../../environments/environment';
-import {AppSettings} from 'src/assets/js/messages';
 import { User } from '../../app/_models';
 
 @Injectable({ providedIn: 'root' })
 export class AuthenticationService {
 
-    API_URI = AppSettings.API_ENDPOINT;
+    API_URI = environment.apiUrl;
     private currentUserSubject: BehaviorSubject<User>;
     public currentUser: Observable<User>;
 

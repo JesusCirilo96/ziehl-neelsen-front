@@ -21,7 +21,7 @@ export class PacienteService {
   }
 
   getPaciente(id: number){
-    return this.http.get(`${this.API_URI}/paciente/get/id/${id}`);
+    return this.http.get(`${this.API_URI}/paciente/id/${id}`);
   }
 
   deletePaciente(id:number){
