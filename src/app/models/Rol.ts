@@ -1,7 +1,5 @@
 export interface Rol {
-    rol_id?:number;
-    nombre?:string;
+    rolId?:number;
+    rolName?:string;
     estado?:boolean;
-    createdAt?:string;
-    updatedAt?:string;
 }

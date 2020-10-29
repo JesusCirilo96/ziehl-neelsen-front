@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { Component, NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 import { AuthGuard } from './_guards';
@@ -42,8 +42,12 @@ import { HistorialPacienteComponent } from './component/catalogo/paciente/histor
 //Rutas para Descuentos
 import { DescuentoEditComponent } from './component/catalogo/descuento/descuento-edit/descuento-edit.component';
 import { DescuentoViewComponent } from './component/catalogo/descuento/descuento-view/descuento-view.component';
+//Rutas para el rol
+import { RolEditComponent } from "./component/catalogo/rol/rol-edit/rol-edit.component";
+import { RolViewComponent } from "./component/catalogo/rol/rol-view/rol-view.component";
 //Rutas para login
 import { LoginComponent } from './component/login/login.component';
+import { CanActivate } from '@angular/router/src/utils/preactivation';
 
 const routes: Routes = [  
   { path: '', component: HomeComponent, canActivate: [AuthGuard] },
@@ -80,6 +84,9 @@ const routes: Routes = [
   { path:'descuento', component: DescuentoViewComponent, canActivate: [AuthGuard]},
   { path:'descuento/add', component: DescuentoEditComponent, canActivate: [AuthGuard]},
   { path:'descuento/edit/:id', component: DescuentoEditComponent, canActivate: [AuthGuard]},
+  { path:'rol', component: RolViewComponent, canActivate: [AuthGuard]},
+  { path:'rol/add', component: RolEditComponent, canActivate: [AuthGuard]},
+  { path:'rol/edit/:id', component: RolEditComponent, canActivate: [AuthGuard]},
   { path: '**', redirectTo: '' }
 ];
 

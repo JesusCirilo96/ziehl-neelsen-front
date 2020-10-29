@@ -6,7 +6,6 @@ import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms'
 import { SeccionesService } from 'src/app/services/secciones.service';
 
 import * as $ from 'jquery';
-import { ThrowStmt } from '@angular/compiler';
 @Component({
   selector: 'app-seccion-edit',
   templateUrl: './seccion-edit.component.html',

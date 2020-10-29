@@ -28,7 +28,7 @@ export class RolService {
    * @param id El ID del rol
    */
   getRol(id: number){
-    return this.http.get(`${this.API_URI}/rol/${id}`);
+    return this.http.get(`${this.API_URI}/rol/get/${id}`);
   }
 
   /**
@@ -44,10 +44,14 @@ export class RolService {
    * @param rol El rol a guardar
    */
   saveRol(rol: Rol){
-    return this.http.post(`${this.API_URI}/rol`, rol);
+    return this.http.post(`${this.API_URI}/rol/save`, rol);
   }
 
-  updateRol(rol_id:number, updatedRol:Rol): Observable<Rol>{
-    return this.http.put(`${this.API_URI}/rol/${rol_id}`, updatedRol);
+  /**
+   * Actualiza el rol en BD
+   * @param updatedRol El rol a guardar
+   */
+  updateRol(updatedRol:Rol): Observable<Rol>{
+    return this.http.post(`${this.API_URI}/rol/save`, updatedRol);
   }
 }

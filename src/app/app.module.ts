@@ -55,7 +55,6 @@ import { SubSeccionService } from './services/subSeccion/sub-seccion.service';
 import { ExamenGeneralService } from './services/examenGeneral/examen-general.service';
 import { DialogoComponent } from './component/catalogo/examenGeneral/dialogo/dialogo.component';
 import { InformeComponent } from './component/catalogo/informe/informe.component';
-import { RolComponent } from './component/catalogo/rol/rol.component';
 import { TablasComponent } from './component/catalogo/tablas/tablas.component';
 import { CotizarComponent } from './component/cotizar/cotizar.component';
 import { HistorialPacienteComponent } from './component/catalogo/paciente/historial-paciente/historial-paciente.component';
@@ -72,6 +71,8 @@ import { DescuentoViewComponent } from './component/catalogo/descuento/descuento
 import { DescuentoEditComponent } from './component/catalogo/descuento/descuento-edit/descuento-edit.component';
 import { MenuComponent } from './component/catalogo/menu/menu.component';
 import { ModalComponent } from './component/catalogo/descuento/modal/modal.component';
+import { RolViewComponent } from './component/catalogo/rol/rol-view/rol-view.component';
+import { RolEditComponent } from './component/catalogo/rol/rol-edit/rol-edit.component';
 
 @NgModule({
   declarations: [
@@ -97,7 +98,6 @@ import { ModalComponent } from './component/catalogo/descuento/modal/modal.compo
     ExamenGeneralEditComponent,
     DialogoComponent,
     InformeComponent,
-    RolComponent,
     TablasComponent,
     CotizarComponent,    
     HistorialPacienteComponent,
@@ -112,7 +112,9 @@ import { ModalComponent } from './component/catalogo/descuento/modal/modal.compo
     DescuentoEditComponent, 
     MenuComponent,
     AlertComponent,
-    ModalComponent
+    ModalComponent,
+    RolViewComponent,
+    RolEditComponent
   ],
   entryComponents: [DialogoComponent, ModalComponent],
   imports: [

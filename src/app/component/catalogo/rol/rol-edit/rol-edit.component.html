@@ -1,0 +1,24 @@
+<div class="row all-table">
+  <form [formGroup]="formRol" (ngSubmit)="edit ? actualizarRol(): guardarRol()" class="col-md-12">
+    <div class="row">
+      <div class="col-md-6">
+        <span class="title-catalogos">{{edit ? 'Editar Rol': 'Agregar Rol'}}</span>
+      </div>
+      <div class="col-md-6 text-right buttons-catalogo">
+        <button mat-button id="rolEstado" (click)="activarInactivar()"></button>
+        <button mat-flat-button color="primary" type="submit" id="seccionGuardar" [disabled]="!rol.estado || !formRol.valid" >Guardar</button>
+        <button mat-flat-button color="warn" (click)="cancelarEdicion()">Cancelar</button>
+      </div>
+    </div>
+    <div class="row form-edit">
+      <div class="col-md-3">
+        <mat-form-field class="input-full-width">
+          <input matInput placeholder="Nombre" formControlName="rolName" required type="text" class="validate">
+          <mat-error *ngIf="rolNameCtrl.hasError('required')">
+            El nombre es obligatorio
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+  </form>
+</div>
