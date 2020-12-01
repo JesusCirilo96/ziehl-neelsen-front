@@ -2,6 +2,6 @@ export interface Metodo{
     metodoId?:number;
     nombre?:string;    
     estado?:boolean;
-    createdAt?:string;
-    updatedAt?:string;
+    fechaCreacion?:string;
+    fechaActualizacion?:string;
 }

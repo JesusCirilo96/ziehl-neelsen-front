@@ -3,13 +3,13 @@ import { HttpClient } from '@angular/common/http';
 
 import {Paciente} from '../../models/Paciente';
 import { Observable } from 'rxjs';
-import {AppSettings} from 'src/assets/js/messages';
+import { environment } from 'src/environments/environment';
 @Injectable({
   providedIn: 'root'
 })
 export class PacienteService {
   
-  API_URI = AppSettings.API_ENDPOINT;
+  API_URI = environment.apiUrl;
   
 
   constructor(private http: HttpClient) { 
@@ -21,11 +21,7 @@ export class PacienteService {
   }
 
   getPaciente(id: number){
-    return this.http.get(`${this.API_URI}/paciente/id/${id}`);
-  }
-
-  deletePaciente(id:number){
-    return this.http.delete(`${this.API_URI}/paciente/${id}`);
+    return this.http.get(`${this.API_URI}/paciente/get/${id}`);
   }
 
   savePaciente(paciente: Paciente){

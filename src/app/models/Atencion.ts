@@ -4,6 +4,6 @@ export interface Atencion{
     apellidoPaterno?:string;
     apellidoMaterno?:string;
     estado?:boolean;
-    createdAt?:string;
-    updatedAt?:string;
+    fechaCreacion?:string;
+    fechaActualizacion?:string;
 }

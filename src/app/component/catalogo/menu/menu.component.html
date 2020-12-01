@@ -1,3 +1,110 @@
-<p>
-  menu works!
-</p>
+<div class="row all-table">
+  <div class="col-md-12">
+    <mat-card class="form-edit">
+      <form [formGroup]="formMenu" (ngSubmit)="edit ? updateUsuario(): saveNewUsuario()">
+        <div class="row">
+          <div class="col-md-6">
+            <h5>Datos del rol</h5>
+          </div>
+          <div class="col-md-6 text-right buttons-catalogo">
+            <button mat-button id="menuEstado" (click)="activarInactivar()"></button>
+            <button mat-flat-button color="primary" type="submit" id="seccionGuardar"
+              [disabled]="!menu.estado || !formMenu.valid">Guardar</button>
+            <button mat-flat-button color="warn" (click)="cancelarEdicion()">Cancelar</button>
+          </div>
+        </div>
+        <div class="row margin-up">
+          <div class="col-md-3">
+            <mat-form-field class="input-full-width">
+              <mat-label>Nombre del menu</mat-label>
+              <input matInput placeholder="Nombre del menu" formControlName="nombre" required>
+              <mat-error *ngIf="menuNombreCtrl.hasError('required')">
+                El nombre del menu es obligatorio
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div class="col-md-3">
+            <mat-form-field class="input-full-width">
+              <mat-label>Ruta</mat-label>
+              <input matInput placeholder="La ruta" formControlName="ruta" required>
+              <mat-error *ngIf="menuRutaCtrl.hasError('required')">
+                La ruta es obligatoria
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div class="col-md-3">
+            <mat-form-field class="input-full-width">
+              <mat-label>Desplegable</mat-label>
+              <mat-select formControlName="dropdown" required>
+                <mat-option value="false">No</mat-option>
+                <mat-option value="true">SI</mat-option>
+              </mat-select>
+              <mat-error *ngIf="menuDropdownCtrl.hasError('required')">
+                La opcion desplegable es obligatoria.
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div class="col-md-3">
+            <mat-form-field class="input-full-width">
+              <mat-label>Icono</mat-label>
+              <input matInput formControlName="icono">
+            </mat-form-field>
+          </div>
+        </div>
+      </form>
+    </mat-card>
+
+    <mat-card>
+      <form [formGroup]="formSubmenu" (ngSubmit)="edit ? updateUsuario(): saveNewUsuario()">
+        <div class="row margin-up-down">
+          <div class="col-md-6">
+            <h5>Agregar nuevo Submenu</h5>
+          </div>
+
+          <div class="col-md-6 text-right buttons-catalogo">
+            <button mat-flat-button color="primary">Guardar</button>
+          </div>
+        </div>
+
+        <div class="row margin-up">
+          <div class="col-md-3">
+            <mat-form-field class="input-full-width">
+              <mat-label>Nombre del menu</mat-label>
+              <input matInput placeholder="Nombre del menu" formControlName="nombre" required>
+              <mat-error *ngIf="submenuNombreCtrl.hasError('required')">
+                El nombre del menu es obligatorio
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div class="col-md-3">
+            <mat-form-field class="input-full-width">
+              <mat-label>Ruta</mat-label>
+              <input matInput placeholder="La ruta" formControlName="ruta" required>
+              <mat-error *ngIf="submenuRutaCtrl.hasError('required')">
+                La ruta es obligatoria
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div class="col-md-3">
+            <mat-form-field class="input-full-width">
+              <mat-label>Desplegable</mat-label>
+              <mat-select formControlName="dropdown" required>
+                <mat-option value="false">No</mat-option>
+                <mat-option value="true">SI</mat-option>
+              </mat-select>
+              <mat-error *ngIf="submenuDropdownCtrl.hasError('required')">
+                La opcion desplegable es obligatoria.
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div class="col-md-3">
+            <mat-form-field class="input-full-width">
+              <mat-label>Icono</mat-label>
+              <input matInput formControlName="icono">
+            </mat-form-field>
+          </div>
+        </div>
+      </form>
+    </mat-card>
+  </div>
+</div>

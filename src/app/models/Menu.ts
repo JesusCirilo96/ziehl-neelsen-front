@@ -1,8 +1,8 @@
 export interface Menu {
-    menu_id?:number;
+    menuId?:number;
     nombre?:string;
     ruta?:string;
+    dropdown?:boolean;
+    icono?:string;
     estado?:boolean;
-    createdAt?:string;
-    updatedAt?:string;
 }

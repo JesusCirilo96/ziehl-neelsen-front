@@ -5,6 +5,7 @@ import { Atencion } from 'src/app/models/Atencion';
 import { AtencionService } from 'src/app/services/atencion/atencion.service';
 
 import * as $ from 'jquery';
+import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-atencion-edit',
@@ -12,7 +13,10 @@ import * as $ from 'jquery';
   styleUrls: ['./atencion-edit.component.css']
 })
 export class AtencionEditComponent implements OnInit {
-  constructor(private atencionService: AtencionService, private router: Router, private activateRoute: ActivatedRoute){
+  constructor(private atencionService: AtencionService,
+     private router: Router, 
+     private activateRoute: ActivatedRoute,
+     private _formBuilder: FormBuilder){
   }
   edit: boolean = false;
   atencion: Atencion = {
@@ -21,17 +25,45 @@ export class AtencionEditComponent implements OnInit {
     apellidoPaterno:'',
     apellidoMaterno:'',
     estado:true,
-    createdAt:'',
-    updatedAt:'',
+    fechaCreacion:null,
+    fechaActualizacion:null,
   }
+
+  formAtencion: FormGroup;
+
+  medicoIdCtrl = new FormControl(null);
+  nombreCtrl = new FormControl('',[Validators.required]);
+  apellidoPaternoCtrl = new FormControl('',[Validators.required]);
+  apellidoMaternoCtrl = new FormControl('');
+  estadoCtrl = new FormControl(true);
+  fechaCreacionCtrl = new FormControl(null);
+  fechaActualizacionCtrl = new FormControl(null);
 
   ngOnInit() {
     $("#atencionEstado").hide();
     const parametros = this.activateRoute.snapshot.params;//<---Contiene los parametros que se pasan
+    this.formAtencion = this._formBuilder.group({
+      medicoId: this.medicoIdCtrl,
+      nombre: this.nombreCtrl,
+      apellidoPaterno: this.apellidoPaternoCtrl,
+      apellidoMaterno: this.apellidoMaternoCtrl,
+      estado: this.estadoCtrl,
+      fechaActualizacion: this.fechaActualizacionCtrl,
+      fechaCreacion: this.fechaCreacionCtrl
+    });
     if(parametros.id){
       this.atencionService.getAtencion(parametros.id).subscribe(
         res=>{
           this.atencion = res;
+          this.formAtencion.patchValue({
+            medicoId: this.atencion.medicoId,
+            nombre: this.atencion.nombre,
+            apellidoPaterno: this.atencion.apellidoPaterno,
+            apellidoMaterno: this.atencion.apellidoMaterno,
+            estado: this.atencion.estado,
+            fechaActualizacion: this.atencion.fechaActualizacion,
+            fechaCreacion: this.atencion.fechaCreacion
+          });
           this.edit = true;
           this.mostrarEstado(this.atencion.estado);
         },
@@ -43,7 +75,7 @@ export class AtencionEditComponent implements OnInit {
   }
 
   saveNewAtencion(){
-    this.atencionService.saveAtencion(this.atencion).subscribe(
+    this.atencionService.saveAtencion(this.formAtencion.value).subscribe(
       res=>{
         this.router.navigate(['/atencion'])
       },
@@ -51,11 +83,11 @@ export class AtencionEditComponent implements OnInit {
         console.log(err);
       }
     )
-    console.log(this.atencion);
+    console.log(this.formAtencion.value);
   }
 
   updateAtencion(){
-    this.atencionService.updateAtencion(this.atencion).subscribe(
+    this.atencionService.updateAtencion(this.formAtencion.value).subscribe(
       res=>{
         this.router.navigate(['/atencion'])
         this.edit = false;
@@ -72,9 +104,13 @@ export class AtencionEditComponent implements OnInit {
 
   activarInactivar(){
     if(this.atencion.estado === false){
-      this.atencion.estado = true;
+      this.formAtencion.patchValue({
+        estado: true
+      });
     }else if(this.atencion.estado === true){
-      this.atencion.estado = false;
+      this.formAtencion.patchValue({
+        estado: false
+      });
     }
     this.updateAtencion();
   }

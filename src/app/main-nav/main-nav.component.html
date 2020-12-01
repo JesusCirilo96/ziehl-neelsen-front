@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light" *ngIf="currentUser">
+<!--<nav class="navbar navbar-expand-lg navbar-light bg-light" *ngIf="currentUser">
   <a class="navbar-brand" href="#">Ziehl Neelsen</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
     aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -55,6 +55,49 @@
         </li>
       </ul>
       
+    </div>
+  </div>
+</nav>-->
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light" *ngIf="currentUser">
+  <a class="navbar-brand" href="#">Ziehl Neelsen</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <ng-template ngFor let-menu [ngForOf]="rolMenu">
+        <li class="nav-item" *ngIf="menu.dropdown == 0; else elseBlock">
+          <a class="nav-link" routerLink='{{menu.ruta}}'>{{menu.nombre}}</a>
+        </li>
+        <ng-template #elseBlock>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+              data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              {{menu.nombre}}
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <a *ngFor="let submenu of menu.submenu" class="dropdown-item"
+                routerLink='{{submenu.ruta}}'>{{submenu.nombre}}</a>
+            </div>
+          </li>
+        </ng-template>
+      </ng-template>
+    </ul>
+    <div class=" my-2 my-lg-0">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            {{currentUser.nombre}} {{currentUser.apellidoPaterno}} {{currentUser.apellidoMaterno}}
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item" routerLink='seccion' (click)="logout()">Salir</a>
+          </div>
+        </li>
+      </ul>
     </div>
   </div>
 </nav>

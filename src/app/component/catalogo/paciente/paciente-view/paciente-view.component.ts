@@ -45,18 +45,6 @@ export class PacienteViewComponent implements OnInit {
       err => console.error(err)
     )
   }
-
-  deletePaciente(id: number) {
-    this.pacienteService.deletePaciente(id).subscribe(
-      res => {
-        console.log(res);
-        this.getAllPaciente();
-      },
-      err => {
-        console.log(err);
-      }
-    )
-  }
   
   masculinoOfemenio(estado) {
     var aux = 'Femenino';

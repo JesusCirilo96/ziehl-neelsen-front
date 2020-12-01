@@ -3,13 +3,13 @@ import { HttpClient } from '@angular/common/http';
 
 import {Metodo} from '../../models/Metodo';
 import { Observable } from 'rxjs';
-import {AppSettings} from 'src/assets/js/messages';
+import { environment } from 'src/environments/environment';
 @Injectable({
   providedIn: 'root'
 })
 export class MetodoService {
 
-  API_URI = AppSettings.API_ENDPOINT;
+  API_URI = environment.apiUrl;
 
   constructor(private http: HttpClient) { 
 
@@ -20,7 +20,7 @@ export class MetodoService {
   }
 
   getMetodo(id: number){
-    return this.http.get(`${this.API_URI}/metodo/get/id/${id}`);
+    return this.http.get(`${this.API_URI}/metodo/get/${id}`);
   }
 
   deleteMetodo(id:number){

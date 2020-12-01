@@ -3,13 +3,13 @@ import { HttpClient } from '@angular/common/http';
 
 import {Atencion} from '../../models/Atencion';
 import { Observable } from 'rxjs';
-import {AppSettings} from 'src/assets/js/messages';
+import { environment } from 'src/environments/environment';
 @Injectable({
   providedIn: 'root'
 })
 export class AtencionService {
 
-  API_URI = AppSettings.API_ENDPOINT;
+  API_URI = environment.apiUrl;
 
   constructor(private http: HttpClient) { 
 
@@ -20,7 +20,7 @@ export class AtencionService {
   }
 
   getAtencion(id: number){
-    return this.http.get(`${this.API_URI}/medico/get/id/${id}`);
+    return this.http.get(`${this.API_URI}/medico/get/${id}`);
   }
 
   deleteAtencion(id:number){

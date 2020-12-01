@@ -64,25 +64,23 @@
           <div class="col-md-3">
             <mat-form-field class="input-full-width">
               <mat-label>Contraseña</mat-label>
-                <input matInput type="password"  placeholder="Contraseña" formControlName="password" required>
-                <mat-error *ngIf="passwordCtrl.hasError('required')">
-                  La contraseña es obligatoria
-                </mat-error>
+              <input matInput type="password" placeholder="Contraseña" formControlName="password" required>
+              <mat-error *ngIf="passwordCtrl.hasError('required')">
+                La contraseña es obligatoria
+              </mat-error>
             </mat-form-field>
-          </div>
-          <div class="col-md-3">
-
-          </div>
-          <div class="col-md-3">
-
           </div>
         </div>
 
         <div *ngIf="edit" class="row margin-top">
-          <small>Fecha creación: {{usuario.fechaCreacion}}</small>
+          <div class="col-md-12">
+            <small>Fecha creación: {{usuario.fechaCreacion}}</small>
+          </div>
         </div>
         <div *ngIf="edit" class="row">
-          <small>Fecha actualización: {{usuario.fechaActualizacion}} </small>
+          <div class="col-md-12">
+            <small>Fecha actualización: {{usuario.fechaActualizacion}} </small>
+          </div>
         </div>
 
       </form>
@@ -94,22 +92,67 @@
           <div class="col-md-6">
             <h5>Roles del usuario</h5>
           </div>
-          
+
           <div class="col-md-6 text-right buttons-catalogo">
             <button mat-flat-button color="primary">Nuevo Rol</button>
-            <button mat-flat-button color="primary">Guardar</button>
           </div>
         </div>
         <div class="row">
           <div class="col-md-12">
             <mat-tab-group>
-              <mat-tab class="margin-up" *ngFor="let rol of rolUsuario" [label]="rol.rolName"> 
+              <mat-tab class="margin-up" *ngFor="let rol of rolUsuario" [label]="rol.rolName">
                 <div class="row margin-up">
                   <div class="col-md-12">
-                    El {{rol.rolName}} puede acceder a los siguiente menus y submenus del sistema
+                    Vista previa de los accesos del usuario {{rol.rolName}}.
                   </div>
                 </div>
-                <div class="row"></div>
+                <div class="row">
+                  <div class="col-md-12">
+                    <nav class="margin-up navbar navbar-expand-lg navbar-light bg-light">
+                      <a class="navbar-brand" href="#">Ziehl Neelsen</a>
+                      <button class="navbar-toggler" type="button" data-toggle="collapse"
+                        data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                      </button>
+
+                      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav mr-auto">
+                          <ng-template ngFor let-menu [ngForOf]="rolMenu">
+                            <li class="nav-item" *ngIf="menu.dropdown == 0; else elseBlock">
+                              <a class="nav-link" routerLink='{{menu.ruta}}'>{{menu.nombre}}</a>
+                            </li>
+                            <ng-template #elseBlock>
+                              <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                                  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                  {{menu.nombre}}
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                  <a *ngFor="let submenu of menu.submenu" class="dropdown-item"
+                                    routerLink='{{submenu.ruta}}'>{{submenu.nombre}}</a>
+                                </div>
+                              </li>
+                            </ng-template>
+                          </ng-template>
+                        </ul>
+                        <div class=" my-2 my-lg-0">
+                          <ul class="navbar-nav mr-auto">
+                            <li class="nav-item dropdown">
+                              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Nombre de Usuario
+                              </a>
+                              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" routerLink='seccion' (click)="logout()">Salir</a>
+                              </div>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                    </nav>
+                  </div>
+                </div>
               </mat-tab>
             </mat-tab-group>
           </div>

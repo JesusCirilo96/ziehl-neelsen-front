@@ -4,7 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { Menu } from '../../models/Menu';
 import { Observable } from 'rxjs';
 
-import {AppSettings} from 'src/assets/js/messages';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -16,25 +16,29 @@ export class MenuService {
 
   }
 
-  API_URI = AppSettings.API_ENDPOINT;
+  API_URI = environment.apiUrl;
 
   getMenus(){
-    return this.http.get(`${this.API_URI}/menu`);
+    return this.http.get(`${this.API_URI}/menu/get/all`);
+  }
+
+  getSubmenuPorMenu(id: number){
+    return this.http.get(`${this.API_URI}/menu/submenu/${id}`);
+  }
+
+  getAllMenuSubmenu(){
+    return this.http.get(`${this.API_URI}/menu/all/menu/submenu`);
   }
 
   getMenu(id: number){
-    return this.http.get(`${this.API_URI}/menu/${id}`);
-  }
-
-  deleteMenu(id:number){
-    return this.http.delete(`${this.API_URI}/menu/${id}`);
+    return this.http.get(`${this.API_URI}/menu/get/${id}`);
   }
 
   saveMenu(menu: Menu){
     return this.http.post(`${this.API_URI}/menu`, menu);
   }
 
-  updateMenu(menu_id:number, updatedMenu:Menu): Observable<Menu>{
-    return this.http.put(`${this.API_URI}/menu/${menu_id}`, updatedMenu);
+  updateMenu(updatedMenu:Menu): Observable<Menu>{
+    return this.http.post(`${this.API_URI}/menu`, updatedMenu);
   }
 }

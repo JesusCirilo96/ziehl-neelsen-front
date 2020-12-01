@@ -4,16 +4,16 @@ import { Routes, RouterModule } from '@angular/router';
 import { AuthGuard } from './_guards';
 
 //views
-import {HomeComponent} from './component/home/home.component'
+import { HomeComponent } from './component/home/home.component'
 
 //Ruta para recepcion
-import {ReceptionComponent} from './component/reception/reception.component'
+import { ReceptionComponent } from './component/reception/reception.component'
 //Ruta para Seccion
-import {SeccionViewComponent} from './component/catalogo/seccion/seccion-view/seccion-view.component';
-import {SeccionEditComponent} from './component/catalogo/seccion/seccion-edit/seccion-edit.component';
+import { SeccionViewComponent } from './component/catalogo/seccion/seccion-view/seccion-view.component';
+import { SeccionEditComponent } from './component/catalogo/seccion/seccion-edit/seccion-edit.component';
 //Ruta para Metodo
-import {MetodoViewComponent} from './component/catalogo/metodo/metodo-view/metodo-view.component';
-import {MetodoEditComponent} from './component/catalogo/metodo/metodo-edit/metodo-edit.component';
+import { MetodoViewComponent } from './component/catalogo/metodo/metodo-view/metodo-view.component';
+import { MetodoEditComponent } from './component/catalogo/metodo/metodo-edit/metodo-edit.component';
 //Rutas para paciente
 import { PacienteViewComponent } from './component/catalogo/paciente/paciente-view/paciente-view.component';
 import { PacienteEditComponent } from './component/catalogo/paciente/paciente-edit/paciente-edit.component';
@@ -30,7 +30,7 @@ import { SubSeccionEditComponent } from './component/catalogo/subSeccion/sub-sec
 import { SubExamenViewComponent } from './component/catalogo/subExamen/sub-examen-view/sub-examen-view.component';
 import { SubExamenEditComponent } from './component/catalogo/subExamen/sub-examen-edit/sub-examen-edit.component';
 //Rutas para ExamenGeneral
-import {ExamenGeneralViewComponent  } from './component/catalogo/examenGeneral/examen-general-view/examen-general-view.component';
+import { ExamenGeneralViewComponent } from './component/catalogo/examenGeneral/examen-general-view/examen-general-view.component';
 import { ExamenGeneralEditComponent } from './component/catalogo/examenGeneral/examen-general-edit/examen-general-edit.component';
 //Rutas para cotizacion
 import { CotizarComponent } from 'src/app/component/cotizar/cotizar.component';
@@ -45,48 +45,53 @@ import { DescuentoViewComponent } from './component/catalogo/descuento/descuento
 //Rutas para el rol
 import { RolEditComponent } from "./component/catalogo/rol/rol-edit/rol-edit.component";
 import { RolViewComponent } from "./component/catalogo/rol/rol-view/rol-view.component";
+//rutas de menu
+import { MenuComponent} from './component/catalogo/menu/menu.component';
 //Rutas para login
 import { LoginComponent } from './component/login/login.component';
 import { CanActivate } from '@angular/router/src/utils/preactivation';
 
-const routes: Routes = [  
+var routes: Routes = [
   { path: '', component: HomeComponent, canActivate: [AuthGuard] },
-  { path:'login', component: LoginComponent },
-  { path:'recepcion', component: ReceptionComponent, canActivate: [AuthGuard]},
-  { path:'categoria', component: SeccionViewComponent, canActivate: [AuthGuard]},
-  { path:'categoria/add', component:SeccionEditComponent, canActivate: [AuthGuard]},
-  { path:'categoria/edit/:id', component: SeccionEditComponent, canActivate: [AuthGuard]},
-  { path:'metodo', component: MetodoViewComponent, canActivate: [AuthGuard]},
-  { path:'metodo/add', component:MetodoEditComponent, canActivate: [AuthGuard]},
-  { path:'metodo/edit/:id', component: MetodoEditComponent, canActivate: [AuthGuard]},
-  { path:'paciente', component: PacienteViewComponent, canActivate: [AuthGuard]},
-  { path:'paciente/add', component:PacienteEditComponent, canActivate: [AuthGuard]},
-  { path:'paciente/edit/:id', component: PacienteEditComponent, canActivate: [AuthGuard]},
-  { path:'paciente/historial/:id', component: HistorialPacienteComponent, canActivate: [AuthGuard] },
-  { path:'usuario', component: UsuarioViewComponent, canActivate: [AuthGuard]},
-  { path:'usuario/add', component:UsuarioEditComponent, canActivate: [AuthGuard]},
-  { path:'usuario/edit/:id', component: UsuarioEditComponent, canActivate: [AuthGuard]},
-  { path:'atencion', component: AtencionViewComponent, canActivate: [AuthGuard]},
-  { path:'atencion/add', component:AtencionEditComponent, canActivate: [AuthGuard]},
-  { path:'atencion/edit/:id', component: AtencionEditComponent, canActivate: [AuthGuard]},
-  { path:'subseccion', component: SubSeccionViewComponent, canActivate: [AuthGuard]},
-  { path:'subseccion/add', component: SubSeccionEditComponent, canActivate: [AuthGuard]},
-  { path:'subseccion/edit/:id', component: SubSeccionEditComponent, canActivate: [AuthGuard]},
-  { path:'subexamen', component: SubExamenViewComponent, canActivate: [AuthGuard]},
-  { path:'subexamen/add', component: SubExamenEditComponent, canActivate: [AuthGuard]},
-  { path:'subexamen/edit/:id', component: SubExamenEditComponent, canActivate: [AuthGuard]},
-  { path:'examengeneral', component: ExamenGeneralViewComponent, canActivate: [AuthGuard]},
-  { path:'examengeneral/add', component: ExamenGeneralEditComponent, canActivate: [AuthGuard]},
-  { path:'examengeneral/edit/:id', component: ExamenGeneralEditComponent, canActivate: [AuthGuard]},
-  { path:'cotizar', component: CotizarComponent, canActivate: [AuthGuard]},
-  { path:'resultado', component: ResultadoViewComponent, canActivate: [AuthGuard]},
-  { path:'resultado/edit/:id', component: ResultadoEditComponent, canActivate: [AuthGuard]},
-  { path:'descuento', component: DescuentoViewComponent, canActivate: [AuthGuard]},
-  { path:'descuento/add', component: DescuentoEditComponent, canActivate: [AuthGuard]},
-  { path:'descuento/edit/:id', component: DescuentoEditComponent, canActivate: [AuthGuard]},
-  { path:'rol', component: RolViewComponent, canActivate: [AuthGuard]},
-  { path:'rol/add', component: RolEditComponent, canActivate: [AuthGuard]},
-  { path:'rol/edit/:id', component: RolEditComponent, canActivate: [AuthGuard]},
+  { path: 'login', component: LoginComponent },
+  { path: 'recepcion', component: ReceptionComponent, canActivate: [AuthGuard] },
+  { path: 'categoria', component: SeccionViewComponent, canActivate: [AuthGuard] },
+  { path: 'categoria/add', component: SeccionEditComponent, canActivate: [AuthGuard] },
+  { path: 'categoria/edit/:id', component: SeccionEditComponent, canActivate: [AuthGuard] },
+  { path: 'metodo', component: MetodoViewComponent, canActivate: [AuthGuard] },
+  { path: 'metodo/add', component: MetodoEditComponent, canActivate: [AuthGuard] },
+  { path: 'metodo/edit/:id', component: MetodoEditComponent, canActivate: [AuthGuard] },
+  { path: 'paciente', component: PacienteViewComponent, canActivate: [AuthGuard] },
+  { path: 'paciente/add', component: PacienteEditComponent, canActivate: [AuthGuard] },
+  { path: 'paciente/edit/:id', component: PacienteEditComponent, canActivate: [AuthGuard] },
+  { path: 'paciente/historial/:id', component: HistorialPacienteComponent, canActivate: [AuthGuard] },
+  { path: 'usuario', component: UsuarioViewComponent, canActivate: [AuthGuard] },
+  { path: 'usuario/add', component: UsuarioEditComponent, canActivate: [AuthGuard] },
+  { path: 'usuario/edit/:id', component: UsuarioEditComponent, canActivate: [AuthGuard] },
+  { path: 'atencion', component: AtencionViewComponent, canActivate: [AuthGuard] },
+  { path: 'atencion/add', component: AtencionEditComponent, canActivate: [AuthGuard] },
+  { path: 'atencion/edit/:id', component: AtencionEditComponent, canActivate: [AuthGuard] },
+  { path: 'subseccion', component: SubSeccionViewComponent, canActivate: [AuthGuard] },
+  { path: 'subseccion/add', component: SubSeccionEditComponent, canActivate: [AuthGuard] },
+  { path: 'subseccion/edit/:id', component: SubSeccionEditComponent, canActivate: [AuthGuard] },
+  { path: 'subexamen', component: SubExamenViewComponent, canActivate: [AuthGuard] },
+  { path: 'subexamen/add', component: SubExamenEditComponent, canActivate: [AuthGuard] },
+  { path: 'subexamen/edit/:id', component: SubExamenEditComponent, canActivate: [AuthGuard] },
+  { path: 'examengeneral', component: ExamenGeneralViewComponent, canActivate: [AuthGuard] },
+  { path: 'examengeneral/add', component: ExamenGeneralEditComponent, canActivate: [AuthGuard] },
+  { path: 'examengeneral/edit/:id', component: ExamenGeneralEditComponent, canActivate: [AuthGuard] },
+  { path: 'cotizar', component: CotizarComponent, canActivate: [AuthGuard] },
+  { path: 'resultado', component: ResultadoViewComponent, canActivate: [AuthGuard] },
+  { path: 'resultado/edit/:id', component: ResultadoEditComponent, canActivate: [AuthGuard] },
+  { path: 'descuento', component: DescuentoViewComponent, canActivate: [AuthGuard] },
+  { path: 'descuento/add', component: DescuentoEditComponent, canActivate: [AuthGuard] },
+  { path: 'descuento/edit/:id', component: DescuentoEditComponent, canActivate: [AuthGuard] },
+  { path: 'rol', component: RolViewComponent, canActivate: [AuthGuard] },
+  { path: 'rol/add', component: RolEditComponent, canActivate: [AuthGuard] },
+  { path: 'rol/edit/:id', component: RolEditComponent, canActivate: [AuthGuard] },
+  { path: 'menu/add', component: MenuComponent, canActivate: [AuthGuard] },
+  { path: 'menu/edit/:id', component: MenuComponent, canActivate: [AuthGuard] },
+  
   { path: '**', redirectTo: '' }
 ];
 
@@ -94,4 +99,6 @@ const routes: Routes = [
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {
+
+}

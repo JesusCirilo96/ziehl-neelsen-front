@@ -2,33 +2,55 @@
   <div class="col-md-12">
     <div class="row">
       <div class="col-md-6">
-        <span class="title-catalogos">{{edit ? 'Editar Atencion': 'Agregar Atencion'}}</span>
-      </div>
-      <div class="col-md-6 text-right buttons-catalogo">
-        <button mat-button id="atencionEstado"  (click)="activarInactivar()"></button>
-        <button mat-button id="atencionGuardar" [disabled]="!atencion.estado" class="primary"
-          (click)="edit ? updateAtencion(): saveNewAtencion()">Guardar</button>
-        <button mat-button class="danger" (click)="cancelarEdicion()">Cancelar</button>
+        <span class="title-catalogos">{{edit ? 'Editar Médico': 'Agregar Médico'}}</span>
       </div>
     </div>
-    <div class="row form-edit">
-      <div class="col-md-4">
-        <mat-form-field class="input-full-width">
-          <input matInput placeholder="Nombre" [(ngModel)]="atencion.nombre" ng-required="Requerido" type="text"
-            class="validate">
-        </mat-form-field>
-      </div>
-      <div class="col-md-4">
-        <mat-form-field class="input-full-width">
-          <input matInput placeholder="Apellido Paterno" [(ngModel)]="atencion.apellidoPaterno" ng-required="Requerido"
-            type="text" class="validate">
-        </mat-form-field>
-      </div>
-      <div class="col-md-4">
-        <mat-form-field class="input-full-width">
-          <input matInput placeholder="Apellido Materno" [(ngModel)]="atencion.apellidoMaterno" type="text">
-        </mat-form-field>
-      </div>
-    </div>
+    <mat-card class="form-edit">
+      <form class="col-md-12" [formGroup]="formAtencion" (ngSubmit)="edit ? updateAtencion(): saveNewAtencion()">
+        <div class="row">
+          <div class="col-md-6">
+            <h5>Datos del médico</h5>
+          </div>
+          <div class="col-md-6 text-right buttons-catalogo">
+            <button mat-button id="atencionEstado"  (click)="activarInactivar()"></button>
+            <button mat-flat-button color="primary" id="atencionGuardar" [disabled]="!atencion.estado || !formAtencion.valid">Guardar</button>
+            <button mat-flat-button color="warn" (click)="cancelarEdicion()">Cancelar</button>
+          </div>
+        </div>
+        <div class="row margin-up">
+          <div class="col-md-4">
+            <mat-form-field class="input-full-width">
+              <input matInput placeholder="Nombre" formControlName="nombre" required type="text">
+              <mat-error *ngIf="nombreCtrl.hasError('required')">
+                El nombre es obligatorio
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div class="col-md-4">
+            <mat-form-field class="input-full-width">
+              <input matInput placeholder="Apellido Paterno" formControlName="apellidoPaterno" type="text" required>
+              <mat-error *ngIf="apellidoPaternoCtrl.hasError('required')">
+                El Apellido paterno es obligatorio
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div class="col-md-4">
+            <mat-form-field class="input-full-width">
+              <input matInput placeholder="Apellido Materno" formControlName="apellidoMaterno" type="text">
+            </mat-form-field>
+          </div>
+        </div>
+        <div *ngIf="edit" class="row margin-top">
+          <div class="col-md-12">
+            <small>Fecha creación: {{atencion.fechaCreacion}}</small>
+          </div>          
+        </div>
+        <div *ngIf="edit" class="row">
+          <div class="col-md-12">
+            <small>Fecha actualización: {{atencion.fechaActualizacion}} </small>
+          </div>
+        </div>
+      </form>
+    </mat-card>
   </div>
 </div>

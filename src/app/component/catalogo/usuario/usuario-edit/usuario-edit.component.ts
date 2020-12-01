@@ -8,6 +8,8 @@ import { UsuarioService } from 'src/app/services/usuario/usuario.service';
 import { RolService } from 'src/app/services/rol/rol.service';
 
 import * as $ from 'jquery';
+import { ValueConverter } from '@angular/compiler/src/render3/view/template';
+import { ThrowStmt } from '@angular/compiler';
 
 @Component({
   selector: 'app-usuario-edit',
@@ -23,6 +25,8 @@ export class UsuarioEditComponent implements OnInit {
     private _formBuilder: FormBuilder
   ) { }
 
+  rolMenu: any = [];
+
   edit: boolean = false;
 
   Roles: any = [];
@@ -30,6 +34,7 @@ export class UsuarioEditComponent implements OnInit {
 
   formUsuario: FormGroup;
 
+  //controls para el formulario de usuario
   usuarioIdCtrl = new FormControl(null);
   nombreCtrl = new FormControl('',[Validators.required]);
   apellidoPaternoCtrl = new FormControl('',[Validators.required]);
@@ -94,6 +99,8 @@ export class UsuarioEditComponent implements OnInit {
             fechaCreacion: this.usuario.fechaCreacion,
             fechaActualizacion: this.usuario.fechaActualizacion
           });
+          console.log(this.rolUsuario[0].rolId)
+          this.obteneMenuRol(this.rolUsuario[0].rolId);
           this.edit = true;
           this.mostrarEstado(this.usuario.estado);
           //this.getRol(this.usuario.rol);
@@ -168,6 +175,17 @@ export class UsuarioEditComponent implements OnInit {
       }
       $("#usuarioEstado").show();
     }
+  }
+
+  obteneMenuRol(rolId){
+    this.rolService.getRolMenu(rolId).subscribe(
+      response =>{
+        this.rolMenu = response['menu']
+        console.log(this.rolMenu);
+      },error =>{
+        console.log("Error al obtener los menus por ID del rol: " + error)
+      }
+    );
   }
 
 }

@@ -27,7 +27,8 @@
             ],
             "scripts": [
               "node_modules/hammerjs/hammer.js",
-              "src/assets/login/js/main.js"
+              "src/assets/login/js/main.js",
+              "src/assets/menu/js/menu.js"
             ],
             "es5BrowserSupport": true
           },

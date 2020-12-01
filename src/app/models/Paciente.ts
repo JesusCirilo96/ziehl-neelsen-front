@@ -5,9 +5,9 @@ export interface Paciente {
     apellidoMaterno?:string;
     fechaNacimiento?:string;
     sexo?:boolean;
-    telefono?:string;
     email?:string;
     estado?:boolean;
-    createdAt?:string;
-    updatedAt?:string;
+    telefono?:string;
+    fechaCreacion?:string;
+    fechaActualizacion?:string;
 }

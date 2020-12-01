@@ -40,6 +40,14 @@ export class RolService {
   }
 
   /**
+   * Obtenemos los menus del ROL
+   * @param rolId El ID del ROL
+   */
+  getRolMenu(rolId: number){
+    return this.http.get(`${this.API_URI}/rol/menu/${rolId}`);
+  }
+
+  /**
    * Guarda el rol en BD
    * @param rol El rol a guardar
    */
