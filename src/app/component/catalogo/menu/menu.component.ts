@@ -81,7 +81,7 @@ export class MenuComponent implements OnInit {
             estado: this.menu.estado
           });
           this.edit = true;
-          this.mostrarEstado(this.menu.estado);
+          //this.mostrarEstado(this.menu.estado);
         }, error => {
           console.log("Error al obtener el menu por ID: " + error)
         }
@@ -89,7 +89,7 @@ export class MenuComponent implements OnInit {
     }
   }
 
-  guardarRol() {
+  /*guardarRol() {
     this.menuService.saveMenu(this.formMenu.value).subscribe(
       res => {
         this.router.navigate(['/rol'])
@@ -141,5 +141,5 @@ export class MenuComponent implements OnInit {
       $("#menuEstado").show();
     }
   }
-
+*/
 }

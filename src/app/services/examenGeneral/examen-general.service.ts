@@ -4,13 +4,14 @@ import { HttpClient } from '@angular/common/http';
 import {ExamenGeneral} from '../../models/ExamenGeneral';
 import { Observable } from 'rxjs';
 import {AppSettings} from 'src/assets/js/messages';
+import { environment } from 'src/environments/environment';
 @Injectable({
   providedIn: 'root'
 })
 export class ExamenGeneralService {
 
   
-  API_URI = AppSettings.API_ENDPOINT;
+  API_URI = environment.apiUrl;
 
   constructor(private http: HttpClient) { 
   }
@@ -24,11 +25,11 @@ export class ExamenGeneralService {
   }
 
   saveExamenGeneral(examenGeneral: ExamenGeneral){
-    return this.http.post(`${this.API_URI}/examen`, examenGeneral);
+    return this.http.post(`${this.API_URI}/examen/save/`, examenGeneral);
   }
 
-  updateExamenGeneral(examen_gen_id:number, updatedExamenGeneral:ExamenGeneral): Observable<ExamenGeneral>{
-    return this.http.put(`${this.API_URI}/examengeneral/${examen_gen_id}`, updatedExamenGeneral);
+  updateExamenGeneral(updatedExamenGeneral:ExamenGeneral): Observable<ExamenGeneral>{
+    return this.http.post(`${this.API_URI}/examen/save/`, updatedExamenGeneral);
   }
 
 }

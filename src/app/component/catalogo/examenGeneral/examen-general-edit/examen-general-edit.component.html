@@ -4,399 +4,152 @@
       <div class="col-md-6">
         <span class="title-catalogos">{{edit ? 'Editar Examen': 'Crear Examen'}}</span>
       </div>
-      <div class="col-md-6 text-right buttons-catalogo">
-        <button mat-button id="examenGeneralEstado" (click)="activarInactivar()"></button>
-        <button mat-button id="examenGeneralGuardar" [disabled]="!examenGeneral.estado" class="primary"
-          (click)="edit ? updateExamenGeneral(): saveNewExamenGeneral()">Guardar</button>
-        <button mat-button class="danger" (click)="cancelarEdicion()">Cancelar</button>
-      </div>
     </div>
-  </div>
-  <div class="col-md-12 form-edit">
-    <mat-card>
-      <div class="row">
-        <div class="col-md-4">
-          <mat-form-field class="input-full-width">
-            <input matInput placeholder="Nombre" [(ngModel)]="examenGeneral.nombre" required ng-required="Requerido"
-              type="text" class="validate">
-          </mat-form-field>
-        </div>
-        <div class="col-md-4">
-          <mat-form-field class="input-full-width">
-            <input matInput placeholder="Alias" [(ngModel)]="examenGeneral.alias" ng-required="Requerido" type="text"
-              class="validate">
-          </mat-form-field>
-        </div>
-        <div class="col-md-4">
-          <mat-form-field class="input-full-width">
-            <input matInput placeholder="Precio" [(ngModel)]="examenGeneral.precio" required ng-required="Requerido"
-              type="text" class="validate">
-          </mat-form-field>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-md-4">
-          <mat-form-field class="input-full-width">
-            <input matInput placeholder="Clave" [(ngModel)]="examenGeneral.clave" required ng-required="Requerido"
-              type="text" class="validate">
-          </mat-form-field>
-        </div>
-        <div class="col-md-4">
-          <mat-form-field class="input-full-width">
-            <input matInput placeholder="Titulo" [(ngModel)]="examenGeneral.titulo" required ng-required="Requerido"
-              type="text" class="validate">
-          </mat-form-field>
-        </div>
-        <div class="col-md-4">
-          <mat-form-field class="input-full-width">
-            <mat-select placeholder="Categoria" required [(ngModel)]="examenGeneral.caregoriaId">
-              <mat-option *ngFor="let seccion of Seccion" [value]="seccion.categoriaId">{{seccion.nombre}}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>
-      </div>
-      <div class="row">
-        <small>Fecha creación: {{examenGeneral.fechaCreacion}}</small>
-      </div>
-      <div class="row">
-        <small>Fecha actualización: {{examenGeneral.fechaActualizacion}} </small>
-      </div>
-      <!--
-      <ng-template [ngIf]="edit">
+    <mat-card class="form-edit">
+      <form class="col-md-12" [formGroup]="formExamen"
+        (ngSubmit)="edit ? updateExamenGeneral(): saveNewExamenGeneral()">
         <div class="row">
-          <div class="col-md-12">
-            <mat-tab-group>
-              <mat-tab label="Referencias">
-                <ng-template [ngIf]="examenGeneral.tipo_examen_id == 1">
-                  <div class="col-md-12 form-edit">
-                    <div class="row form-edit" id="referenciaAdultos">
-                      <div class="col-md-4">
-                        <mat-form-field class="input-full-width">
-                          <input matInput placeholder="Referencia Hombre" [(ngModel)]="examenGeneral.vr_hombre"
-                            ng-required="Requerido" type="text" class="validate">
-                        </mat-form-field>
-                      </div>
-                      <div class="col-md-4">
-                        <mat-form-field class="input-full-width">
-                          <input matInput placeholder="Referencia Mujer" [(ngModel)]="examenGeneral.vr_mujer"
-                            ng-required="Requerido" type="text" class="validate">
-                        </mat-form-field>
-                      </div>
-                      <div class="col-md-4">
-                        <mat-form-field class="input-full-width">
-                          <input matInput placeholder="Referencia General" [(ngModel)]="examenGeneral.vr_general"
-                            ng-required="Requerido" type="text" class="validate">
-                        </mat-form-field>
-                      </div>
-                    </div>
-                    <div class="row" id="referenciaNinos">
-                      <div class="col-md-4">
-                        <mat-form-field class="input-full-width">
-                          <input matInput placeholder="Referencia Niño" [(ngModel)]="examenGeneral.vr_ninos"
-                            ng-required="Requerido" type="text" class="validate">
-                        </mat-form-field>
-                      </div>
-                      <div class="col-md-4">
-                        <mat-form-field class="input-full-width">
-                          <input matInput placeholder="Referencia Niña" [(ngModel)]="examenGeneral.ninas"
-                            ng-required="Requerido" type="text" class="validate">
-                        </mat-form-field>
-                      </div>
-                      <div class="col-md-4">
-                        <mat-form-field class="input-full-width">
-                          <input matInput placeholder="Referencia Niño/Niña" [(ngModel)]="examenGeneral.vr_general_n"
-                            ng-required="Requerido" type="text" class="validate">
-                        </mat-form-field>
-                      </div>
-                    </div>
-                  </div>
-                </ng-template>
-                <div class="col-md-12 form-edit">
-                  <div class="row">
-                    <div class="col-md-4">
-                      <mat-form-field class="input-full-width">
-                        <input matInput placeholder="Referencia Perzonalizada" [(ngModel)]="referenciaPersonalizada"
-                          ng-required="Requerido" type="text" class="validate">
-                      </mat-form-field>
-                      <mat-form-field class="input-full-width">
-                        <input matInput placeholder="Orden" [(ngModel)]="ordenReferencia" ng-required="Requerido"
-                          type="text" class="validate">
-                      </mat-form-field>
-                      <button mat-stroked-button color="primary" (click)="agregarReferencia()">Añadir
-                        Referencia</button>
-
-                      <div class="form-edit">
-                        <h6>Referencia personalizada:</h6>
-                        <mat-list role="list">
-                          <mat-list-item role="listitem"
-                            *ngFor="let referencia of examenGeneral.referencia_personalizada">
-                            {{referencia.nombre}}</mat-list-item>
-                        </mat-list>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-              </mat-tab>
-              <mat-tab label="Metodos">
-                <div class="col-md-12 form-edit">
-                  <div class="row">
-                    <div class="col-md-4">
-                      <mat-form-field class="input-full-width">
-                        <mat-select placeholder="Metodo" [(ngModel)]="metodoEscogido">
-                          <mat-option *ngFor="let metodo of Metodo" [value]="metodo.metodo_id">{{metodo.nombre}}
-                          </mat-option>
-                        </mat-select>
-                      </mat-form-field>
-                      <button mat-stroked-button color="primary" (click)="guardarMetodo()">
-                        Añadir</button>
-                    </div>
-                    <div class="col-md-4">
-                      <p *ngFor="let metodo of examenGeneral.metodo">{{metodo.nombre}}</p>
-                    </div>
-                  </div>
-                </div>
-
-              </mat-tab>
-              <mat-tab label="Descuentos">
-                Descuentos
-              </mat-tab>
-            </mat-tab-group>
+          <div class="col-md-6">
+            <h5>Datos del examen</h5>
+          </div>
+          <div class="col-md-6 text-right buttons-catalogo">
+            <button mat-button id="examenGeneralEstado" (click)="activarInactivar()"></button>
+            <button mat-flat-button color="primary" id="examenGeneralGuardar"
+              [disabled]="!examenGeneral.estado || !formExamen.valid">Guardar</button>
+            <button mat-flat-button color="warn" (click)="cancelarEdicion()">Cancelar</button>
           </div>
         </div>
-      </ng-template> -->
+
+        <div class="row margin-up">
+          <div class="col-md-4">
+            <mat-form-field class="input-full-width">
+              <mat-label>Nombre</mat-label>
+              <input matInput formControlName="nombre" required type="text">
+              <mat-error *ngIf="examenNombreCtrl.hasError('required')">
+                El nombre es obligatorio
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div class="col-md-4">
+            <mat-form-field class="input-full-width">
+              <mat-label>Alias</mat-label>
+              <input matInput formControlName="alias" type="text">
+            </mat-form-field>
+          </div>
+          <div class="col-md-4">
+            <mat-form-field class="input-full-width">
+              <mat-label>Titulo examen</mat-label>
+              <input matInput formControlName="titulo" type="text">
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div class="row margin-up">
+          <div class="col-md-4">
+            <mat-form-field class="input-full-width">
+              <mat-label>Clave del examen</mat-label>
+              <input matInput formControlName="clave" type="text">
+            </mat-form-field>
+          </div>
+          <div class="col-md-4">
+            <mat-form-field class="input-full-width">
+              <mat-label>Categoría</mat-label>
+              <mat-select formControlName="categoriaId" required>
+                <mat-option *ngFor="let categoria of Categoria" [value]="categoria.categoriaId">{{categoria.nombre}}
+                </mat-option>
+              </mat-select>
+              <mat-error *ngIf="examenCategoriaCtrl.hasError('required')">
+                La categoria es obligatoria
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div class="col-md-4">
+            <mat-form-field class="input-full-width">
+              <mat-label>Precio</mat-label>
+              <input matInput type="number" formControlName="precio">
+              <span matPrefix>$&nbsp;</span>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <small>Fecha creación: {{examenGeneral.fechaCreacion}}</small>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <small>Fecha actualización: {{examenGeneral.fechaActualizacion}} </small>
+          </div>
+        </div>
+      </form>
+    </mat-card>
+
+    <mat-card class="form-edit">
+      <div class="row margin-up-down">
+        <div class="col-md-2">
+          <button class="input-full-width" mat-button color="primary" matTooltip="Añadir metodo general para el examen"
+          (click)="openDialog()">Añadir metodo</button>
+        </div>
+        <div class="col-md-10">
+          <mat-chip-list aria-label="Fish selection">
+            <mat-chip [selectable]="selectable" [removable]="removable" (removed)="remove(1)">
+              Centrifugado
+              <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+            </mat-chip>
+          </mat-chip-list>
+        </div>
+      </div>
+    </mat-card>
+
+    <mat-card class="form-edit">
+      <div class="row">
+        <div class="col-md-6">
+          <h5>Estudios</h5>
+        </div>
+        <div class="col-md-6 text-right buttons-catalogo">
+          <button mat-button id="examenGeneralEstado" (click)="activarInactivar()"></button>
+          <button mat-flat-button color="primary" id="examenGeneralGuardar"
+            [disabled]="!examenGeneral.estado || !formExamen.valid">Guardar</button>
+          <button mat-flat-button color="warn" (click)="cancelarEdicion()">Cancelar</button>
+        </div>
+      </div>
+
 
     </mat-card>
   </div>
-  <!--
-  <ng-template [ngIf]="edit">
-  <div class="form-edit col-md-12">
-    <mat-accordion>
-      <mat-expansion-panel>
-        <mat-expansion-panel-header>
-          <mat-panel-title>
-            Agregar Examen
-          </mat-panel-title>
-        </mat-expansion-panel-header>
-        <div class="row form-edit">
-          <div class="col-md-4">
-            <mat-form-field class="input-full-width">
-              <input matInput placeholder="Nombre" [(ngModel)]="subExamen.nombre" ng-required="Requerido" type="text"
-                class="validate">
-            </mat-form-field>
-          </div>
-          <div class="col-md-4">
-            <mat-form-field class="input-full-width">
-              <input matInput placeholder="Orden" [(ngModel)]="subExamen.orden" ng-required="Requerido" type="text"
-                class="validate">
-            </mat-form-field>
-          </div>
-        </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Añadir metodo</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
         <div class="row">
           <div class="col-md-12">
-            <button mat-stroked-button color="accent" [matMenuTriggerFor]="menu">Agregar valores de referencia</button>
-            <mat-menu #menu="matMenu">
-              <button mat-menu-item data-toggle="collapse" data-target="#collapseRefninos" aria-expanded="false"
-                aria-controls="callapseRefninos">
-                <mat-icon>child_care</mat-icon>
-                <span>Referencia Niños</span>
-              </button>
-              <button mat-menu-item data-toggle="collapse" data-target="#collapseRefAdulto" aria-expanded="false"
-                aria-controls="collapseRefAdulto">
-                <mat-icon>people</mat-icon>
-                <span>Referencia Adultos</span>
-              </button>
-              <button mat-menu-item data-toggle="collapse" data-target="#collapseShuffle" aria-expanded="false"
-                aria-controls="collapseShuffle">
-                <mat-icon>shuffle</mat-icon>
-                <span>Referencia Perzonalizada</span>
-              </button>
-            </mat-menu>
-          </div>
-        </div>
-        <div class="collapse row form-edit" id="collapseRefninos">
-          <div class="col-md-4">
             <mat-form-field class="input-full-width">
-              <input matInput placeholder="Referencia Niño" [(ngModel)]="subExamen.vr_ninos" ng-required="Requerido"
-                type="text" class="validate">
-            </mat-form-field>
-          </div>
-          <div class="col-md-4">
-            <mat-form-field class="input-full-width">
-              <input matInput placeholder="Referencia Niña" [(ngModel)]="subExamen.vr_ninas" ng-required="Requerido"
-                type="text" class="validate">
-            </mat-form-field>
-          </div>
-          <div class="col-md-4">
-            <mat-form-field class="input-full-width">
-              <input matInput placeholder="Referencia General Niños/Niñas" [(ngModel)]="subExamen.vr_general_n"
-                ng-required="Requerido" type="text" class="validate">
-            </mat-form-field>
-          </div>
-        </div>
-        <div class="collapse row form-edit" id="collapseRefAdulto">
-          <div class="col-md-4">
-            <mat-form-field class="input-full-width">
-              <input matInput placeholder="Referencia Hombre" [(ngModel)]="subExamen.vr_hombre" ng-required="Requerido"
-                type="text" class="validate">
-            </mat-form-field>
-          </div>
-          <div class="col-md-4">
-            <mat-form-field class="input-full-width">
-              <input matInput placeholder="Referencia Mujer" [(ngModel)]="subExamen.vr_mujer" ng-required="Requerido"
-                type="text" class="validate">
-            </mat-form-field>
-          </div>
-          <div class="col-md-4">
-            <mat-form-field class="input-full-width">
-              <input matInput placeholder="Referencia Hombre/Mujer" [(ngModel)]="subExamen.vr_general"
-                ng-required="Requerido" type="text" class="validate">
-            </mat-form-field>
-          </div>
-        </div>
-        <div id="collapseShuffle" class="collapse row form-edit">
-          <div class="col-md-4">
-            <mat-form-field class="input-full-width">
-              <input matInput placeholder="Referencia Perzonalizada" [(ngModel)]="referenciaPersonalizada"
-                ng-required="Requerido" type="text" class="validate">
-            </mat-form-field>
-            <button mat-stroked-button id="subSeccionGuardar" color="primary"
-              (click)="agregarReferenciaPerzonalizada(referenciaPersonalizada)">Añadir Referencia</button>
-          </div>
-          <div class="col-md-4">
-            <ul class="list-group">
-              <li class="list-group-item" *ngFor="let referencia of ReferenciaPersonalizada">
-                <a href="#" matToolTip="Remover">
-                  <i class="fas fa-minus"></i>
-                </a>
-                {{referencia.referencia}}
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div class="row form-edit">
-          <button mat-button id="subSeccionGuardar" color="primary" (click)="saveSubExamen()">Añadir Examen</button>
-          <button mat-button color="primary" (click)="openDialog()">¿Ya Existe?</button>
-        </div>
-      </mat-expansion-panel>
-      <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
-        <mat-expansion-panel-header>
-          <mat-panel-title>
-            Agregar Sub Sección
-          </mat-panel-title>
-        </mat-expansion-panel-header>
-        <div class="row">
-          <div class="col-md-4">
-            <mat-form-field class="input-full-width">
-              <mat-select placeholder="Sub-sección" [(ngModel)]="subEstudio">
-                <mat-option *ngFor="let subSeccion of SubSeccion" [value]="subSeccion.sub_seccion_id">
-                  {{subSeccion.nombre}}
+              <mat-label>Metodo</mat-label>
+              <mat-select required>
+                <mat-option *ngFor="let metodo of ListMetodo" [value]="metodo.metodoId">{{metodo.nombre}}
                 </mat-option>
               </mat-select>
             </mat-form-field>
-            <button mat-button color="primary" (click)="saveExamenGeneralSubSeccion()">
-              Añadir
-            </button>
-            <a [routerLink]="['/subseccion/add']" mat-button color="primary" matTooltip="Añadir mas Examenes">
-              ¿La Sub Seccion no esta?
-            </a>
           </div>
         </div>
-      </mat-expansion-panel>
-    </mat-accordion>
-    <mat-card class="form-edit">
-      <table class="table table-bordered table-sm">
-        <thead class="thead-light">
-          <tr>
-            <th>Seccion</th>
-            <th>Examen</th>
-            <th class="text-center" colspan="7">Valores de referencia</th>
-          </tr>
-          <tr>
-            <th colspan="2"></th>
-            <th>Hombre</th>
-            <th>Mujer</th>
-            <th>H/M</th>
-            <th>Niño</th>
-            <th>Niña</th>
-            <th>Niño/Niña</th>
-            <th>Personalizado</th>
-          </tr>
-        </thead>
-        <ng-template [ngIf]="obtenerExamenGeneralSubseccion != null">
-          <tbody *ngFor="let item of obtenerExamenGeneralSubseccion">
-            <tr>
-              <td colspan="8">
-                <button mat-icon-button color="primary" [matMenuTriggerFor]="menu" matTooltip="Opciones">
-                  <mat-icon>more_vert</mat-icon>
-                </button>
-                <mat-menu #menu="matMenu">
-                  <a mat-menu-item [routerLink]="['/subseccion/edit/', item.sub_seccion_id]">
-                    <mat-icon>note_add</mat-icon>
-                    <span>Añadir mas examenes</span>
-                  </a>
-                  <button mat-menu-item (click)="deleteSubEstudio(item.sub_seccion_id)">
-                    <mat-icon>delete</mat-icon>
-                    <span>Borrar</span>
-                  </button>
-                </mat-menu>
-                {{item.sub_seccion}}
-              </td>
-            </tr>
-
-            <tr *ngFor="let subExamen of item.sub_examen">
-              <td colspan="1"></td>
-              <td>{{subExamen.nombre}}</td>
-              <td>{{subExamen.vr_hombre}}</td>
-              <td>{{subExamen.vr_mujer}}</td>
-              <td>{{subExamen.vr_general}}</td>
-              <td>{{subExamen.vr_ninos}}</td>
-              <td>{{subExamen.vr_ninas}}</td>
-              <td>{{subExamen.vr_general_n}}</td>
-            </tr>
-          </tbody>
-        </ng-template>
-        <td class="text-center bold light" colspan="8"></td>
-        <ng-template [ngIf]="obtenerExamenGeneralSubExamen != null">
-          <tbody>
-            <tr *ngFor="let examen of obtenerExamenGeneralSubExamen">
-              <td colspan="1"></td>
-              <td>
-                <button mat-icon-button color="primary" matTooltip="Eliminar Examen"
-                  (click)="deleteSubExamen(examen.sub_examen_id)">
-                  <mat-icon>remove</mat-icon>
-                </button>
-                {{examen.nombre_subExamen}}
-              </td>
-              <td>{{examen.vr_hombre}}</td>
-              <td>{{examen.vr_mujer}}</td>
-              <td>{{examen.vr_general}}</td>
-              <td>{{examen.vr_ninos}}</td>
-              <td>{{examen.vr_ninas}}</td>
-              <td>{{examen.vr_general_n}}</td>
-              <td>
-                <button mat-button color="accent" [matMenuTriggerFor]="referencia_personalizada">
-                  ver
-                </button>
-                <mat-menu #referencia_personalizada="matMenu">
-                  <ng-template [ngIf]="examen.referencia_personalizada == null">
-                    <button mat-menu-item>
-                      <span>Sin Referencia</span>
-                    </button>
-                  </ng-template>
-                  <ng-template [ngIf]="examen.referencia_personalizada != null">
-                    <button mat-menu-item *ngFor="let referencia of examen.referencia_personalizada">
-                      <span>{{referencia.nombre}}</span>
-                    </button>
-                  </ng-template>
-                </mat-menu>
-              </td>
-            </tr>
-          </tbody>
-        </ng-template>
-      </table>
-    </mat-card>
+        <div class="row">
+          <div class="col-md-6">
+            <a routerLink="/metodo/add"></a> Crear Nuevo metodo
+          </div>
+          <div class="col-md-6 text-right buttons-catalogo">
+            <button mat-flat-button color="primary" (click)="cancelarEdicion()">Añadir</button>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
-  </ng-template> -->
 </div>

@@ -2,11 +2,13 @@ import { Component, Inject } from '@angular/core';
 import {MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 
 import { SubExamenService } from 'src/app/services/subExamen/sub-examen.service';
+import { MetodoService } from 'src/app/services/metodo/metodo.service';
+
 
 declare var $: any;
 
 export interface DialogData {
-  examen:JSON;
+  metodo:JSON;
 }
 
 @Component({
@@ -17,26 +19,25 @@ export interface DialogData {
 export class DialogoComponent{
 
   constructor(
-    private subExamenService: SubExamenService,
+    private metodoService: MetodoService,
     public dialogRef: MatDialogRef<DialogoComponent>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData) {
-      this.getSubExamen();
+      this.getMetodos();
     }
 
   onNoClick(): void {
     this.dialogRef.close();
   }
     
-  SubExamen: any = [];
-  examenId:number;
+  ListMetodo: any = [];
+  metodoId:number;
 
-  getSubExamen(){
-    this.subExamenService.getSubExamenes().subscribe(
-      res => {
-        this.SubExamen = res;
-        console.log(this.SubExamen);
+  getMetodos(){
+    this.metodoService.getMetodos().subscribe(
+      response =>{
+        this.ListMetodo = response;
       },
-      err => console.log(err)
+      err => console.error(err)
     );
   }
 }

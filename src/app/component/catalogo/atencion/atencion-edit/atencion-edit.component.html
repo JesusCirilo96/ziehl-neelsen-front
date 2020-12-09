@@ -20,7 +20,8 @@
         <div class="row margin-up">
           <div class="col-md-4">
             <mat-form-field class="input-full-width">
-              <input matInput placeholder="Nombre" formControlName="nombre" required type="text">
+              <mat-label>Nombre</mat-label>
+              <input matInput formControlName="nombre" required type="text">
               <mat-error *ngIf="nombreCtrl.hasError('required')">
                 El nombre es obligatorio
               </mat-error>
@@ -28,7 +29,8 @@
           </div>
           <div class="col-md-4">
             <mat-form-field class="input-full-width">
-              <input matInput placeholder="Apellido Paterno" formControlName="apellidoPaterno" type="text" required>
+              <mat-label>Apellido Paterno</mat-label>
+              <input matInput formControlName="apellidoPaterno" type="text" required>
               <mat-error *ngIf="apellidoPaternoCtrl.hasError('required')">
                 El Apellido paterno es obligatorio
               </mat-error>
@@ -36,7 +38,8 @@
           </div>
           <div class="col-md-4">
             <mat-form-field class="input-full-width">
-              <input matInput placeholder="Apellido Materno" formControlName="apellidoMaterno" type="text">
+              <mat-label>Apellido Materno</mat-label>
+              <input matInput formControlName="apellidoMaterno" type="text">
             </mat-form-field>
           </div>
         </div>
