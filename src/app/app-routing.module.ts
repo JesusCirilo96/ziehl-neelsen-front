@@ -47,6 +47,9 @@ import { RolEditComponent } from "./component/catalogo/rol/rol-edit/rol-edit.com
 import { RolViewComponent } from "./component/catalogo/rol/rol-view/rol-view.component";
 //rutas de menu
 import { MenuComponent} from './component/catalogo/menu/menu.component';
+//ruta de la categoria
+import { CategoriaEditComponent } from './component/catalogo/categoria/categoria-edit/categoria-edit.component';
+import { CategoriaViewComponent } from './component/catalogo/categoria/categoria-view/categoria-view.component';
 //Rutas para login
 import { LoginComponent } from './component/login/login.component';
 import { CanActivate } from '@angular/router/src/utils/preactivation';
@@ -55,9 +58,9 @@ var routes: Routes = [
   { path: '', component: HomeComponent, canActivate: [AuthGuard] },
   { path: 'login', component: LoginComponent },
   { path: 'recepcion', component: ReceptionComponent, canActivate: [AuthGuard] },
-  { path: 'categoria', component: SeccionViewComponent, canActivate: [AuthGuard] },
-  { path: 'categoria/add', component: SeccionEditComponent, canActivate: [AuthGuard] },
-  { path: 'categoria/edit/:id', component: SeccionEditComponent, canActivate: [AuthGuard] },
+  { path: 'categoria', component: CategoriaViewComponent, canActivate: [AuthGuard] },
+  { path: 'categoria/add', component: CategoriaEditComponent, canActivate: [AuthGuard] },
+  { path: 'categoria/edit/:id', component: CategoriaEditComponent, canActivate: [AuthGuard] },
   { path: 'metodo', component: MetodoViewComponent, canActivate: [AuthGuard] },
   { path: 'metodo/add', component: MetodoEditComponent, canActivate: [AuthGuard] },
   { path: 'metodo/edit/:id', component: MetodoEditComponent, canActivate: [AuthGuard] },

@@ -1,0 +1,54 @@
+<div class="row all-table">
+  <div class="col-md-12">
+    <div class="row">
+      <div class="col-md-6">
+        <span class="title-catalogos">{{edit ? 'Editar Categoría': 'Agregar Categoría'}}</span>
+      </div>
+    </div>
+    <mat-card class="form-edit">
+      <form [formGroup]="formCategoria" (ngSubmit)="edit ? updateCategoria(): saveCategoria()" class="col-md-12">
+        <div class="row">
+          <div class="col-md-6">
+            <h5>Datos de la categoria</h5>
+          </div>
+          <div class="col-md-6 text-right buttons-catalogo">
+            <button mat-button id="categoiraEstado" (click)="activarInactivar()"></button>
+            <button mat-flat-button color="primary" type="submit" id="seccionGuardar" [disabled]="!categoria.estado || !formCategoria.valid">Guardar</button>
+            <button mat-flat-button color="warn" (click)="cancelarEdicion()">Cancelar</button>
+          </div>
+        </div>
+        <div class="row margin-up">
+          <div class="col-md-3">
+            <mat-form-field class="input-full-width">
+              <mat-label>Nombre</mat-label>
+              <input matInput formControlName="nombre" required type="text" class="validate">
+              <mat-error *ngIf="nombreCtrl.hasError('required')">
+                El nombre es obligatorio
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div class="col-md-3">
+            <mat-form-field class="input-full-width">
+              <mat-label>Orden</mat-label>
+              <input matInput formControlName="orden" required type="number" class="validate">
+              <mat-error *ngIf="ordenCtrl.hasError('required')">
+                El orden es obligatorio
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+        <div *ngIf="edit" class="row margin-top">
+          <div class="col-md-12">
+            <small>Fecha creación: {{categoria.fechaCreacion}}</small>
+          </div>          
+        </div>
+        <div *ngIf="edit" class="row">
+          <div class="col-md-12">
+            <small>Fecha actualización: {{categoria.fechaActualizacion}} </small>
+          </div>
+        </div>
+      </form>
+    </mat-card>
+
+  </div>
+</div>

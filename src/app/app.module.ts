@@ -73,6 +73,8 @@ import { MenuComponent } from './component/catalogo/menu/menu.component';
 import { ModalComponent } from './component/catalogo/descuento/modal/modal.component';
 import { RolViewComponent } from './component/catalogo/rol/rol-view/rol-view.component';
 import { RolEditComponent } from './component/catalogo/rol/rol-edit/rol-edit.component';
+import { CategoriaEditComponent } from './component/catalogo/categoria/categoria-edit/categoria-edit.component';
+import { CategoriaViewComponent } from './component/catalogo/categoria/categoria-view/categoria-view.component';
 
 @NgModule({
   declarations: [
@@ -114,7 +116,9 @@ import { RolEditComponent } from './component/catalogo/rol/rol-edit/rol-edit.com
     AlertComponent,
     ModalComponent,
     RolViewComponent,
-    RolEditComponent
+    RolEditComponent,
+    CategoriaEditComponent,
+    CategoriaViewComponent
   ],
   entryComponents: [DialogoComponent, ModalComponent],
   imports: [
