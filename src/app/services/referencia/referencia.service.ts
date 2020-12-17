@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 
 import { Referencia } from '../../models/Referencia';
 import { Observable } from 'rxjs';
-import {AppSettings} from 'src/assets/js/messages';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -11,32 +11,29 @@ import {AppSettings} from 'src/assets/js/messages';
 export class ReferenciaService {
 
   
-  API_URI = AppSettings.API_ENDPOINT;
+  API_URI = environment.apiUrl;
 
   constructor(private http: HttpClient) { 
 
   }
 
   getReferencias(){
-    return this.http.get(`${this.API_URI}/referencia`);
+    return this.http.get(`${this.API_URI}/referencia/get/all`);
   }
 
-  getReferencia(id: number){
-    return this.http.get(`${this.API_URI}/referencia/${id}`);
+  getReferenciaEstudio(id: number){
+    return this.http.get(`${this.API_URI}/referencia/estudio/${id}`);
   }
 
-  getMaxId(){
-    return this.http.get(`${this.API_URI}/referencia/getlastid`);
-  }
   deleteReferencia(id:number){
     return this.http.delete(`${this.API_URI}/referencia/${id}`);
   }
 
   saveReferencia(referencia: Referencia){
-    return this.http.post(`${this.API_URI}/referencia`, referencia);
+    return this.http.post(`${this.API_URI}/referencia/save`, referencia);
   }
 
-  updateReferencia(referencia_id:number, updatedReferencia:Referencia): Observable<Referencia>{
-    return this.http.put(`${this.API_URI}/referencia/${referencia_id}`, updatedReferencia);
+  updateReferencia(updatedReferencia:Referencia): Observable<Referencia>{
+    return this.http.put(`${this.API_URI}/referencia/save`, updatedReferencia);
   }
 }

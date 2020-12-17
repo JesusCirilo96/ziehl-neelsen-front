@@ -75,6 +75,9 @@ import { RolViewComponent } from './component/catalogo/rol/rol-view/rol-view.com
 import { RolEditComponent } from './component/catalogo/rol/rol-edit/rol-edit.component';
 import { CategoriaEditComponent } from './component/catalogo/categoria/categoria-edit/categoria-edit.component';
 import { CategoriaViewComponent } from './component/catalogo/categoria/categoria-view/categoria-view.component';
+import { ClasificacionPacienteEditComponent } from './component/catalogo/clasificacionPaciente/clasificacion-paciente-edit/clasificacion-paciente-edit.component';
+import { ClasificacionPacienteViewComponent } from './component/catalogo/clasificacionPaciente/clasificacion-paciente-view/clasificacion-paciente-view.component';
+import { DialogReferenciaComponent } from './component/catalogo/examenGeneral/dialog-referencia/dialog-referencia.component';
 
 @NgModule({
   declarations: [
@@ -118,9 +121,12 @@ import { CategoriaViewComponent } from './component/catalogo/categoria/categoria
     RolViewComponent,
     RolEditComponent,
     CategoriaEditComponent,
-    CategoriaViewComponent
+    CategoriaViewComponent,
+    ClasificacionPacienteEditComponent,
+    ClasificacionPacienteViewComponent,
+    DialogReferenciaComponent
   ],
-  entryComponents: [DialogoComponent, ModalComponent],
+  entryComponents: [DialogoComponent, DialogReferenciaComponent, ModalComponent],
   imports: [
     BrowserModule,    
     AppRoutingModule,

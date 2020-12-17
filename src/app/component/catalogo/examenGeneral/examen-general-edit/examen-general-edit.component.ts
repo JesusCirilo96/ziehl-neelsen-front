@@ -6,14 +6,17 @@ import Swal from 'sweetalert2';
 
 //MODELS
 import { ExamenGeneral } from 'src/app/models/ExamenGeneral';
+import { Referencia } from 'src/app/models/Referencia';
 
 //SERVICES
 import { ExamenGeneralService } from 'src/app/services/examenGeneral/examen-general.service';
-import { SeccionesService } from 'src/app/services/secciones.service';
 import { MetodoService } from 'src/app/services/metodo/metodo.service';
+import { CategoriaService } from 'src/app/services/categoria/categoria.service';
+import { ReferenciaService } from 'src/app/services/referencia/referencia.service';
 
 //COMPONENTS
 import {DialogoComponent} from '../dialogo/dialogo.component';
+import {DialogReferenciaComponent } from '../dialog-referencia/dialog-referencia.component';
 
 
 import * as $ from 'jquery';
@@ -31,7 +34,8 @@ export class ExamenGeneralEditComponent implements OnInit {
   constructor(
     private examenGeneralService: ExamenGeneralService,
     private metodoService: MetodoService,
-    private seccionesService: SeccionesService,
+    private refereciaService: ReferenciaService,
+    private categoriaService: CategoriaService,
     private router: Router,
     private activateRoute: ActivatedRoute,
     private _formBuilder: FormBuilder,
@@ -46,6 +50,15 @@ export class ExamenGeneralEditComponent implements OnInit {
 
   ListMetodo: any = [];//lista para los metodos
   Categoria: any = []; //lista para las categorias
+  ExamenSeccion: any = []; //Lista para los examenes con sus respectivas secciones
+
+  referencia: Referencia = {
+    clasificacionId: null,
+    estudioId: null,
+    femenino:'',
+    masculino: '',
+    general:''
+  }
 
   examenGeneral: ExamenGeneral = {
     examenGeneralId:null,
@@ -78,17 +91,17 @@ export class ExamenGeneralEditComponent implements OnInit {
     $("#addExamenes").hide();
     this.formGroupExamen();
     this.getExamenGeneral();
-    this.getSecciones();
+    this.getCategorias();
     this.getMetodos();
-   
   }
 
   getExamenGeneral(){
     const parametros = this.activateRoute.snapshot.params;//<---Contiene los parametros que se pasan
     if (parametros.id) {
-      this.examenGeneralService.getExamenGeneral(parametros.id).subscribe(
+      this.examenGeneralService.getExamenSecciones(parametros.id).subscribe(
         res => {
-          this.examenGeneral = res;
+          this.examenGeneral = res['examen'];
+          this.ExamenSeccion = res['seccion'];
           this.formExamen.patchValue({
             examenGeneralId:this.examenGeneral.examenGeneralId,
             nombre:this.examenGeneral.nombre,
@@ -103,7 +116,9 @@ export class ExamenGeneralEditComponent implements OnInit {
           });
           this.edit = true;
           console.log(this.formExamen.value)
+          console.log(this.ExamenSeccion)
           this.mostrarEstado(this.examenGeneral.estado);
+          
         },
         err => {
           console.log(err);
@@ -178,8 +193,8 @@ export class ExamenGeneralEditComponent implements OnInit {
     }
   }
 
-  getSecciones() {
-    this.seccionesService.getSecciones().subscribe(
+  getCategorias() {
+    this.categoriaService.getCategorias().subscribe(
       res => {
         this.Categoria = res;
         console.log(this.Categoria);
@@ -232,6 +247,64 @@ export class ExamenGeneralEditComponent implements OnInit {
           }*/
         }
       });
+  }
+
+  referenciaDialog: any = [];
+  openDialogReferencia(estudioId){
+
+    console.log("El estudio ID ::" + estudioId);
+    
+    const dialogReferencia = this.dialog.open(DialogReferenciaComponent, {
+      width:'500px',
+      data: {referencia:this.referenciaDialog}
+    });
+
+    dialogReferencia.afterClosed().subscribe(result => {
+      if (result != undefined) {
+        this.referencia = {
+          clasificacionId: result[0].clasificacionId,
+          estudioId: estudioId,
+          femenino:result[0].referenciaFemenino,
+          masculino: result[0].referenciaMasculino,
+          general:result[0].referenciaGeneral
+        }
+       console.log(this.referencia)
+       this.guardarReferencia(this.referencia);
+        /*if (result[0].catalogo == 'subexamen') {
+          this.examenGeneralSubExamen.sub_examen_id = result[0].examenId;
+          this.saveExamenGeneralSubExamen();
+        }*/
+      }
+    });
+  }
+
+  guardarReferencia(referencia) {
+    this.refereciaService.saveReferencia(referencia).subscribe(
+      res => {
+        this.alerta('Se Añadio la referencia exitosamente','success',false);
+        var examenSeccion = this.ExamenSeccion;
+        for(var key in examenSeccion){
+          var estudios = examenSeccion[key].estudio;
+          for(var key1 in estudios){
+            if(estudios[key].estudioId === referencia.estudioId){
+              this.refereciaService.getReferenciaEstudio(referencia.estudioId).subscribe(
+                res => {
+                  estudios[key].referencia = [];
+                  estudios[key].referencia = res;
+                },
+                err => {
+                  console.log(err);
+                }
+              )
+            }
+          }
+        }
+      },
+      err => {
+        this.alertaBoton('Verificar datos introducidos','Error: ' + err,'warning')
+      }
+    )
+    console.log(this.formExamen.value);
   }
 
   remove(id: number): void {

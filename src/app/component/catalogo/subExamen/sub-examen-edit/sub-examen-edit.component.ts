@@ -57,8 +57,8 @@ export class SubExamenEditComponent implements OnInit {
     sub_examen_id: null
   }
 
-  Referencia: Referencia = {
-    referencia_id: null,
+  Referencia = {
+    referenciaId: null,
     nombre: '',
     orden: null,
     estado: true
@@ -185,13 +185,13 @@ export class SubExamenEditComponent implements OnInit {
 
   getIdReferencia() {
     var id = 0;
-    this.referenciaService.getMaxId().subscribe(
+    /*this.referenciaService.getMaxId().subscribe(
       res => {
         id = parseInt(JSON.stringify(res));
-        this.Referencia.referencia_id = id + 1;
+        //this.Referencia.referencia_id = id + 1;
       },
       error => console.log(error)
-    )
+    )*/
   }
 
   agregarReferencia() {
@@ -200,13 +200,13 @@ export class SubExamenEditComponent implements OnInit {
   }
 
   guardarReferencia() {
-    this.Referencia = {
+   /* this.Referencia = {
       nombre: this.referenciaPersonalizada,
       estado: true,
       orden: this.ordenReferencia
-    }
+    }*/
 
-    this.referenciaService.saveReferencia(this.Referencia).subscribe(
+    /*this.referenciaService.saveReferencia(this.Referencia).subscribe(
       res => {
         console.log("OK");
         this.guardarSubExamenReferencia(this.Referencia);
@@ -215,7 +215,7 @@ export class SubExamenEditComponent implements OnInit {
       error => {
         console.log(error);
       }
-    )
+    )*/
   }
 
   guardarSubExamenReferencia(Referencia) {

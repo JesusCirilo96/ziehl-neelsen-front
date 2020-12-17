@@ -85,10 +85,74 @@
     </mat-card>
 
     <mat-card class="form-edit">
+      <div class="row">
+        <div class="col-md-6">
+          <h5>Estudios del examen</h5>
+        </div>
+      </div>
+      <div class="row margin-up" *ngFor="let seccion of ExamenSeccion">
+        <div class="col-md-12">
+          <p>{{seccion.seccion.titulo}}</p>
+        </div>
+        <mat-accordion *ngFor="let estudio of seccion.estudio" class="form-edit col-md-12">
+          <mat-expansion-panel>
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                <button class="fas fa-times" matTooltip="Remover examen"
+                  (click)="removerExamenGeneral(seleccion.EXAMEN_GEN_ID)"></button>
+                &nbsp;
+                {{estudio.nombre}}
+              </mat-panel-title>
+              <mat-panel-description>
+                <div class="width-100 text-right">
+                  
+                </div>
+              </mat-panel-description>
+            </mat-expansion-panel-header>
+
+            <div class="row">
+              <div class="col-md-6">
+                Referencias:
+                <mat-list role="list" *ngFor="let referencia of estudio.referencia">
+                  <mat-list-item role="listitem"><strong>{{referencia.clasificacion.nombre}}</strong></mat-list-item>
+                  <mat-list-item role="listitem">Femenino: {{referencia.referenciaFemenino}}</mat-list-item>
+                  <mat-list-item role="listitem">Masculino: {{referencia.referenciaMasculino}}</mat-list-item>
+                  <mat-list-item role="listitem">General: {{referencia.referenciaGeneral}}</mat-list-item>
+                </mat-list>
+                <button mat-stroked-button (click)="openDialogReferencia(estudio.estudioId)">¿Nueva referencia?</button>
+              </div>
+              <div class="col-md-6">
+                Metodos:
+              </div>
+            </div>
+          </mat-expansion-panel>
+        </mat-accordion>
+
+        <div class="col-md-12 margin-up-down">
+          <div class="row">
+            <div class="col-md-2">
+            <button class="input-full-width" mat-button color="primary"
+              (click)="openDialog()">Añadir metodo</button>
+            </div>
+            <div class="col-md-10">
+              <mat-chip-list aria-label="Seleccion de metodo">
+                <mat-chip [selectable]="selectable" [removable]="removable" (removed)="remove(1)" *ngFor="let metodo of seccion.metodo">
+                  {{metodo.nombre}}
+                  <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+                </mat-chip>
+              </mat-chip-list>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </mat-card>
+
+    <mat-card class="form-edit">
       <div class="row margin-up-down">
         <div class="col-md-2">
           <button class="input-full-width" mat-button color="primary" matTooltip="Añadir metodo general para el examen"
-          (click)="openDialog()">Añadir metodo</button>
+            (click)="openDialog()">Añadir metodo</button>
         </div>
         <div class="col-md-10">
           <mat-chip-list aria-label="Fish selection">
@@ -99,22 +163,6 @@
           </mat-chip-list>
         </div>
       </div>
-    </mat-card>
-
-    <mat-card class="form-edit">
-      <div class="row">
-        <div class="col-md-6">
-          <h5>Estudios</h5>
-        </div>
-        <div class="col-md-6 text-right buttons-catalogo">
-          <button mat-button id="examenGeneralEstado" (click)="activarInactivar()"></button>
-          <button mat-flat-button color="primary" id="examenGeneralGuardar"
-            [disabled]="!examenGeneral.estado || !formExamen.valid">Guardar</button>
-          <button mat-flat-button color="warn" (click)="cancelarEdicion()">Cancelar</button>
-        </div>
-      </div>
-
-
     </mat-card>
   </div>
 </div>

@@ -1,11 +1,7 @@
 import { Component, Inject } from '@angular/core';
 import {MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 
-import { SubExamenService } from 'src/app/services/subExamen/sub-examen.service';
 import { MetodoService } from 'src/app/services/metodo/metodo.service';
-
-
-declare var $: any;
 
 export interface DialogData {
   metodo:JSON;

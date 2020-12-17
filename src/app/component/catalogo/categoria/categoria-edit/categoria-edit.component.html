@@ -21,7 +21,7 @@
           <div class="col-md-3">
             <mat-form-field class="input-full-width">
               <mat-label>Nombre</mat-label>
-              <input matInput formControlName="nombre" required type="text" class="validate">
+              <input matInput formControlName="nombre" required type="text">
               <mat-error *ngIf="nombreCtrl.hasError('required')">
                 El nombre es obligatorio
               </mat-error>
@@ -30,7 +30,7 @@
           <div class="col-md-3">
             <mat-form-field class="input-full-width">
               <mat-label>Orden</mat-label>
-              <input matInput formControlName="orden" required type="number" class="validate">
+              <input matInput formControlName="orden" required type="number">
               <mat-error *ngIf="ordenCtrl.hasError('required')">
                 El orden es obligatorio
               </mat-error>

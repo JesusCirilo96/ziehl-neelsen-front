@@ -1,0 +1,54 @@
+<div class="col-md-12 all-table">
+  <div class="row">
+    <div>
+      <span class="title-catalogos">Clasificación pacientes</span>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12 add-new">
+      <a routerLink="/clasificacion/paciente/add" class="">Crear Nuevo</a>
+    </div>
+  </div>
+  <div class="row mat-elevation-z8">
+    <div class="col-md-12 text-right">
+      <mat-form-field class="table-filter">
+        <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filtrar">
+      </mat-form-field>
+    </div>
+    <div class="col-md-12">      
+      <table mat-table [dataSource]="dataSource" class="input-full-width">
+        <!-- nombre-->
+        <ng-container matColumnDef="nombre">
+          <th mat-header-cell class="width-30 thead" *matHeaderCellDef> Nombre </th>
+          <td mat-cell class="width-30" *matCellDef="let element"> {{element.nombre}} </td>
+        </ng-container>
+
+        <!-- edad minima -->
+        <ng-container matColumnDef="edadMinima">
+          <th mat-header-cell class="width-30 thead" *matHeaderCellDef> Edad Minima </th>
+          <td mat-cell class="width-30" *matCellDef="let element"> {{element.edadMinima}} Años</td>
+        </ng-container>
+
+        <!-- edad maxima -->
+        <ng-container matColumnDef="edadMaxima">
+          <th mat-header-cell class="width-30 thead" *matHeaderCellDef> Edad Maxima</th>
+          <td mat-cell class="width-30" *matCellDef="let element"> {{element.edadMaxima}} Años</td>
+        </ng-container>
+
+        <!-- accion -->
+        <ng-container matColumnDef="accion" class="width-20">
+          <th mat-header-cell class="width-10" *matHeaderCellDef></th>
+          <td mat-cell class="width-10" *matCellDef="let element">
+            <a [routerLink]="['/clasificacion/paciente/edit/', element.clasificacionPacienteId]">Editar</a>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;" [ngClass]="{'table-danger': row.estado == 0}"></tr>
+      </table>
+    </div>
+    <div class="col-md-12">
+      <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+    </div>
+  </div>
+</div>

@@ -52,6 +52,11 @@ import { CategoriaEditComponent } from './component/catalogo/categoria/categoria
 import { CategoriaViewComponent } from './component/catalogo/categoria/categoria-view/categoria-view.component';
 //Rutas para login
 import { LoginComponent } from './component/login/login.component';
+
+//Rutas para clasificacion paciente
+import {ClasificacionPacienteEditComponent} from './component/catalogo/clasificacionPaciente/clasificacion-paciente-edit/clasificacion-paciente-edit.component';
+import {ClasificacionPacienteViewComponent} from './component/catalogo/clasificacionPaciente/clasificacion-paciente-view/clasificacion-paciente-view.component';
+
 import { CanActivate } from '@angular/router/src/utils/preactivation';
 
 var routes: Routes = [
@@ -94,6 +99,9 @@ var routes: Routes = [
   { path: 'rol/edit/:id', component: RolEditComponent, canActivate: [AuthGuard] },
   { path: 'menu/add', component: MenuComponent, canActivate: [AuthGuard] },
   { path: 'menu/edit/:id', component: MenuComponent, canActivate: [AuthGuard] },
+  { path: 'clasificacion/paciente', component: ClasificacionPacienteViewComponent, canActivate: [AuthGuard] },
+  { path: 'clasificacion/paciente/add', component: ClasificacionPacienteEditComponent, canActivate: [AuthGuard] },
+  { path: 'clasificacion/paciente/edit/:id', component: ClasificacionPacienteEditComponent, canActivate: [AuthGuard] },
   
   { path: '**', redirectTo: '' }
 ];

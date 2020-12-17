@@ -16,24 +16,36 @@ export class SeccionesService {
 
   }
 
+  /**
+   * Obtenemos todas las secciones
+   */
   getSecciones(){
-    return this.http.get(`${this.API_URI}/categoria/get/all`);
-  }
-  
-  getSeccionExamen(){
-    return this.http.get(`${this.API_URI}/categoria/examen`);//obtener los examennes clasificados por seccion
+    return this.http.get(`${this.API_URI}/seccion/get/all`);
   }
 
+
+  /**
+   * Obtenemos la seccion por ID
+   * @param id ID de la seccion
+   */
   getSeccion(id: number){
-    return this.http.get(`${this.API_URI}/categoria/get/${id}`);
+    return this.http.get(`${this.API_URI}/seccion/get/${id}`);
   }
 
+  /**
+   * Guardamos la seccion
+   * @param seccion El objeto con lo datos de la seccion
+   */
   saveSeccion(seccion: Seccion){
     return this.http.post(`${this.API_URI}/categoria/save`, seccion);
   }
 
+  /**
+   * Actualizamos la seccion
+   * @param updatedSeccion La seccion a actualizar
+   */
   updateSeccion(updatedSeccion:Seccion): Observable<Seccion>{
-    return this.http.post(`${this.API_URI}/categoria/save`, updatedSeccion);
+    return this.http.post(`${this.API_URI}/seccion/save`, updatedSeccion);
   }
 
 }
