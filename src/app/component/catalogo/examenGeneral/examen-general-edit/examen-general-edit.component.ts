@@ -51,7 +51,7 @@ export class ExamenGeneralEditComponent implements OnInit {
   ListMetodo: any = [];//lista para los metodos
   Categoria: any = []; //lista para las categorias
   ExamenSeccion: any = []; //Lista para los examenes con sus respectivas secciones
-
+  ReferenciaEstudio: any = [];
   referencia: Referencia = {
     clasificacionId: null,
     estudioId: null,
@@ -278,27 +278,22 @@ export class ExamenGeneralEditComponent implements OnInit {
     });
   }
 
+  obtenerReferencia(idEstudio){
+    this.refereciaService.getReferenciaEstudio(idEstudio).subscribe(
+      res => {
+        this.ReferenciaEstudio = res;
+      },
+      err => {
+        console.log(err);
+      }
+    )
+  }
+
   guardarReferencia(referencia) {
     this.refereciaService.saveReferencia(referencia).subscribe(
       res => {
         this.alerta('Se Añadio la referencia exitosamente','success',false);
-        var examenSeccion = this.ExamenSeccion;
-        for(var key in examenSeccion){
-          var estudios = examenSeccion[key].estudio;
-          for(var key1 in estudios){
-            if(estudios[key].estudioId === referencia.estudioId){
-              this.refereciaService.getReferenciaEstudio(referencia.estudioId).subscribe(
-                res => {
-                  estudios[key].referencia = [];
-                  estudios[key].referencia = res;
-                },
-                err => {
-                  console.log(err);
-                }
-              )
-            }
-          }
-        }
+        this.obtenerReferencia(referencia.estudioId);
       },
       err => {
         this.alertaBoton('Verificar datos introducidos','Error: ' + err,'warning')

@@ -90,12 +90,30 @@
           <h5>Estudios del examen</h5>
         </div>
       </div>
+      <ng-template [ngIf]="ExamenSeccion != null && ExamenSeccion != []">
+        <div class="row margin-up">
+          <div class="col-md-12">
+            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+              ¡Sin secciones ni estudios agregados!
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="row margin-up">
+          <div class="col-md-12 text-right buttons-catalogo">
+            <button mat-raised-button id="addEstudio">Añadir examen</button>
+            <button mat-raised-button color="primary" id="addSeccion">Añadir Seccion</button>
+          </div>
+        </div>
+      </ng-template>
       <div class="row margin-up" *ngFor="let seccion of ExamenSeccion">
         <div class="col-md-12">
           <p>{{seccion.seccion.titulo}}</p>
         </div>
         <mat-accordion *ngFor="let estudio of seccion.estudio" class="form-edit col-md-12">
-          <mat-expansion-panel>
+          <mat-expansion-panel (afterExpand)="obtenerReferencia(estudio.estudioId)">
             <mat-expansion-panel-header>
               <mat-panel-title>
                 <button class="fas fa-times" matTooltip="Remover examen"
@@ -105,7 +123,7 @@
               </mat-panel-title>
               <mat-panel-description>
                 <div class="width-100 text-right">
-                  
+
                 </div>
               </mat-panel-description>
             </mat-expansion-panel-header>
@@ -113,7 +131,7 @@
             <div class="row">
               <div class="col-md-6">
                 Referencias:
-                <mat-list role="list" *ngFor="let referencia of estudio.referencia">
+                <mat-list role="list" *ngFor="let referencia of ReferenciaEstudio">
                   <mat-list-item role="listitem"><strong>{{referencia.clasificacion.nombre}}</strong></mat-list-item>
                   <mat-list-item role="listitem">Femenino: {{referencia.referenciaFemenino}}</mat-list-item>
                   <mat-list-item role="listitem">Masculino: {{referencia.referenciaMasculino}}</mat-list-item>
@@ -131,12 +149,12 @@
         <div class="col-md-12 margin-up-down">
           <div class="row">
             <div class="col-md-2">
-            <button class="input-full-width" mat-button color="primary"
-              (click)="openDialog()">Añadir metodo</button>
+              <button class="input-full-width" mat-button color="primary" (click)="openDialog()">Añadir metodo</button>
             </div>
             <div class="col-md-10">
               <mat-chip-list aria-label="Seleccion de metodo">
-                <mat-chip [selectable]="selectable" [removable]="removable" (removed)="remove(1)" *ngFor="let metodo of seccion.metodo">
+                <mat-chip [selectable]="selectable" [removable]="removable" (removed)="remove(1)"
+                  *ngFor="let metodo of seccion.metodo">
                   {{metodo.nombre}}
                   <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
                 </mat-chip>
