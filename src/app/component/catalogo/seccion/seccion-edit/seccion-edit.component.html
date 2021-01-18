@@ -1,1 +1,110 @@
-<p>WORKS</p>
+<div class="row all-table">
+    <div class="col-md-12">
+      <div class="row">
+        <div class="col-md-6">
+          <span class="title-catalogos">{{edit ? 'Editar Seccíon': 'Agregar Seccíon'}}</span>
+        </div>
+      </div>
+      <mat-card class="form-edit">
+        <form class="col-md-12" [formGroup]="formSeccion" (ngSubmit)="edit ? updateSeccion(): saveNewSeccion()">
+          <div class="row">
+            <div class="col-md-6">
+              <h5>Datos de la sección</h5>
+            </div>
+            <div class="col-md-6 text-right buttons-catalogo">
+              <button mat-button id="seccionEstado" (click)="activarInactivar()"></button>
+              <button mat-flat-button color="primary" id="seccionGuardar"
+                [disabled]="!seccion.estado || !formSeccion.valid">Guardar</button>
+              <button mat-flat-button color="warn" (click)="cancelarEdicion()">Cancelar</button>
+            </div>
+          </div>
+          <div class="row margin-up">
+            <div class="col-md-6">
+              <mat-form-field class="input-full-width">
+                <input matInput placeholder="Nombre" formControlName="nombre" required type="text">
+                <mat-error *ngIf="nombreCtrl.hasError('required')">
+                  El nombre es obligatorio
+                </mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+                <mat-form-field class="input-full-width">
+                  <input matInput placeholder="Titulo" formControlName="titulo" type="text">
+                </mat-form-field>
+                <small>El titulo que aparecera en la hoja impresa</small>
+            </div>
+          </div>
+          <div *ngIf="edit" class="row margin-top">
+            <div class="col-md-12">
+              <small>Fecha creación: {{seccion.fechaCreacion}}</small>
+            </div>          
+          </div>
+          <div *ngIf="edit" class="row">
+            <div class="col-md-12">
+              <small>Fecha actualización: {{seccion.fechaActualizacion}} </small>
+            </div>
+          </div>
+        </form>
+      </mat-card>
+      <mat-card class="form-edit">
+          <div class="row">
+              <div class="col-md-6">
+                  <h5>Estudios</h5>
+              </div>
+          </div>
+          <div class="row margin-up">
+            <mat-accordion *ngFor="let estudio of Estudios" class="form-edit col-md-12">
+                <mat-expansion-panel (afterExpand)="obtenerReferencia(estudio.estudioId)">
+                  <mat-expansion-panel-header>
+                    <mat-panel-title>
+                      <button class="fas fa-times" matTooltip="Remover examen"
+                        (click)="removerExamenGeneral(seleccion.EXAMEN_GEN_ID)"></button>
+                      &nbsp;
+                      {{estudio.nombre}}
+                    </mat-panel-title>
+                    <mat-panel-description>
+                      <div class="width-100 text-right">
+      
+                      </div>
+                    </mat-panel-description>
+                  </mat-expansion-panel-header>
+      
+                  <div class="row">
+                    <div class="col-md-6">
+                      Referencias:
+                      <mat-list role="list" *ngFor="let referencia of ReferenciaEstudio">
+                        <mat-list-item role="listitem"><strong>{{referencia.clasificacion.nombre}}</strong></mat-list-item>
+                        <mat-list-item role="listitem">Femenino: {{referencia.referenciaFemenino}}</mat-list-item>
+                        <mat-list-item role="listitem">Masculino: {{referencia.referenciaMasculino}}</mat-list-item>
+                        <mat-list-item role="listitem">General: {{referencia.referenciaGeneral}}</mat-list-item>
+                      </mat-list>
+                      <button mat-stroked-button (click)="openDialogReferencia(estudio.estudioId)">¿Nueva referencia?</button>
+                    </div>
+                    <div class="col-md-6">
+                      Metodos:
+                    </div>
+                  </div>
+                </mat-expansion-panel>
+              </mat-accordion>
+              <div class="col-md-12 margin-up-down">
+                <div class="row">
+                  <div class="col-md-2">
+                    <button class="input-full-width" mat-button color="primary" (click)="openDialog()">Añadir metodo</button>
+                  </div>
+                  <div class="col-md-10">
+                    <mat-chip-list aria-label="Seleccion de metodo">
+                      <mat-chip [selectable]="selectable" [removable]="removable" (removed)="removeMetodo(1)"
+                        *ngFor="let metodo of Metodos">
+                        {{metodo.nombre}}
+                        <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+                      </mat-chip>
+                    </mat-chip-list>
+                  </div>
+                </div>
+              </div>
+          </div>
+      </mat-card>
+    </div>
+  </div>

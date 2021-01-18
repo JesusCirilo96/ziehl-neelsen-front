@@ -58,6 +58,7 @@ import {ClasificacionPacienteEditComponent} from './component/catalogo/clasifica
 import {ClasificacionPacienteViewComponent} from './component/catalogo/clasificacionPaciente/clasificacion-paciente-view/clasificacion-paciente-view.component';
 
 import { CanActivate } from '@angular/router/src/utils/preactivation';
+import { SeccionService } from './services/seccion/seccion.service';
 
 var routes: Routes = [
   { path: '', component: HomeComponent, canActivate: [AuthGuard] },
@@ -102,6 +103,9 @@ var routes: Routes = [
   { path: 'clasificacion/paciente', component: ClasificacionPacienteViewComponent, canActivate: [AuthGuard] },
   { path: 'clasificacion/paciente/add', component: ClasificacionPacienteEditComponent, canActivate: [AuthGuard] },
   { path: 'clasificacion/paciente/edit/:id', component: ClasificacionPacienteEditComponent, canActivate: [AuthGuard] },
+  { path: 'seccion', component: SeccionViewComponent, canActivate: [AuthGuard] },
+  { path: 'seccion/add', component: SeccionEditComponent, canActivate: [AuthGuard] },
+  { path: 'seccion/edit/:id', component: SeccionEditComponent, canActivate: [AuthGuard] },
   
   { path: '**', redirectTo: '' }
 ];

@@ -20,7 +20,6 @@ export class SeccionViewComponent implements OnInit {
 
   displayedColumns: string[] = [
     'nombre', 
-    'orden',
     'accion'
   ];
   dataSource = new MatTableDataSource<Element>();

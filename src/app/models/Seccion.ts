@@ -1,7 +1,7 @@
 export interface Seccion{
-    categoriaId?:number;
+    seccionId?:number;
     nombre?:string;
-    orden?:number;
+    titulo?:string;
     estado?:boolean;
     fechaCreacion?:string;
     fechaActualizacion?:string;

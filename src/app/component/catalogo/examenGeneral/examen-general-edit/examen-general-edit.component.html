@@ -86,33 +86,117 @@
 
     <mat-card class="form-edit">
       <div class="row">
-        <div class="col-md-6">
-          <h5>Estudios del examen</h5>
-        </div>
+        <button mat-icon-button [matMenuTriggerFor]="menuExamen" aria-label="Example icon-button with a menu">
+          <mat-icon>more_vert</mat-icon>
+          Estudios del examen
+        </button>
+        <mat-menu #menuExamen="matMenu">
+          <button mat-menu-item (click)="openDialogoEstudio(false)">
+            <mat-icon>text_snippet</mat-icon>
+            <span>Añadir estudio</span>
+          </button>
+          <button mat-menu-item (click)="openDialogoSeccion()">
+            <mat-icon>ballot</mat-icon>
+            <span>Añadir seccion</span>
+          </button>
+          <button mat-menu-item (click)="openDialog(seccion.seccion.seccionId)">
+            <mat-icon>local_library</mat-icon>
+            <span>Añadir metodo</span>
+          </button>
+        </mat-menu>
       </div>
-      <ng-template [ngIf]="ExamenSeccion != null && ExamenSeccion != []">
+      <ng-template [ngIf]="ExamenSeccion.length == 0">
         <div class="row margin-up">
           <div class="col-md-12">
             <div class="alert alert-warning alert-dismissible fade show" role="alert">
-              ¡Sin secciones ni estudios agregados!
+              ¡Sin secciones agregadas!
               <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
           </div>
         </div>
+      </ng-template>
+      <ng-template [ngIf]=" ExamenEstudioList.length == 0">
         <div class="row margin-up">
-          <div class="col-md-12 text-right buttons-catalogo">
-            <button mat-raised-button id="addEstudio">Añadir examen</button>
-            <button mat-raised-button color="primary" id="addSeccion">Añadir Seccion</button>
+          <div class="col-md-12">
+            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+              ¡Sin estudios agregados!
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
           </div>
         </div>
       </ng-template>
-      <div class="row margin-up" *ngFor="let seccion of ExamenSeccion">
-        <div class="col-md-12">
-          <p>{{seccion.seccion.titulo}}</p>
+      <mat-card class="width-100 margin-up" *ngFor="let seccion of ExamenSeccion">
+        <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+          <mat-icon>more_vert</mat-icon>
+          {{seccion.seccion.titulo}}
+        </button>
+        <mat-menu #menu="matMenu">
+          <button mat-menu-item>
+            <mat-icon>text_snippet</mat-icon>
+            <span>Añadir estudio</span>
+          </button>
+          <button mat-menu-item (click)="openDialog(seccion.seccion.seccionId)">
+            <mat-icon>local_library</mat-icon>
+            <span>Añadir metodo</span>
+          </button>
+        </mat-menu>
+        <mat-card-content>
+          <mat-accordion *ngFor="let estudio of seccion.estudio" class="form-edit col-md-12">
+            <mat-expansion-panel (afterExpand)="obtenerReferencia(estudio.estudioId)">
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                  <button class="fas fa-times" matTooltip="Remover examen"
+                    (click)="removerExamenGeneral(seleccion.EXAMEN_GEN_ID)"></button>
+                  &nbsp;
+                  {{estudio.nombre}}
+                </mat-panel-title>
+                <mat-panel-description>
+                  <div class="width-100 text-right">
+
+                  </div>
+                </mat-panel-description>
+              </mat-expansion-panel-header>
+
+              <div class="row">
+                <div class="col-md-6">
+                  Referencias:
+                  <mat-list role="list" *ngFor="let referencia of ReferenciaEstudio">
+                    <mat-list-item role="listitem"><strong>{{referencia.clasificacion.nombre}}</strong></mat-list-item>
+                    <mat-list-item role="listitem">Femenino: {{referencia.referenciaFemenino}}</mat-list-item>
+                    <mat-list-item role="listitem">Masculino: {{referencia.referenciaMasculino}}</mat-list-item>
+                    <mat-list-item role="listitem">General: {{referencia.referenciaGeneral}}</mat-list-item>
+                  </mat-list>
+                  <button mat-stroked-button (click)="openDialogReferencia(estudio.estudioId)">¿Nueva
+                    referencia?</button>
+                </div>
+                <div class="col-md-6">
+                  Metodos:
+                </div>
+              </div>
+            </mat-expansion-panel>
+          </mat-accordion>
+        </mat-card-content>
+
+        <div class="col-md-12 margin-up-down">
+          <div class="row">
+            <div class="col-md-12">
+              <mat-chip-list aria-label="Seleccion de metodo">
+                <mat-chip [selectable]="selectable" [removable]="removable" (removed)="removeMetodo(1)"
+                  *ngFor="let metodo of seccion.metodo">
+                  {{metodo.nombre}}
+                  <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+                </mat-chip>
+              </mat-chip-list>
+            </div>
+          </div>
         </div>
-        <mat-accordion *ngFor="let estudio of seccion.estudio" class="form-edit col-md-12">
+      </mat-card>
+      
+        <mat-accordion *ngFor="let estudio of ExamenEstudioList" class="form-edit col-md-12">
           <mat-expansion-panel (afterExpand)="obtenerReferencia(estudio.estudioId)">
             <mat-expansion-panel-header>
               <mat-panel-title>
@@ -137,7 +221,8 @@
                   <mat-list-item role="listitem">Masculino: {{referencia.referenciaMasculino}}</mat-list-item>
                   <mat-list-item role="listitem">General: {{referencia.referenciaGeneral}}</mat-list-item>
                 </mat-list>
-                <button mat-stroked-button (click)="openDialogReferencia(estudio.estudioId)">¿Nueva referencia?</button>
+                <button mat-stroked-button (click)="openDialogReferencia(estudio.estudioId)">¿Nueva
+                  referencia?</button>
               </div>
               <div class="col-md-6">
                 Metodos:
@@ -145,42 +230,7 @@
             </div>
           </mat-expansion-panel>
         </mat-accordion>
-
-        <div class="col-md-12 margin-up-down">
-          <div class="row">
-            <div class="col-md-2">
-              <button class="input-full-width" mat-button color="primary" (click)="openDialog()">Añadir metodo</button>
-            </div>
-            <div class="col-md-10">
-              <mat-chip-list aria-label="Seleccion de metodo">
-                <mat-chip [selectable]="selectable" [removable]="removable" (removed)="remove(1)"
-                  *ngFor="let metodo of seccion.metodo">
-                  {{metodo.nombre}}
-                  <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
-                </mat-chip>
-              </mat-chip-list>
-            </div>
-          </div>
-        </div>
-      </div>
-
-    </mat-card>
-
-    <mat-card class="form-edit">
-      <div class="row margin-up-down">
-        <div class="col-md-2">
-          <button class="input-full-width" mat-button color="primary" matTooltip="Añadir metodo general para el examen"
-            (click)="openDialog()">Añadir metodo</button>
-        </div>
-        <div class="col-md-10">
-          <mat-chip-list aria-label="Fish selection">
-            <mat-chip [selectable]="selectable" [removable]="removable" (removed)="remove(1)">
-              Centrifugado
-              <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
-            </mat-chip>
-          </mat-chip-list>
-        </div>
-      </div>
+      
     </mat-card>
   </div>
 </div>

@@ -78,6 +78,8 @@ import { CategoriaViewComponent } from './component/catalogo/categoria/categoria
 import { ClasificacionPacienteEditComponent } from './component/catalogo/clasificacionPaciente/clasificacion-paciente-edit/clasificacion-paciente-edit.component';
 import { ClasificacionPacienteViewComponent } from './component/catalogo/clasificacionPaciente/clasificacion-paciente-view/clasificacion-paciente-view.component';
 import { DialogReferenciaComponent } from './component/catalogo/examenGeneral/dialog-referencia/dialog-referencia.component';
+import { DialogoSeccionComponent } from './component/catalogo/examenGeneral/dialogo-seccion/dialogo-seccion.component';
+import { DialogoEstudioComponent } from './component/catalogo/examenGeneral/dialogo-estudio/dialogo-estudio.component';
 
 @NgModule({
   declarations: [
@@ -124,9 +126,17 @@ import { DialogReferenciaComponent } from './component/catalogo/examenGeneral/di
     CategoriaViewComponent,
     ClasificacionPacienteEditComponent,
     ClasificacionPacienteViewComponent,
-    DialogReferenciaComponent
+    DialogReferenciaComponent,
+    DialogoSeccionComponent,
+    DialogoEstudioComponent
   ],
-  entryComponents: [DialogoComponent, DialogReferenciaComponent, ModalComponent],
+  entryComponents: [
+    DialogoComponent, 
+    DialogReferenciaComponent, 
+    DialogoSeccionComponent, 
+    DialogoEstudioComponent , 
+    ModalComponent
+  ],
   imports: [
     BrowserModule,    
     AppRoutingModule,

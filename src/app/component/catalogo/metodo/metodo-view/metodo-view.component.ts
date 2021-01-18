@@ -37,18 +37,6 @@ export class MetodoViewComponent implements OnInit {
     )
   }
 
-  deleteMetodo(id:number){
-    this.metodoService.deleteMetodo(id).subscribe(
-      res=>{
-        console.log(res);
-        this.getAllMetodo();
-      },
-      err=>{
-        console.log(err);
-      }
-    )
-  }
-
   activoOinactivo(estado){
     var aux = 'Inactivo';
     if(estado == '1'){

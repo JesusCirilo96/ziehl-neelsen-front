@@ -33,11 +33,20 @@ export class SeccionesService {
   }
 
   /**
+   * 
+   * @param id Obtenemos los estudios de la seccion
+   */
+  getSeccionEstudio(id: number){
+    return this.http.get(`${this.API_URI}/seccion/estudio/${id}`);
+  }
+  
+
+  /**
    * Guardamos la seccion
    * @param seccion El objeto con lo datos de la seccion
    */
   saveSeccion(seccion: Seccion){
-    return this.http.post(`${this.API_URI}/categoria/save`, seccion);
+    return this.http.post(`${this.API_URI}/seccion/save`, seccion);
   }
 
   /**

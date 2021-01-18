@@ -7,17 +7,26 @@ import Swal from 'sweetalert2';
 //MODELS
 import { ExamenGeneral } from 'src/app/models/ExamenGeneral';
 import { Referencia } from 'src/app/models/Referencia';
+import {MetodoSeccion } from 'src/app/models/MetodoSeccion';
+import { ExamenEstudio } from 'src/app/models/ExamenEstudio';
+import {Estudio} from 'src/app/models/Estudio';
+import { SeccionExamen } from 'src/app/models/SeccionExamen';
 
 //SERVICES
 import { ExamenGeneralService } from 'src/app/services/examenGeneral/examen-general.service';
 import { MetodoService } from 'src/app/services/metodo/metodo.service';
 import { CategoriaService } from 'src/app/services/categoria/categoria.service';
 import { ReferenciaService } from 'src/app/services/referencia/referencia.service';
+import { EstudioService } from 'src/app/services/estudio/estudio.service';
+import { SeccionService } from 'src/app/services/seccion/seccion.service';
 
 //COMPONENTS
+
+//Dialogos
 import {DialogoComponent} from '../dialogo/dialogo.component';
 import {DialogReferenciaComponent } from '../dialog-referencia/dialog-referencia.component';
-
+import { DialogoSeccionComponent } from '../dialogo-seccion/dialogo-seccion.component';
+import { DialogoEstudioComponent } from '../dialogo-estudio/dialogo-estudio.component';
 
 import * as $ from 'jquery';
 
@@ -32,6 +41,7 @@ import { _MatTabHeaderMixinBase } from '@angular/material/tabs/typings/tab-heade
 
 export class ExamenGeneralEditComponent implements OnInit {
   constructor(
+    private estudioService: EstudioService,
     private examenGeneralService: ExamenGeneralService,
     private metodoService: MetodoService,
     private refereciaService: ReferenciaService,
@@ -43,7 +53,7 @@ export class ExamenGeneralEditComponent implements OnInit {
   ) {
   }
 
-  electable = true;
+  selectable = true;
   removable = true;
 
   edit: boolean = false;
@@ -51,6 +61,7 @@ export class ExamenGeneralEditComponent implements OnInit {
   ListMetodo: any = [];//lista para los metodos
   Categoria: any = []; //lista para las categorias
   ExamenSeccion: any = []; //Lista para los examenes con sus respectivas secciones
+  ExamenEstudioList: any =[];
   ReferenciaEstudio: any = [];
   referencia: Referencia = {
     clasificacionId: null,
@@ -58,6 +69,11 @@ export class ExamenGeneralEditComponent implements OnInit {
     femenino:'',
     masculino: '',
     general:''
+  }
+
+  metodoSeccion: MetodoSeccion = {
+    metodoId: null,
+    seccionId:null
   }
 
   examenGeneral: ExamenGeneral = {
@@ -71,6 +87,11 @@ export class ExamenGeneralEditComponent implements OnInit {
     categoriaId:null,
     fechaCreacion:'',
     fechaActualizacion:''
+  }
+
+  examenEstudio: ExamenEstudio = {
+    examenId: null,
+    nombreEstudio: ''
   }
 
   formExamen: FormGroup;
@@ -101,7 +122,12 @@ export class ExamenGeneralEditComponent implements OnInit {
       this.examenGeneralService.getExamenSecciones(parametros.id).subscribe(
         res => {
           this.examenGeneral = res['examen'];
-          this.ExamenSeccion = res['seccion'];
+          if(res['seccion'] != null ){
+            this.ExamenSeccion = res['seccion'];
+          }
+          if(res['estudio'] != null){
+            this.ExamenEstudioList = res['estudio'];
+          }
           this.formExamen.patchValue({
             examenGeneralId:this.examenGeneral.examenGeneralId,
             nombre:this.examenGeneral.nombre,
@@ -117,6 +143,7 @@ export class ExamenGeneralEditComponent implements OnInit {
           this.edit = true;
           console.log(this.formExamen.value)
           console.log(this.ExamenSeccion)
+          console.log(this.ExamenEstudioList);
           this.mostrarEstado(this.examenGeneral.estado);
           
         },
@@ -230,9 +257,10 @@ export class ExamenGeneralEditComponent implements OnInit {
     )
   }
 
-  examen: any = []
-  openDialog() {
+  /*DIALOGO METODO */
 
+  examen: any = []
+  openDialog(seccionId) {
       const dialogRef = this.dialog.open(DialogoComponent, {
         width: '500px',
         data: { categoriaId: this.examen }
@@ -240,14 +268,51 @@ export class ExamenGeneralEditComponent implements OnInit {
   
       dialogRef.afterClosed().subscribe(result => {
         if (result != undefined) {
-         console.log(result[0].metodoId)
-          /*if (result[0].catalogo == 'subexamen') {
-            this.examenGeneralSubExamen.sub_examen_id = result[0].examenId;
-            this.saveExamenGeneralSubExamen();
-          }*/
+         this.metodoSeccion = {
+           metodoId: result[0].metodoId,
+           seccionId: seccionId
+         }
+         this.guardarMetodo(this.metodoSeccion);
         }
       });
   }
+
+  guardarMetodo(metodoSeccion){
+    this.metodoService.saveMetodoSeccion(metodoSeccion).subscribe(
+      res => {
+        this.alerta('Se Añadio el metodo exitosamente','success',false);
+        this.obtenerMetodosSeccion(metodoSeccion.seccionId);
+      },
+      err => {
+        this.alertaBoton('Verificar datos introducidos','Error: ' + err,'warning')
+      }
+    )
+  }
+
+  obtenerMetodosSeccion(idSeccion){
+    this.metodoService.getMetodosSeccion(idSeccion).subscribe(
+      response =>{
+        if(response != []){
+          var seccion = this.ExamenSeccion;
+          for(var key in seccion){
+            if(seccion[key].seccion.seccionId == idSeccion){
+              seccion[key].metodo = response;
+              break;
+            }
+          }
+        }
+      },
+      err => {
+        console.log(err);
+      }
+    )
+  }
+
+  removeMetodo(id: number): void {
+    console.log("ID A REMOVER == " + id)
+  }
+
+  /*DIALOGO REFERENCIA */
 
   referenciaDialog: any = [];
   openDialogReferencia(estudioId){
@@ -270,10 +335,6 @@ export class ExamenGeneralEditComponent implements OnInit {
         }
        console.log(this.referencia)
        this.guardarReferencia(this.referencia);
-        /*if (result[0].catalogo == 'subexamen') {
-          this.examenGeneralSubExamen.sub_examen_id = result[0].examenId;
-          this.saveExamenGeneralSubExamen();
-        }*/
       }
     });
   }
@@ -299,10 +360,68 @@ export class ExamenGeneralEditComponent implements OnInit {
         this.alertaBoton('Verificar datos introducidos','Error: ' + err,'warning')
       }
     )
-    console.log(this.formExamen.value);
   }
 
-  remove(id: number): void {
-    console.log("ID A REMOVER == " + id)
+  /*DIALOGO SECCION */
+
+  dialogoSeccion: any = [];
+  openDialogoSeccion(){
+  
+    const dialogSeccion = this.dialog.open(DialogoSeccionComponent, {
+      width:'500px',
+      data: {referencia:this.dialogoSeccion}
+    });
+
+    dialogSeccion.afterClosed().subscribe(result => {
+      if (result != undefined) {
+       console.log("DIALOGO SECCION CERRADA")
+       console.log(result[0].seccionId);
+      }
+    });
+  }
+
+  /*DIALOGO ESTUDIO */
+  dialogoEstudio: any = [];
+  openDialogoEstudio(seccion){
+    const dialogoEstudio = this.dialog.open(DialogoEstudioComponent, {
+      width:'500px',
+      data: {estudio:this.dialogoEstudio}
+    });
+
+    dialogoEstudio.afterClosed().subscribe(result => {
+      if (result != undefined) {
+        if(!seccion){
+          this.examenEstudio.examenId = this.examenGeneral.examenGeneralId;
+          this.examenEstudio.nombreEstudio = result[0].nombreEstudio;
+          this.guardarExamenEstudio(this.examenEstudio);
+        }
+       console.log("DIALOGO ESTUDIO CERRADA")
+       console.log(result[0].nombreEstudio);
+       
+      }
+    });
+  }
+
+  guardarExamenEstudio(estudio){
+    this.examenGeneralService.saveExamenEstudio(estudio).subscribe(
+      res => {
+        this.alerta('Se Añadio el estudio exitosamente','success',false);
+        this.getExamenEstudios(this.examenGeneral.examenGeneralId);
+      },
+      err => {
+        this.alertaBoton('Verificar datos introducidos','Error: ' + err,'warning')
+      }
+    )
+  }
+
+  getExamenEstudios(examenId){
+    this.examenGeneralService.getExamenEstudios(examenId).subscribe(
+      res => {
+        this.ExamenEstudioList = res;
+      },
+      err => {
+        console.log(err);
+      }
+    )
   }
 }

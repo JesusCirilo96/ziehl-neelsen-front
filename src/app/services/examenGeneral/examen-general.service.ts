@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
 import {ExamenGeneral} from '../../models/ExamenGeneral';
+import {ExamenEstudio} from '../../models/ExamenEstudio';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 @Injectable({
@@ -40,11 +41,27 @@ export class ExamenGeneralService {
   }
 
   /**
+   * Obtenemos los estudios correspondientes al examen
+   * @param id El id del examen
+   */
+  getExamenEstudios(id: number){
+    return this.http.get(`${this.API_URI}/examen/estudio/${id}`);
+  }
+
+  /**
    * El objeto de examen
    * @param examenGeneral Guardamos el examen
    */
   saveExamenGeneral(examenGeneral: ExamenGeneral){
     return this.http.post(`${this.API_URI}/examen/save/`, examenGeneral);
+  }
+
+  /**
+   * Guardamos el id de examen y id de estudio
+   * @param examenEstudio El examen estudio a guardar
+   */
+  saveExamenEstudio(examenEstudio: ExamenEstudio){
+    return this.http.post(`${this.API_URI}/examen/estudio/save/`, examenEstudio);
   }
 
   /**
