@@ -33,10 +33,6 @@ import { PacienteViewComponent } from './component/catalogo/paciente/paciente-vi
 import { PacienteEditComponent } from './component/catalogo/paciente/paciente-edit/paciente-edit.component';
 import { UsuarioEditComponent } from './component/catalogo/usuario/usuario-edit/usuario-edit.component';
 import { UsuarioViewComponent } from './component/catalogo/usuario/usuario-view/usuario-view.component';
-import { SubExamenEditComponent } from './component/catalogo/subExamen/sub-examen-edit/sub-examen-edit.component';
-import { SubExamenViewComponent } from './component/catalogo/subExamen/sub-examen-view/sub-examen-view.component';
-import { SubSeccionViewComponent } from './component/catalogo/subSeccion/sub-seccion-view/sub-seccion-view.component';
-import { SubSeccionEditComponent } from './component/catalogo/subSeccion/sub-seccion-edit/sub-seccion-edit.component';
 import { ExamenGeneralViewComponent } from './component/catalogo/examenGeneral/examen-general-view/examen-general-view.component';
 import { ExamenGeneralEditComponent } from './component/catalogo/examenGeneral/examen-general-edit/examen-general-edit.component';
 
@@ -50,8 +46,6 @@ import { RecepcionService } from './services/recepcion/recepcion.service';
 import { PacienteService } from './services/paciente/paciente.service';
 import { UsuarioService } from './services/usuario/usuario.service';
 import { AtencionService } from './services/atencion/atencion.service';
-import { SubExamenService } from './services/subExamen/sub-examen.service';
-import { SubSeccionService } from './services/subSeccion/sub-seccion.service';
 import { ExamenGeneralService } from './services/examenGeneral/examen-general.service';
 import { DialogoComponent } from './component/catalogo/examenGeneral/dialogo/dialogo.component';
 import { InformeComponent } from './component/catalogo/informe/informe.component';
@@ -61,8 +55,6 @@ import { HistorialPacienteComponent } from './component/catalogo/paciente/histor
 import { ResultadoViewComponent } from './component/resultado/resultado-view/resultado-view.component';
 import { ResultadoEditComponent } from './component/resultado/resultado-edit/resultado-edit.component';
 import { HematicaComponent } from './component/resultado/pdfLayout/hematica/hematica.component';
-import { TipoExamenViewComponent } from './component/catalogo/tipoExamen/tipo-examen-view/tipo-examen-view.component';
-import { TipoExamenEditComponent } from './component/catalogo/tipoExamen/tipo-examen-edit/tipo-examen-edit.component';
 import { MainNavComponent } from './main-nav/main-nav.component';
 import { LayoutModule } from '@angular/cdk/layout';
 import { MatToolbarModule, MatButtonModule, MatSidenavModule, MatIconModule, MatListModule } from '@angular/material';
@@ -97,10 +89,6 @@ import { DialogoEstudioComponent } from './component/catalogo/examenGeneral/dial
     PacienteEditComponent,
     UsuarioEditComponent,
     UsuarioViewComponent,
-    SubExamenEditComponent,
-    SubExamenViewComponent,
-    SubSeccionViewComponent,
-    SubSeccionEditComponent,
     ExamenGeneralViewComponent,
     ExamenGeneralEditComponent,
     DialogoComponent,
@@ -111,8 +99,6 @@ import { DialogoEstudioComponent } from './component/catalogo/examenGeneral/dial
     ResultadoViewComponent, 
     ResultadoEditComponent, 
     HematicaComponent, 
-    TipoExamenViewComponent, 
-    TipoExamenEditComponent, 
     MainNavComponent, 
     LoginComponent, 
     DescuentoViewComponent, 
@@ -156,8 +142,6 @@ import { DialogoEstudioComponent } from './component/catalogo/examenGeneral/dial
     PacienteService,
     UsuarioService,
     AtencionService,
-    SubExamenService,
-    SubSeccionService,
     ExamenGeneralService,
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true }

@@ -23,12 +23,6 @@ import { UsuarioEditComponent } from './component/catalogo/usuario/usuario-edit/
 //Rutas para atencion
 import { AtencionViewComponent } from './component/catalogo/atencion/atencion-view/atencion-view.component';
 import { AtencionEditComponent } from './component/catalogo/atencion/atencion-edit/atencion-edit.component';
-//Rutas para subSeccion
-import { SubSeccionViewComponent } from './component/catalogo/subSeccion/sub-seccion-view/sub-seccion-view.component';
-import { SubSeccionEditComponent } from './component/catalogo/subSeccion/sub-seccion-edit/sub-seccion-edit.component';
-//Rutas para subExamen
-import { SubExamenViewComponent } from './component/catalogo/subExamen/sub-examen-view/sub-examen-view.component';
-import { SubExamenEditComponent } from './component/catalogo/subExamen/sub-examen-edit/sub-examen-edit.component';
 //Rutas para ExamenGeneral
 import { ExamenGeneralViewComponent } from './component/catalogo/examenGeneral/examen-general-view/examen-general-view.component';
 import { ExamenGeneralEditComponent } from './component/catalogo/examenGeneral/examen-general-edit/examen-general-edit.component';
@@ -80,12 +74,6 @@ var routes: Routes = [
   { path: 'atencion', component: AtencionViewComponent, canActivate: [AuthGuard] },
   { path: 'atencion/add', component: AtencionEditComponent, canActivate: [AuthGuard] },
   { path: 'atencion/edit/:id', component: AtencionEditComponent, canActivate: [AuthGuard] },
-  { path: 'subseccion', component: SubSeccionViewComponent, canActivate: [AuthGuard] },
-  { path: 'subseccion/add', component: SubSeccionEditComponent, canActivate: [AuthGuard] },
-  { path: 'subseccion/edit/:id', component: SubSeccionEditComponent, canActivate: [AuthGuard] },
-  { path: 'subexamen', component: SubExamenViewComponent, canActivate: [AuthGuard] },
-  { path: 'subexamen/add', component: SubExamenEditComponent, canActivate: [AuthGuard] },
-  { path: 'subexamen/edit/:id', component: SubExamenEditComponent, canActivate: [AuthGuard] },
   { path: 'examengeneral', component: ExamenGeneralViewComponent, canActivate: [AuthGuard] },
   { path: 'examengeneral/add', component: ExamenGeneralEditComponent, canActivate: [AuthGuard] },
   { path: 'examengeneral/edit/:id', component: ExamenGeneralEditComponent, canActivate: [AuthGuard] },
