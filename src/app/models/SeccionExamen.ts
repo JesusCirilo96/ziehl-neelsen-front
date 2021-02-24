@@ -1,5 +1,5 @@
 export interface SeccionExamen{
-    seccionExamenId?:string;
+    seccionId?:string;
     examenId?:number;
     orden:number;
 }

@@ -9,15 +9,14 @@ import { ExamenGeneral } from 'src/app/models/ExamenGeneral';
 import { Referencia } from 'src/app/models/Referencia';
 import {MetodoSeccion } from 'src/app/models/MetodoSeccion';
 import { ExamenEstudio } from 'src/app/models/ExamenEstudio';
-import {Estudio} from 'src/app/models/Estudio';
 import { SeccionExamen } from 'src/app/models/SeccionExamen';
+import { SeccionEstudio } from 'src/app/models/SeccionEstudio';
 
 //SERVICES
 import { ExamenGeneralService } from 'src/app/services/examenGeneral/examen-general.service';
 import { MetodoService } from 'src/app/services/metodo/metodo.service';
 import { CategoriaService } from 'src/app/services/categoria/categoria.service';
 import { ReferenciaService } from 'src/app/services/referencia/referencia.service';
-import { EstudioService } from 'src/app/services/estudio/estudio.service';
 import { SeccionService } from 'src/app/services/seccion/seccion.service';
 
 //COMPONENTS
@@ -31,6 +30,7 @@ import { DialogoEstudioComponent } from '../dialogo-estudio/dialogo-estudio.comp
 import * as $ from 'jquery';
 
 import { _MatTabHeaderMixinBase } from '@angular/material/tabs/typings/tab-header';
+import { Seccion } from 'src/app/models/Seccion';
 
 
 @Component({
@@ -41,10 +41,10 @@ import { _MatTabHeaderMixinBase } from '@angular/material/tabs/typings/tab-heade
 
 export class ExamenGeneralEditComponent implements OnInit {
   constructor(
-    private estudioService: EstudioService,
     private examenGeneralService: ExamenGeneralService,
     private metodoService: MetodoService,
     private refereciaService: ReferenciaService,
+    private seccionService: SeccionService,
     private categoriaService: CategoriaService,
     private router: Router,
     private activateRoute: ActivatedRoute,
@@ -61,7 +61,7 @@ export class ExamenGeneralEditComponent implements OnInit {
   ListMetodo: any = [];//lista para los metodos
   Categoria: any = []; //lista para las categorias
   ExamenSeccion: any = []; //Lista para los examenes con sus respectivas secciones
-  ExamenEstudioList: any =[];
+  ExamenEstudioList: any =[];//Lista para los estudios de los examenes
   ReferenciaEstudio: any = [];
   referencia: Referencia = {
     clasificacionId: null,
@@ -91,7 +91,21 @@ export class ExamenGeneralEditComponent implements OnInit {
 
   examenEstudio: ExamenEstudio = {
     examenId: null,
-    nombreEstudio: ''
+    nombreEstudio: '',
+    porId:false,
+    estudioId:null
+  }
+
+  examenSeccion: SeccionExamen = {
+    examenId: null,
+    seccionId: null,
+    orden: 0
+  }
+
+  seccionEstudio: SeccionEstudio = {
+    seccionId: null,
+    estudioId: null,
+    orden: 0
   }
 
   formExamen: FormGroup;
@@ -375,14 +389,44 @@ export class ExamenGeneralEditComponent implements OnInit {
     dialogSeccion.afterClosed().subscribe(result => {
       if (result != undefined) {
        console.log("DIALOGO SECCION CERRADA")
-       console.log(result[0].seccionId);
+       this.examenSeccion.examenId = this.examenGeneral.examenGeneralId;
+       this.examenSeccion.seccionId = result[0].seccionId;
+       this.guardarExamenSeccion(this.examenSeccion);
       }
     });
   }
 
+  guardarExamenSeccion(examenSeccion){
+    this.examenGeneralService.saveExamenSeccion(examenSeccion).subscribe(
+      res => {
+        this.alerta('Se Añadio la seccion exitosamente','success',false);
+        this.getExamenSeccion(this.examenGeneral.examenGeneralId);
+      },
+      err => {
+        this.alertaBoton('Verificar datos introducidos','Error: ' + err,'warning')
+      }
+    )
+  }
+
+  getExamenSeccion(examenId){
+    this.examenGeneralService.getExamenSecciones(examenId).subscribe(
+      res => {
+        this.ExamenSeccion = res['seccion'];;
+      },
+      err => {
+        console.log(err);
+      }
+    )
+  }
+
   /*DIALOGO ESTUDIO */
   dialogoEstudio: any = [];
-  openDialogoEstudio(seccion){
+
+  /**
+   * paraSeccion variable boleana para determinar si el estudio es para la seccion
+   * o para el examen 
+   */
+  openDialogoEstudio(paraSeccion, seccionId){
     const dialogoEstudio = this.dialog.open(DialogoEstudioComponent, {
       width:'500px',
       data: {estudio:this.dialogoEstudio}
@@ -390,16 +434,74 @@ export class ExamenGeneralEditComponent implements OnInit {
 
     dialogoEstudio.afterClosed().subscribe(result => {
       if (result != undefined) {
-        if(!seccion){
-          this.examenEstudio.examenId = this.examenGeneral.examenGeneralId;
-          this.examenEstudio.nombreEstudio = result[0].nombreEstudio;
-          this.guardarExamenEstudio(this.examenEstudio);
+        var porId = result[0].porId;
+        if(paraSeccion){
+          if(porId){
+            console.log("Se guardara estudio para la seccion por ID: " + result[0].idEstudio);
+            this.seccionEstudio.estudioId = result[0].idEstudio;
+            this.seccionEstudio.porId = true;
+            this.seccionEstudio.seccionId = seccionId;
+            this.seccionEstudio.orden = 0;
+            this.guardarSeccionEstudio(this.seccionEstudio);
+          }else{
+            console.log("Se guardara estudio para la seccion por nuevo" + result[0].nombreEstudio);
+            this.seccionEstudio.nombreEstudio = result[0].nombreEstudio;
+            this.seccionEstudio.seccionId = seccionId;
+            this.seccionEstudio.porId = false;
+            this.seccionEstudio.orden = 0;
+            this.guardarSeccionEstudio(this.seccionEstudio);
+          }
+          console.log("ESTUDIO PARA LA SECCION");
+        }else{
+          if(porId){
+            console.log("Se guardara estudio para el examen por ID: " + result[0].idEstudio);
+            this.examenEstudio.examenId = this.examenGeneral.examenGeneralId;
+            this.examenEstudio.porId = true;
+            this.examenEstudio.estudioId = result[0].idEstudio;
+            this.guardarExamenEstudio(this.examenEstudio);
+          }else{
+            console.log("Se guardara estudio para el examen por nuevo " + result[0].nombreEstudio);
+            this.examenEstudio.examenId = this.examenGeneral.examenGeneralId;
+            this.examenEstudio.porId = false;
+            this.examenEstudio.nombreEstudio = result[0].nombreEstudio;
+            this.guardarExamenEstudio(this.examenEstudio);
+          }
+          console.log("ESTUDIO PARA EL EXAMEN");
         }
-       console.log("DIALOGO ESTUDIO CERRADA")
-       console.log(result[0].nombreEstudio);
-       
+       console.log("DIALOGO ESTUDIO CERRADA")       
       }
     });
+  }
+
+  guardarSeccionEstudio(seccionEstudio){
+    this.seccionService.saveSeccionEstudio(seccionEstudio).subscribe(
+      response => {
+        this.alerta('Se Añadio el estudio exitosamente','success',false);
+        this.getSeccionEstudios(seccionEstudio.seccionId);
+      },
+      error => {
+        this.alertaBoton('Verificar los datos', 'Error' + error ,'warning')
+      }
+    );
+  }
+
+  getSeccionEstudios(seccionId){
+    this.seccionService.getSeccionEstudio(seccionId).subscribe(
+      res =>{
+        if(res != []){
+          var seccion = this.ExamenSeccion;
+          for(var key in seccion){
+            if(seccion[key].seccion.seccionId == seccionId){
+              seccion[key] = res;
+              break;
+            }
+          }
+        }
+
+      }, err =>{
+        console.log(err);
+      }
+    );
   }
 
   guardarExamenEstudio(estudio){
@@ -411,7 +513,7 @@ export class ExamenGeneralEditComponent implements OnInit {
       err => {
         this.alertaBoton('Verificar datos introducidos','Error: ' + err,'warning')
       }
-    )
+    );
   }
 
   getExamenEstudios(examenId){
@@ -423,5 +525,102 @@ export class ExamenGeneralEditComponent implements OnInit {
         console.log(err);
       }
     )
+  }
+
+  removerSeccion(seccionId, nombre){
+    this.alertaRemover("Se va a eliminar la sección <b>" + nombre + "</b>", "warning", "Se removio la sección exitosamente", 1, seccionId, 0);
+  }
+
+  removerEstudioPorSeccion(seccionId, estudioId, nombreEstudio){
+    this.alertaRemover("Se va a eliminar el estudio <b>"+ nombreEstudio +"</b> de la sección.", "warning", "Se removio el estudio exitosamente", 2, seccionId, estudioId);
+  }
+
+  removerEstudioPorExamen(estudioId, nombreEstudio){
+    this.alertaRemover("Se va a eliminar el estudio <b>"+ nombreEstudio +"</b> del examen.", "warning", "Se removio el estudio exitosamente", 3, 0, estudioId);
+  }
+
+  /**
+   * 
+   * @param texto El texto a mostrar en la alerta
+   * @param tipo el tipo de alerta
+   * @param deleteMsj El mensaje que se mostrara si se acepta
+   * @param opcionARemover la opcion a remover 1: una seccion, 2: estudio de una seccion, 3: estudio del examen
+   */
+  alertaRemover(texto,tipo,deleteMsj, opcionARemover, seccionId, estudioId){
+    Swal.fire({
+      title: "¿Estas seguro?",
+      html: texto,
+      type: tipo,
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Remover',
+      cancelButtonText:'Cancelar'
+    }).then((result) => {
+      if (result.value) {
+        switch(opcionARemover){
+          case 1:
+            this.examenGeneralService.deleteExamenSeccion(this.examenGeneral.examenGeneralId, seccionId).subscribe(
+              res =>{
+                console.log(res);
+                var seccion = this.ExamenSeccion;
+                for(var key in seccion){
+                  if(seccion[key].seccion.seccionId == seccionId){
+                    var index = this.ExamenSeccion.map(function (est) { return est.seccionId; }).indexOf(seccionId);
+                    this.ExamenSeccion.splice(index, 1);
+                    break;
+                  }
+                }
+              }, error =>{
+                console.log(error);
+              }
+            );
+          break;
+          case 2:
+            this.seccionService.deleteSeccionEstudio(seccionId, estudioId).subscribe(
+              res =>{
+                console.log(res);
+                var seccion = this.ExamenSeccion;
+                for(var key in seccion){
+                  if(seccion[key].seccion.seccionId == seccionId){
+                    var indexEstudio = this.ExamenSeccion[key].estudio.map(function (sub) { return sub.estudioId; }).indexOf(estudioId);
+                    this.ExamenSeccion[key].estudio.splice(indexEstudio, 1);
+                    break;
+                  }
+                }
+                
+              }, error =>{
+                console.log(error);
+              }
+            );
+          break;
+          case 3:
+            this.examenGeneralService.deleteExamenEstudio(this.examenGeneral.examenGeneralId, estudioId).subscribe(
+              res =>{
+                console.log(res);
+                var estudio = this.ExamenEstudioList;
+                for(var key in estudio){
+                  console.log(estudio[key].estudioId);
+                  if(estudio[key].estudioId == estudioId){
+                    var index = this.ExamenEstudioList.map(function (est) { return est.estudioId ; }).indexOf(estudioId);
+                    this.ExamenEstudioList.splice(index, 1);
+                    break;
+                  }
+                }
+              }, error =>{
+                console.log(error);
+              }
+            );
+          break;
+          default: console.log("Error");
+          break;
+        }
+        Swal.fire(
+          'Removido',
+          deleteMsj,
+          'success'
+        )
+      }
+    })
   }
 }

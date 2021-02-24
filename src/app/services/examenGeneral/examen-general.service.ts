@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 
 import {ExamenGeneral} from '../../models/ExamenGeneral';
 import {ExamenEstudio} from '../../models/ExamenEstudio';
+import {SeccionExamen} from '../../models/SeccionExamen';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 @Injectable({
@@ -65,11 +66,27 @@ export class ExamenGeneralService {
   }
 
   /**
+   * Guardamos el registro que une examen con secciones
+   * @param examenSeccion El objeto de la tabla examenSeccion
+   */
+  saveExamenSeccion(examenSeccion: SeccionExamen){
+    return this.http.post(`${this.API_URI}/examen/seccion/save/`, examenSeccion);
+  }
+
+  /**
    * Actualizamos los datos del examen general
    * @param updatedExamenGeneral El examen a actualizar
    */
   updateExamenGeneral(updatedExamenGeneral:ExamenGeneral): Observable<ExamenGeneral>{
     return this.http.post(`${this.API_URI}/examen/save/`, updatedExamenGeneral);
+  }
+
+  deleteExamenSeccion(examenId: number, seccionId: number){
+    return this.http.delete(`${this.API_URI}/examen/seccion/delete/${examenId}/${seccionId}`);
+  }
+
+  deleteExamenEstudio(examenId: number, estudioId: number){
+    return this.http.delete(`${this.API_URI}/examen/estudio/delete/${examenId}/${estudioId}`);
   }
 
 }

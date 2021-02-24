@@ -135,7 +135,7 @@
           {{seccion.seccion.titulo}}
         </button>
         <mat-menu #menu="matMenu">
-          <button mat-menu-item>
+          <button mat-menu-item (click)="openDialogoEstudio(true,seccion.seccion.seccionId)">
             <mat-icon>text_snippet</mat-icon>
             <span>Añadir estudio</span>
           </button>
@@ -143,14 +143,18 @@
             <mat-icon>local_library</mat-icon>
             <span>Añadir metodo</span>
           </button>
+          <button mat-menu-item (click)="removerSeccion(seccion.seccion.seccionId, seccion.seccion.nombre)">
+            <mat-icon>delete_sweep</mat-icon>
+            <span>Eliminar</span>
+          </button>
         </mat-menu>
         <mat-card-content>
           <mat-accordion *ngFor="let estudio of seccion.estudio" class="form-edit col-md-12">
             <mat-expansion-panel (afterExpand)="obtenerReferencia(estudio.estudioId)">
               <mat-expansion-panel-header>
                 <mat-panel-title>
-                  <button class="fas fa-times" matTooltip="Remover examen"
-                    (click)="removerExamenGeneral(seleccion.EXAMEN_GEN_ID)"></button>
+                  <button class="fas fa-times" matTooltip="Remover estudio"
+                    (click)="removerEstudioPorSeccion(seccion.seccion.seccionId, estudio.estudioId, estudio.nombre)"></button>
                   &nbsp;
                   {{estudio.nombre}}
                 </mat-panel-title>
@@ -200,8 +204,8 @@
           <mat-expansion-panel (afterExpand)="obtenerReferencia(estudio.estudioId)">
             <mat-expansion-panel-header>
               <mat-panel-title>
-                <button class="fas fa-times" matTooltip="Remover examen"
-                  (click)="removerExamenGeneral(seleccion.EXAMEN_GEN_ID)"></button>
+                <button class="fas fa-times" matTooltip="Remover estudio"
+                  (click)="removerEstudioPorExamen(estudio.estudioId, estudio.nombre)"></button>
                 &nbsp;
                 {{estudio.nombre}}
               </mat-panel-title>

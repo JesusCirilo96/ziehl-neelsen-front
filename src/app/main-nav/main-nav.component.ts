@@ -38,13 +38,16 @@ export class MainNavComponent {
   }
 
   obteneMenuRol(rolId){
-    this.rolService.getRolMenu(rolId).subscribe(
-      response =>{
-        this.rolMenu = response['menu']
-      },error =>{
-        console.log("Error al obtener los menus por ID del rol: " + error)
-      }
-    );
+    if(localStorage.getItem("currentMenu") == ""){
+      this.rolService.getRolMenu(rolId).subscribe(
+        response =>{
+          localStorage.setItem("currentMenu", JSON.stringify(response['menu']));
+        },error =>{
+          console.log("Error al obtener los menus por ID del rol: " + error)
+        }
+      );
+    }
+    this.rolMenu = JSON.parse(localStorage.getItem("currentMenu"));
   }
 
   logout() {
