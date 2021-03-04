@@ -11,6 +11,12 @@
         </mat-select>
       </mat-form-field>
     </div>
+    <div class="col-md-12">
+      <mat-form-field class="input-full-width">
+        <mat-label>Orden</mat-label>
+        <input matInput [(ngModel)]="orden" type="number">
+      </mat-form-field>
+    </div>
   </div>
   <div class="row">
     <div class="col-md-12">
@@ -20,5 +26,5 @@
 </div>
 <div mat-dialog-actions>
   <button mat-button (click)="onNoClick()">Cancelar</button>
-  <button mat-button [mat-dialog-close]="[{'seccionId': seccionId}]" cdkFocusInitial>Ok</button>
+  <button mat-button [mat-dialog-close]="[{'seccionId': seccionId, 'orden':orden}]" cdkFocusInitial>Ok</button>
 </div>

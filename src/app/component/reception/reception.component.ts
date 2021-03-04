@@ -17,9 +17,8 @@ import { SeccionesService } from 'src/app/services/secciones.service';
 import { ExamenGeneralService } from 'src/app/services/examenGeneral/examen-general.service';
 import { PacienteService } from 'src/app/services/paciente/paciente.service';
 import { AtencionService } from 'src/app/services/atencion/atencion.service';
-import { ExamenGeneralSubseccionService } from 'src/app/services/examenGeneralSubSeccion/examen-general-subseccion.service';
-import { ExamenGeneralSubExamenService } from 'src/app/services/examenGeneralSubExamen/examen-general-sub-examen.service';
 import { ExamenGeneralRecepcionService } from 'src/app/services/examenGeneralRecepcion/examen-general-recepcion.service'
+import { CategoriaService } from 'src/app/services/categoria/categoria.service';
 import Swal from 'sweetalert2';
 
 //Start autocomplete
@@ -62,8 +61,7 @@ export class ReceptionComponent implements OnInit {
     private pacienteService: PacienteService,
     private atencionService: AtencionService,
     private examenGeneralRecepcionService: ExamenGeneralRecepcionService,
-    private examenGeneralSubseccionService: ExamenGeneralSubseccionService,
-    private examenGeneralSubExamenService: ExamenGeneralSubExamenService
+    private categoriaService: CategoriaService
   ) {
 
   }
@@ -85,13 +83,13 @@ export class ReceptionComponent implements OnInit {
   });
 
 
-  seccionExamen: any = [];//datos formateados del examen para el autocomplete
-  stateGroups: StateGroup[] = this.seccionExamen;
+  categoriaExamen: any = [];//datos formateados del examen para el autocomplete
+  stateGroups: StateGroup[] = this.categoriaExamen;
   stateGroupOptions: Observable<StateGroup[]>;
   //end autocomplete
 
 
-  Seccion: any = [];
+  Categoria: any = [];
   ficha: number;
   examenGeneralEscogido: string;
 
@@ -102,7 +100,7 @@ export class ReceptionComponent implements OnInit {
   Sexo: string;
 
 
-  ExamenGeneralModel: any=[];/*ExamenGeneral = {
+  ExamenGeneralModel: any = [];/*ExamenGeneral = {
     examen_gen_id: null,
     alias: '',
     nombre: '',
@@ -139,7 +137,7 @@ export class ReceptionComponent implements OnInit {
     total: 0.0,
     anticipo: 0.0,
     restante: 0.0,
-    muestra:'',
+    muestra: '',
     pacienteId: null,
     medicoId: null
   }
@@ -148,7 +146,7 @@ export class ReceptionComponent implements OnInit {
     examen_gen_id: null,
     recepcion_id: '',
     realizado: false,
-    impreso:false,
+    impreso: false,
     resultado: null
   }
 
@@ -156,7 +154,7 @@ export class ReceptionComponent implements OnInit {
     this.getPaciente();
     this.getAtencion();
     this.getExamenGeneral();
-    this.getSeccion();
+    this.getCategoria();
     this.getFicha();
     this.inicializarAutocomplete();
   }
@@ -236,7 +234,7 @@ export class ReceptionComponent implements OnInit {
         examen_gen_id: null,
         recepcion_id: this.recepcion.recepcion_id,
         realizado: false,
-        impreso:false,
+        impreso: false,
         resultado: null
       }
     }
@@ -254,7 +252,7 @@ export class ReceptionComponent implements OnInit {
       total: 0.0,
       anticipo: 0.0,
       restante: 0.0,
-      muestra:'',
+      muestra: '',
       pacienteId: null,
       medicoId: null
     }
@@ -262,7 +260,7 @@ export class ReceptionComponent implements OnInit {
       examen_gen_id: null,
       recepcion_id: '',
       realizado: false,
-      impreso:false,
+      impreso: false,
       resultado: null
     }
 
@@ -291,9 +289,10 @@ export class ReceptionComponent implements OnInit {
   }
 
   getFicha() {
-    this.recepcionService.getFicha(this.getToday()).subscribe(
+    this.recepcionService.getFicha().subscribe(
       res => {
-        this.ficha = res[0].ficha + 1;
+        var ficha = res.toString();
+        this.ficha = parseInt(ficha);
       },
       err => {
         console.log(err);
@@ -331,7 +330,7 @@ export class ReceptionComponent implements OnInit {
     var examenGeneral = this.ExamenGeneral;
     for (var key in examenGeneral) {
       if (examenGeneral[key].nombre == value) {
-        this.examenGeneralEscogido = examenGeneral[key].examen_gen_id;
+        this.examenGeneralEscogido = examenGeneral[key].examenGeneralId;
         break;
       }
 
@@ -339,131 +338,31 @@ export class ReceptionComponent implements OnInit {
   }
 
   addExamenGeneral() {
-    this.getExamenGeneralSubSeccion(this.examenGeneralEscogido);
+    this.getExamenGeneralEstudios(this.examenGeneralEscogido);
     this.stateForm.reset();
   }
 
-  //Inicio obtencion de datos para llenar la tabla de examen general
-  getExamenGeneralSubSeccion(id) {
-    this.examenGeneralSubseccionService.getExamenGeneralSubseccion(id).subscribe(
+  getExamenGeneralEstudios(examenId) {
+    this.examenGeneralService.getExamenSecciones(examenId).subscribe(
       res => {
-        console.log(res);
-        if (res[0] == undefined) {
-          this.getExamenGeneralSubExamen(id);
-        } else {
-          if (res[0].tipo_examen_id == 4 || res[0].tipo_examen_id == 5) {
-            var subExamen = [];
-            var estudios = [];
-            for (var key in res) {
-              estudios = [];
-              var examen = res[key].sub_examen;
-              for (var key1 in examen) {
-                estudios.push({
-                  NOMBRE: examen[key1].nombre,
-                  VR_HOMBRE: examen[key1].vr_hombre,
-                  VR_MUJER: examen[key1].vr_mujer,
-                  VR_GENERAL: examen[key1].vr_general,
-                  RESULTADO: ''
-                })
-              }
-              subExamen.push({
-                NOMBRE: res[key].sub_seccion,
-                METODO_SUBSECCION:res[key].metodo_sub_seccion,
-                ALINEACION: res[key].alineacion_estudios,
-                EXAMEN: estudios
-              })
-            }
+        this.ExamenGeneralRecepcion.push({
+          NOMBRE: res['examen'].nombre,
+          PRECIO: res['examen'].precio,
+          //METODO_EXAMEN_GENERAL: res['examen'].metodo_examen_general,
+          EXAMEN_GEN_ID: res['examen'].examenGeneralId,
+          SECCION: res['seccion'],
+          ESTUDIO: res['estudio']
+        });
 
-            if (res[0].tipo_examen_id == 2) {
-              this.ExamenGeneralRecepcion.push({
-                NOMBRE: res[0].examen_general,
-                PRECIO: res[0].precio,
-                TIPO_EXAMEN: res[0].tipo_examen_id,
-                EXAMEN_GEN_ID: res[0].examen_gen_id,
-                METODO_EXAMEN_GENERAL: res[0].metodo_examen_general,
-                DESARROLLO: false,
-                SUB_SECCION: subExamen,
-                SUB_EXAMEN: this.getSubExamenesExamenGeneral(id)
-              });
-            } else {
-              this.ExamenGeneralRecepcion.push({
-                NOMBRE: res[0].examen_general,
-                PRECIO: res[0].precio,
-                TIPO_EXAMEN: res[0].tipo_examen_id,
-                METODO_EXAMEN_GENERAL: res[0].metodo_examen_general,
-                EXAMEN_GEN_ID: res[0].examen_gen_id,
-                SUB_SECCION: subExamen,
-                SUB_EXAMEN: this.getSubExamenesExamenGeneral(id)
-              });
-            }
+        console.log(this.ExamenGeneralRecepcion)
+        this.subTotal += parseFloat(res['examen'].precio);
+        this.obtenerTotal();
 
-            console.log(this.ExamenGeneralRecepcion);
-            this.subTotal += parseFloat(res[0].precio);
-            this.obtenerTotal();
-          }
-        }
-      },
-      err => console.log(err)
-    );
+      }, err => {
+        console.log(err)
+      });
   }
-  getSubExamenesExamenGeneral(id) { //trae los examenes
-    var estudios = [];
-    this.examenGeneralSubExamenService.getExamenGeneralSubexamen(id).subscribe(
-      res => {
-        for (var key in res) {
-          var examen = res[key].examen;
-          for (var key1 in examen) {
-            estudios.push({
-              NOMBRE: examen[key1].nombre,
-              VR_HOMBRE: examen[key1].vr_hombre,
-              VR_MUJER: examen[key1].vr_mujer,
-              VR_GENERAL: examen[key1].vr_general,
-              RESULTADO: ''
-            })
-          }
-        }
-      },
-      err => console.log(err)
-    );
 
-    return estudios;
-  }
-  getExamenGeneralSubExamen(id) { /** VERIFICAR PROCEDIMIENTO EXAMEN GENERAL SUBEXAMEN */
-      this.examenGeneralSubExamenService.getExamenGeneralSubexamen(id).subscribe(
-        res => {
-          //console.log(res);
-          if (Object.keys(res).length != 0) {
-            var estudios = [];
-            for (var key in res) {
-              estudios.push({
-                NOMBRE: res[key].nombre_subExamen,
-                VR_HOMBRE: res[key].vr_hombre,
-                VR_MUJER: res[key].vr_mujer,
-                VR_GENERAL: res[key].vr_general,
-                RESULTADO: ''
-              })
-            }
-            this.ExamenGeneralRecepcion.push({
-              NOMBRE: res[0].nombre,
-              PRECIO: res[0].precio,
-              TIPO_EXAMEN: res[0].tipo_examen_id,
-              EXAMEN_GEN_ID: res[0].examen_gen_id,
-              METODO: res[0].metodo_examen_general,
-              SUB_SECCION: [],
-              SUB_EXAMEN: estudios
-            });
-
-            this.subTotal += parseFloat(res[0].precio);
-            this.obtenerTotal();
-
-           // console.log(this.ExamenGeneralRecepcion);
-          } else {
-            this.getExamenGeneralResultado(id);
-          }
-        },
-        err => console.log(err)
-      );
-    }
 
   getExamenGeneralResultado(id) { /** VERIFICAR PROCEDIMIENTO ALMACENADO EXAMEN GENERAL SUBEXAMEN */
     this.examenGeneralService.getExamenGeneral(id).subscribe(
@@ -477,7 +376,7 @@ export class ReceptionComponent implements OnInit {
             TIPO_EXAMEN: general.tipo_examen_id,
             EXAMEN_GEN_ID: general.examen_gen_id,
             REFERENCIA_PERSONALIZADA: general.referencia_personalizada,
-            METODO:general.metodo,
+            METODO: general.metodo,
             SUB_SECCION: [],
             SUB_EXAMEN: [],
             RESULTADO: '',
@@ -493,7 +392,7 @@ export class ReceptionComponent implements OnInit {
     );
     console.log(this.ExamenGeneralRecepcion);
   }
-  
+
   obtenerDescuento(data) {
     this.descuento = data;
     this.total = this.subTotal - parseFloat(this.descuento)
@@ -512,10 +411,10 @@ export class ReceptionComponent implements OnInit {
 
   //Inicio obtencion seccion -- rellenado de autocomplete de examenes
 
-  getSeccion() {
-    this.seccionService.getSecciones().subscribe(
+  getCategoria() {
+    this.categoriaService.getCategorias().subscribe(
       res => {
-        this.Seccion = res;
+        this.Categoria = res;
         this.legibleParaAutoComplete(res);
       },
       err => console.log(err)
@@ -525,16 +424,16 @@ export class ReceptionComponent implements OnInit {
   legibleParaAutoComplete(response) {
     var examenGeneral = this.ExamenGeneral;
     for (var key in response) {
-      var seccionId = response[key].seccion_id;
+      var categoriaId = response[key].categoriaId;
       var names = [];
       for (var key1 in examenGeneral) {
-        if (seccionId == examenGeneral[key1].seccion_id) {
+        if (categoriaId == examenGeneral[key1].categoriaId) {
           names.push(
             examenGeneral[key1].nombre
           );
         }
       }
-      this.seccionExamen.push({
+      this.categoriaExamen.push({
         letter: response[key].nombre,
         names: names
       });

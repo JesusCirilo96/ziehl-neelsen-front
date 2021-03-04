@@ -150,7 +150,8 @@
         </mat-menu>
         <mat-card-content>
           <mat-accordion *ngFor="let estudio of seccion.estudio" class="form-edit col-md-12">
-            <mat-expansion-panel (afterExpand)="obtenerReferencia(estudio.estudioId)">
+            <mat-expansion-panel>
+              <!--(afterExpand)="obtenerReferencia(estudio.estudioId)"-->
               <mat-expansion-panel-header>
                 <mat-panel-title>
                   <button class="fas fa-times" matTooltip="Remover estudio"
@@ -160,27 +161,44 @@
                 </mat-panel-title>
                 <mat-panel-description>
                   <div class="width-100 text-right">
-
+                    Orden: {{estudio.orden}}
                   </div>
                 </mat-panel-description>
               </mat-expansion-panel-header>
-
               <div class="row">
-                <div class="col-md-6">
-                  Referencias:
-                  <mat-list role="list" *ngFor="let referencia of ReferenciaEstudio">
-                    <mat-list-item role="listitem"><strong>{{referencia.clasificacion.nombre}}</strong></mat-list-item>
-                    <mat-list-item role="listitem">Femenino: {{referencia.referenciaFemenino}}</mat-list-item>
-                    <mat-list-item role="listitem">Masculino: {{referencia.referenciaMasculino}}</mat-list-item>
-                    <mat-list-item role="listitem">General: {{referencia.referenciaGeneral}}</mat-list-item>
-                  </mat-list>
-                  <button mat-stroked-button (click)="openDialogReferencia(estudio.estudioId)">¿Nueva
-                    referencia?</button>
-                </div>
-                <div class="col-md-6">
-                  Metodos:
+                <div class="col-md-12">
+                  <span class="badge badge-secondary">Referencias:</span>
                 </div>
               </div>
+              <div class="row margin-up">
+                <div class="col-md-6" *ngFor="let referencia of estudio.referencia">
+                  <strong>{{referencia.clasificacion.nombre}}</strong>
+                  <p>Femenino: {{referencia.referenciaFemenino}}</p>
+                  <p>Masculino {{referencia.referenciaMasculino}}</p>
+                  <p>General: {{referencia.referenciaGeneral}}</p>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12">
+                  <button type="button" class="btn btn-primary btn-sm" (click)="openDialogReferencia(estudio.estudioId,true)">Nueva Referencia</button>
+                </div>
+              </div>
+              <div class="row margin-up">
+                <div class="col-md-12">
+                  <span class="badge badge-secondary">Metodos:</span>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12">
+                  
+                </div>
+              </div>
+              <div class="row margin-up">
+                <div class="col-md-12">
+                  <button type="button" class="btn btn-primary btn-sm" (click)="openDialogReferencia(estudio.estudioId)">Nuevo Metodo</button>
+                </div>
+              </div>
+              
             </mat-expansion-panel>
           </mat-accordion>
         </mat-card-content>
@@ -199,42 +217,59 @@
           </div>
         </div>
       </mat-card>
-      
-        <mat-accordion *ngFor="let estudio of ExamenEstudioList" class="form-edit col-md-12">
-          <mat-expansion-panel (afterExpand)="obtenerReferencia(estudio.estudioId)">
-            <mat-expansion-panel-header>
-              <mat-panel-title>
-                <button class="fas fa-times" matTooltip="Remover estudio"
-                  (click)="removerEstudioPorExamen(estudio.estudioId, estudio.nombre)"></button>
-                &nbsp;
-                {{estudio.nombre}}
-              </mat-panel-title>
-              <mat-panel-description>
-                <div class="width-100 text-right">
 
-                </div>
-              </mat-panel-description>
-            </mat-expansion-panel-header>
+      <mat-accordion *ngFor="let estudio of ExamenEstudioList" class="form-edit col-md-12">
+        <mat-expansion-panel (afterExpand)="obtenerReferencia(estudio.estudioId)">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              <button class="fas fa-times" matTooltip="Remover estudio"
+                (click)="removerEstudioPorExamen(estudio.estudioId, estudio.nombre)"></button>
+              &nbsp;
+              {{estudio.nombre}}
+            </mat-panel-title>
+            <mat-panel-description>
+              <div class="width-100 text-right">
 
-            <div class="row">
-              <div class="col-md-6">
-                Referencias:
-                <mat-list role="list" *ngFor="let referencia of ReferenciaEstudio">
-                  <mat-list-item role="listitem"><strong>{{referencia.clasificacion.nombre}}</strong></mat-list-item>
-                  <mat-list-item role="listitem">Femenino: {{referencia.referenciaFemenino}}</mat-list-item>
-                  <mat-list-item role="listitem">Masculino: {{referencia.referenciaMasculino}}</mat-list-item>
-                  <mat-list-item role="listitem">General: {{referencia.referenciaGeneral}}</mat-list-item>
-                </mat-list>
-                <button mat-stroked-button (click)="openDialogReferencia(estudio.estudioId)">¿Nueva
-                  referencia?</button>
               </div>
-              <div class="col-md-6">
-                Metodos:
-              </div>
+            </mat-panel-description>
+          </mat-expansion-panel-header>
+          <div class="row">
+            <div class="col-md-12">
+              <span class="badge badge-secondary">Referencias:</span>
             </div>
-          </mat-expansion-panel>
-        </mat-accordion>
-      
+          </div>
+          <div class="row margin-up">
+            <div class="col-md-6" *ngFor="let referencia of estudio.referencia">
+              <strong>{{referencia.clasificacion.nombre}}</strong>
+              <p>Femenino: {{referencia.referenciaFemenino}}</p>
+              <p>Masculino {{referencia.referenciaMasculino}}</p>
+              <p>General: {{referencia.referenciaGeneral}}</p>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <button type="button" class="btn btn-primary btn-sm" (click)="openDialogReferencia(estudio.estudioId, false)">Nueva Referencia</button>
+            </div>
+          </div>
+          <div class="row margin-up">
+            <div class="col-md-12">
+              <span class="badge badge-secondary">Metodos:</span>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              
+            </div>
+          </div>
+          <div class="row margin-up">
+            <div class="col-md-12">
+              <button type="button" class="btn btn-primary btn-sm" (click)="openDialogReferencia(estudio.estudioId)">Nuevo Metodo</button>
+            </div>
+          </div>
+
+        </mat-expansion-panel>
+      </mat-accordion>
+
     </mat-card>
   </div>
 </div>

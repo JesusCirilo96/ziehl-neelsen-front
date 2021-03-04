@@ -28,6 +28,7 @@ export class DialogoEstudioComponent implements OnInit {
     this.dialogRef.close();
   }
   seleccionado = false;
+  orden: number;
 
   nombreEstudio: string;
 
@@ -89,7 +90,8 @@ export class DialogoEstudioComponent implements OnInit {
       {
         'nombreEstudio': this.nombreEstudio,
         'porId': this.seleccionado,
-        'idEstudio': idEstudio
+        'idEstudio': idEstudio,
+        'orden':this.orden
       }
     );
     return response;

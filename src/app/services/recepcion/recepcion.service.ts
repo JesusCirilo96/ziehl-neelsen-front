@@ -4,14 +4,14 @@ import { HttpClient } from '@angular/common/http';
 import {  Recepcion } from '../../models/Recepcion';
 import { Observable } from 'rxjs';
 
-import {AppSettings} from 'src/assets/js/messages';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class RecepcionService {
 
-  API_URI = AppSettings.API_ENDPOINT;
+  API_URI = environment.apiUrl;
 
   constructor(private http: HttpClient) { 
 
@@ -25,8 +25,8 @@ export class RecepcionService {
     return this.http.get(`${this.API_URI}/recepcion/${id}`);
   }
 
-  getFicha(fecha_ingreso: string){
-    return this.http.get(`${this.API_URI}/recepcion/getficha/${fecha_ingreso}`);    
+  getFicha(){
+    return this.http.get(`${this.API_URI}/recepcion/get/ficha`);    
   }
 
   getRecepcionFecha(fecha: string){

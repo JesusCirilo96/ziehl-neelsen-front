@@ -27,6 +27,7 @@ export class DialogoSeccionComponent {
     
   ListSecciones: any = [];
   seccionId:number;
+  orden:number;
 
   getSecciones(){
     this.seccionService.getSecciones ().subscribe(

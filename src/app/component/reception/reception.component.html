@@ -106,6 +106,8 @@
       </div>
     </mat-card>
     <div class="form-edit"></div>
+
+
     <mat-accordion *ngFor="let seleccion of ExamenGeneralRecepcion" class="form-edit">
       <mat-expansion-panel>
         <mat-expansion-panel-header>
@@ -122,23 +124,23 @@
           </mat-panel-description>
         </mat-expansion-panel-header>
         <div class="row">
-          <div class="col-md-12" *ngFor="let subSeccion of seleccion.SUB_SECCION">
+          <div class="col-md-12" *ngFor="let seccion of seleccion.SECCION">
             <div>
               <table class="table table-sm table-borderless">
                 <thead>
                   <th colspan="2">
-                    {{subSeccion.NOMBRE}}
+                    {{seccion.seccion.nombre}}
                   </th>
                 </thead>
                 <tbody>
-                  <tr *ngFor="let estudio of subSeccion.EXAMEN">
+                  <tr *ngFor="let estudio of seccion.estudio">
                     <td colspan="1"></td>
                     <td>
                       <button mat-icon-button color="warn" aria-label="Example icon-button with a heart icon"
                         (click)="removerSubExamenSubSeccion(seleccion.EXAMEN_GEN_ID, subSeccion.NOMBRE, estudio.NOMBRE)">
                         <mat-icon>remove</mat-icon>
                       </button>
-                      {{estudio.NOMBRE}}
+                      {{estudio.nombre}}
                     </td>
                   </tr>
                 </tbody>
@@ -152,13 +154,13 @@
             <div>
               <table class="table table-sm table-borderless">
                 <tbody>
-                  <tr *ngFor="let subExamen of seleccion.SUB_EXAMEN">
+                  <tr *ngFor="let subExamen of seleccion.ESTUDIO">
                     <td>
                       <button mat-icon-button color="warn" aria-label="Example icon-button with a heart icon"
                         (click)="removerSubExamenSubseccion(seleccion.EXAMEN_GEN_ID,subExamen.NOMBRE)">
                         <mat-icon>remove</mat-icon>
                       </button>
-                      {{subExamen.NOMBRE}}
+                      {{subExamen.nombre}}
                     </td>
                   </tr>
                 </tbody>
@@ -168,6 +170,8 @@
         </div>
       </mat-expansion-panel>
     </mat-accordion>
+    
+
   </div>
 </div>
 <mat-card class="form-edit precio">

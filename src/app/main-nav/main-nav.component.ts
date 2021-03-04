@@ -38,7 +38,7 @@ export class MainNavComponent {
   }
 
   obteneMenuRol(rolId){
-    if(localStorage.getItem("currentMenu") == ""){
+    if(localStorage.getItem("currentMenu") === null){
       this.rolService.getRolMenu(rolId).subscribe(
         response =>{
           localStorage.setItem("currentMenu", JSON.stringify(response['menu']));

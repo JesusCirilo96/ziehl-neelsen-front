@@ -36,6 +36,14 @@ export class AuthenticationService {
                     this.currentUserSubject.next(user);
 
                     this.getUsuario(user.usuarioId)
+
+                    this.rolService.getRolMenu(user.usuarioId).subscribe(
+                        response =>{
+                          localStorage.setItem("currentMenu", JSON.stringify(response['menu']));
+                        },error =>{
+                          console.log("Error al obtener los menus por ID del rol: " + error)
+                        }
+                    );
                 }
 
                 console.log(user);
@@ -60,6 +68,7 @@ export class AuthenticationService {
                 console.log(this.rolUsuario[0].rolId)
                 console.log(this.rolUsuario);
                 localStorage.setItem('currentRol',JSON.stringify(this.rolUsuario));
+
             },
             err => {
                 console.log(err);
