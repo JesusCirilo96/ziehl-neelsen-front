@@ -93,7 +93,8 @@ export class ExamenGeneralEditComponent implements OnInit {
     examenId: null,
     nombreEstudio: '',
     porId: false,
-    estudioId: null
+    estudioId: null,
+    orden: 0
   }
 
   examenSeccion: SeccionExamen = {
@@ -499,12 +500,14 @@ export class ExamenGeneralEditComponent implements OnInit {
             this.examenEstudio.examenId = this.examenGeneral.examenGeneralId;
             this.examenEstudio.porId = true;
             this.examenEstudio.estudioId = result[0].idEstudio;
+            this.examenEstudio.orden = result[0].orden;
             this.guardarExamenEstudio(this.examenEstudio);
           } else {
             console.log("Se guardara estudio para el examen por nuevo " + result[0].nombreEstudio);
             this.examenEstudio.examenId = this.examenGeneral.examenGeneralId;
             this.examenEstudio.porId = false;
             this.examenEstudio.nombreEstudio = result[0].nombreEstudio;
+            this.examenEstudio.orden = result[0].orden;
             this.guardarExamenEstudio(this.examenEstudio);
           }
           console.log("ESTUDIO PARA EL EXAMEN");

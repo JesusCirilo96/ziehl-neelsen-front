@@ -3,4 +3,5 @@ export interface ExamenEstudio{
     examenId?:number;
     porId?:boolean;
     estudioId?:number;
+    orden?:number;
 }
