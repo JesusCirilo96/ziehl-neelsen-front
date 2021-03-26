@@ -35,16 +35,16 @@
         </ng-container>
 
         <!-- Hora ingreso -->
-        <ng-container matColumnDef="hora_ingreso">
+        <ng-container matColumnDef="horaIngreso">
           <th mat-header-cell class="width-10 thead" *matHeaderCellDef> Hora de Ingreso</th>
-          <td mat-cell class="width-10" *matCellDef="let element"> {{element.hora_ingreso}} </td>
+          <td mat-cell class="width-10" *matCellDef="let element"> {{element.horaIngreso}} </td>
         </ng-container>
 
         <!-- accion -->
         <ng-container matColumnDef="accion">
           <th mat-header-cell class="width-10" *matHeaderCellDef></th>
           <td mat-cell class="width-10" *matCellDef="let element">
-            <a [routerLink]="['/resultado/edit/', element.recepcion_id]">ver</a>
+            <a [routerLink]="['/resultado/edit/', element.recepcionId]">ver</a>
           </td>
         </ng-container>
 

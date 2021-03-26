@@ -30,7 +30,7 @@ export class ResultadoViewComponent implements OnInit {
   recepcionColumns: string[] = [
     'ficha',
     'paciente',
-    'hora_ingreso',
+    'horaIngreso',
     'accion'
   ];
   dataSource = new MatTableDataSource<Element>();

@@ -1,7 +1,9 @@
 export interface ExamenGeneralRecepcion{
-    examen_gen_id?:number;
-    recepcion_id?:string;
+    examenId?:number;
+    recepcionId?:string;
+    usuarioId?:number;
     realizado?:boolean;
     impreso?:boolean;
-    resultado?:JSON;
+    entregado?:boolean;
+    resultado?:string;
 }

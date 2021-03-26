@@ -2,9 +2,10 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
 import {Metodo} from '../../models/Metodo';
-import {MetodoSeccion} from '../../models/MetodoSeccion';
+import {MetodoSeccion} from 'src/app/models/MetodoSeccion';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { MetodoEstudio } from 'src/app/models/MetodoEstudio';
 @Injectable({
   providedIn: 'root'
 })
@@ -40,6 +41,14 @@ export class MetodoService {
   }
 
   /**
+   * Obtenemos los metodos del estudio
+   * @param estudioId El ID del estudio a buscar
+   */
+  getMetodosEstudio(estudioId){
+    return this.http.get(`${this.API_URI}/metodo/estudio/${estudioId}`);
+  }
+
+  /**
    * Guardamos el metodo
    * @param metodo El objeto del metodo a guardar
    */
@@ -61,6 +70,14 @@ export class MetodoService {
    */
   saveMetodoSeccion(metodoSeccion:MetodoSeccion):Observable<MetodoSeccion>{
     return this.http.post(`${this.API_URI}/metodo/seccion/save/`, metodoSeccion);
+  }
+
+  /**
+   * Guardamos el metodo estudio
+   * @param metodoSeccion El objeto del metodo con seccion
+   */
+  saveMetodoEstudio(metodoEstudio:MetodoEstudio):Observable<MetodoEstudio>{
+    return this.http.post(`${this.API_URI}/metodo/estudio/save/`, metodoEstudio);
   }
 
 }

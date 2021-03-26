@@ -1,16 +1,16 @@
 export interface Recepcion{
-    recepcion_id?:string;
-    fecha_ingreso?:string;
-    hora_ingreso?:string;
+    recepcionId?:string;
+    fechaIngreso?:string;
+    horaIngreso?:string;
     ficha?:number;
+    total?:number;
     subTotal?:number;
     descuento?:number;
-    total?:number;
     anticipo?:number;
     restante?:number;
-    pacienteId?:number;
+    muestras?:string;
+    notas?:string;
+    usuarioId?:number;
     medicoId?:number;
-    muestra?:string;
-    createdAt?:string;
-    updatedAt?:string;
+    pacienteId?:number;
 }

@@ -3,12 +3,12 @@ import { HttpClient } from '@angular/common/http';
 
 import {ExamenGeneralRecepcion} from '../../models/ExamenGeneralRecepcion';
 import { Observable } from 'rxjs';
-import {AppSettings} from 'src/assets/js/messages';
+import { environment } from 'src/environments/environment';
 @Injectable({
   providedIn: 'root'
 })
 export class ExamenGeneralRecepcionService {
-  API_URI = AppSettings.API_ENDPOINT;
+  API_URI = environment.apiUrl;
 
   constructor(private http: HttpClient) { 
 
@@ -31,7 +31,7 @@ export class ExamenGeneralRecepcionService {
   }
 
   saveExGenRecepcion(seccion: ExamenGeneralRecepcion){
-    return this.http.post(`${this.API_URI}/examengeneralrecepcion`, seccion);
+    return this.http.post(`${this.API_URI}/recepcion/examen/save`, seccion);
   }
 
   updateExGenRecepcion(recepcion_id:number,examen_gen_id:number, updatedRecepcion:ExamenGeneralRecepcion): Observable<ExamenGeneralRecepcion>{

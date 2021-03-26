@@ -128,25 +128,29 @@ export class ReceptionComponent implements OnInit {
     { value: false, viewValue: 'Femenino' }
   ];
   recepcion: Recepcion = {
-    recepcion_id: null,
-    fecha_ingreso: '',
-    hora_ingreso: '',
+    recepcionId: null,
+    fechaIngreso: '',
+    horaIngreso: '',
     ficha: 0,
+    total: 0.0,
     subTotal: 0.0,
     descuento: 0.0,
-    total: 0.0,
     anticipo: 0.0,
     restante: 0.0,
-    muestra: '',
-    pacienteId: null,
-    medicoId: null
+    muestras: '',
+    notas: '',
+    usuarioId: null,
+    medicoId: null,
+    pacienteId: null
   }
 
   examenGeneralRecepcion: ExamenGeneralRecepcion = {
-    examen_gen_id: null,
-    recepcion_id: '',
+    examenId: null,
+    recepcionId: '',
+    usuarioId:null,
     realizado: false,
     impreso: false,
+    entregado: false,
     resultado: null
   }
 
@@ -181,43 +185,61 @@ export class ReceptionComponent implements OnInit {
 
   saveRecepcion() {
     //for id  19-06-15-300    <fecha>-<ficha de 3 cifras>
-    this.recepcion.recepcion_id = this.getId();
+    this.recepcion.recepcionId = this.getId();
     this.recepcion.ficha = this.ficha;
     this.recepcion.subTotal = this.subTotal;
     this.recepcion.descuento = parseFloat(this.descuento);
     this.recepcion.total = this.total;
     this.recepcion.anticipo = parseFloat(this.anticipo);
     this.recepcion.restante = this.restante;
-    this.recepcion.fecha_ingreso = this.getToday();
-    this.recepcion.hora_ingreso = this.obtenerHora();
+    this.recepcion.fechaIngreso = this.getToday();
+    this.recepcion.horaIngreso = this.obtenerHora();
 
     if (this.recepcion.pacienteId == null || this.recepcion.medicoId == null) {
       this.errorRecepcion('Faltan algunos datos');
     } else if (Object.keys(this.ExamenGeneralRecepcion).length === 0) {
       this.errorRecepcion('Debes elegir al menos un Examen');
     } else {
-      this.recepcionService.saveRecepcion(this.recepcion).subscribe(
-        res => {
-          this.saveExamenGeneralRecepcion();
-          this.getFicha();
-          this.iniciarNUevo();
-        },
-        err => {
-          console.log(err);
+      Swal.fire({
+        title: 'Ingresa tu identificador de usuario',
+        input: 'text',
+        inputValue: "",
+        showCancelButton: true,
+        inputValidator: (value) => {
+          if (!value) {
+            return 'Porfavor introduce tu identificador'
+          } else {
+            this.recepcion.usuarioId =  Number(value);
+            console.log(this.recepcion);
+            this.recepcionService.saveRecepcion(this.recepcion).subscribe(
+              res => {
+                console.log(res)
+                this.saveExamenGeneralRecepcion();
+                this.getFicha();
+                this.iniciarNUevo();
+              },
+              err => {
+                console.log(err);
+              }
+            )
+          }
         }
-      )
+      })
+
     }
     //console.log(this.recepcion);
   }
 
   saveExamenGeneralRecepcion() {
     var examenGeneral = this.ExamenGeneralRecepcion;
-    //console.log(examenGeneral);
-    this.examenGeneralRecepcion.recepcion_id = this.recepcion.recepcion_id;
+    console.log("EL JSON DE RESULTADO");
+    console.log(examenGeneral);
+    this.examenGeneralRecepcion.recepcionId = this.recepcion.recepcionId;
 
     for (var key1 in examenGeneral) {
-      this.examenGeneralRecepcion.examen_gen_id = examenGeneral[key1].EXAMEN_GEN_ID;
-      this.examenGeneralRecepcion.resultado = examenGeneral[key1];
+      this.examenGeneralRecepcion.usuarioId = this.recepcion.usuarioId;
+      this.examenGeneralRecepcion.examenId = examenGeneral[key1].EXAMEN_GEN_ID;
+      this.examenGeneralRecepcion.resultado = JSON.stringify(examenGeneral[key1]);
       this.examenGeneralRecepcionService.saveExGenRecepcion(this.examenGeneralRecepcion).subscribe(
         res => {
           Swal.fire({
@@ -231,8 +253,9 @@ export class ReceptionComponent implements OnInit {
         err => console.log(err)
       );
       this.examenGeneralRecepcion = {
-        examen_gen_id: null,
-        recepcion_id: this.recepcion.recepcion_id,
+        examenId: null,
+        recepcionId: this.recepcion.recepcionId,
+        usuarioId:null,
         realizado: false,
         impreso: false,
         resultado: null
@@ -243,24 +266,27 @@ export class ReceptionComponent implements OnInit {
 
   iniciarNUevo() {
     this.recepcion = {
-      recepcion_id: null,
-      fecha_ingreso: '',
-      hora_ingreso: '',
+      recepcionId: null,
+      fechaIngreso: '',
+      horaIngreso: '',
       ficha: 0,
       subTotal: 0.0,
       descuento: 0.0,
       total: 0.0,
       anticipo: 0.0,
       restante: 0.0,
-      muestra: '',
+      muestras: '',
+      notas: '',
       pacienteId: null,
       medicoId: null
     }
     this.examenGeneralRecepcion = {
-      examen_gen_id: null,
-      recepcion_id: '',
+      examenId: null,
+      recepcionId: '',
       realizado: false,
+      usuarioId:null,
       impreso: false,
+      entregado:false,
       resultado: null
     }
 
@@ -363,36 +389,6 @@ export class ReceptionComponent implements OnInit {
       });
   }
 
-
-  getExamenGeneralResultado(id) { /** VERIFICAR PROCEDIMIENTO ALMACENADO EXAMEN GENERAL SUBEXAMEN */
-    this.examenGeneralService.getExamenGeneral(id).subscribe(
-      res => {
-        this.ExamenGeneralModel = res[0];
-        var general = this.ExamenGeneralModel;
-        if (general.tipo_examen_id == 1) {
-          this.ExamenGeneralRecepcion.push({
-            NOMBRE: general.nombre,
-            PRECIO: general.precio,
-            TIPO_EXAMEN: general.tipo_examen_id,
-            EXAMEN_GEN_ID: general.examen_gen_id,
-            REFERENCIA_PERSONALIZADA: general.referencia_personalizada,
-            METODO: general.metodo,
-            SUB_SECCION: [],
-            SUB_EXAMEN: [],
-            RESULTADO: '',
-            VR_NINAOS: general.vr_ninos,
-            VR_NINAS: general.vr_ninas,
-            VR_GENERAL_N: general.vr_general_n,
-            VR_HOMBRE: general.vr_hombre,
-            VR_MUJER: general.vr_mujer,
-            VR_GENERAL: general.vr_general
-          });
-        }
-      }, err => console.log(err)
-    );
-    console.log(this.ExamenGeneralRecepcion);
-  }
-
   obtenerDescuento(data) {
     this.descuento = data;
     this.total = this.subTotal - parseFloat(this.descuento)
@@ -465,7 +461,7 @@ export class ReceptionComponent implements OnInit {
     for (var key in paciente) {
       var nombre = paciente[key].nombre + " " + paciente[key].apellidoPaterno + " " + paciente[key].apellidoMaterno
       if (nombre == value) {
-        this.recepcion.pacienteId = paciente[key].paciente_id;//setear paciente_id al modelo de recepcion  
+        this.recepcion.pacienteId = paciente[key].pacienteId;//setear paciente_id al modelo de recepcion  
         this.apellidoPaterno = paciente[key].apellidoPaterno;
         this.apellidoMaterno = paciente[key].apellidoMaterno;
         this.Sexo = paciente[key].sexo;

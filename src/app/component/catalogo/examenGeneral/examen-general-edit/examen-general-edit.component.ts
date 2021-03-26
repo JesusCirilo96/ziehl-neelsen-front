@@ -8,6 +8,7 @@ import Swal from 'sweetalert2';
 import { ExamenGeneral } from 'src/app/models/ExamenGeneral';
 import { Referencia } from 'src/app/models/Referencia';
 import { MetodoSeccion } from 'src/app/models/MetodoSeccion';
+import { MetodoEstudio } from 'src/app/models/MetodoEstudio';
 import { ExamenEstudio } from 'src/app/models/ExamenEstudio';
 import { SeccionExamen } from 'src/app/models/SeccionExamen';
 import { SeccionEstudio } from 'src/app/models/SeccionEstudio';
@@ -76,6 +77,11 @@ export class ExamenGeneralEditComponent implements OnInit {
     seccionId: null
   }
 
+  metodoEstudio: MetodoEstudio = {
+    metodoId: null,
+    estudioId: null
+  }
+
   examenGeneral: ExamenGeneral = {
     examenGeneralId: null,
     nombre: '',
@@ -93,7 +99,8 @@ export class ExamenGeneralEditComponent implements OnInit {
     examenId: null,
     nombreEstudio: '',
     porId: false,
-    estudioId: null
+    estudioId: null,
+    orden: 0
   }
 
   examenSeccion: SeccionExamen = {
@@ -274,7 +281,7 @@ export class ExamenGeneralEditComponent implements OnInit {
   /*DIALOGO METODO */
 
   examen: any = []
-  openDialog(seccionId) {
+  openDialog(seccionId, estudioId, porSeccion) {
     const dialogRef = this.dialog.open(DialogoComponent, {
       width: '500px',
       data: { categoriaId: this.examen }
@@ -282,25 +289,48 @@ export class ExamenGeneralEditComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result != undefined) {
-        this.metodoSeccion = {
-          metodoId: result[0].metodoId,
-          seccionId: seccionId
+        if (porSeccion) {
+          this.metodoSeccion = {
+            metodoId: result[0].metodoId,
+            seccionId: seccionId
+          }
+          this.guardarMetodo(this.metodoSeccion, porSeccion);
+        } else {
+          this.metodoEstudio = {
+            metodoId: result[0].metodoId,
+            estudioId: estudioId
+          }
+          this.guardarMetodo(this.metodoEstudio, porSeccion)
         }
-        this.guardarMetodo(this.metodoSeccion);
+
       }
     });
   }
 
-  guardarMetodo(metodoSeccion) {
-    this.metodoService.saveMetodoSeccion(metodoSeccion).subscribe(
-      res => {
-        this.alerta('Se Añadio el metodo exitosamente', 'success', false);
-        this.obtenerMetodosSeccion(metodoSeccion.seccionId);
-      },
-      err => {
-        this.alertaBoton('Verificar datos introducidos', 'Error: ' + err, 'warning')
-      }
-    )
+  guardarMetodo(metodoSeccion, porSeccion) {
+
+    if (porSeccion) {
+      this.metodoService.saveMetodoSeccion(metodoSeccion).subscribe(
+        res => {
+          this.alerta('Se Añadio el metodo exitosamente', 'success', false);
+          this.obtenerMetodosSeccion(metodoSeccion.seccionId);
+        },
+        err => {
+          this.alertaBoton('Verificar datos introducidos', 'Error: ' + err, 'warning')
+        }
+      )
+    }else{
+      this.metodoService.saveMetodoEstudio(metodoSeccion).subscribe(
+        res => {
+          this.alerta('Se Añadio el metodo exitosamente', 'success', false);
+          this.obtenerMetodosSeccion(metodoSeccion.seccionId);
+        },
+        err => {
+          this.alertaBoton('Verificar datos introducidos', 'Error: ' + err, 'warning')
+        }
+      )
+    }
+
   }
 
   obtenerMetodosSeccion(idSeccion) {
@@ -354,17 +384,14 @@ export class ExamenGeneralEditComponent implements OnInit {
   }
 
   obtenerReferencia(idEstudio, esPorSeccion) {
+    console.log(idEstudio);
     if (esPorSeccion) {
-      var seccion = this.ExamenSeccion;
-      console.log(seccion);
-      for (var key in seccion) {
-        var estudio = seccion[key].estudio;
-        console.log(estudio);
-        for (var llave in estudio) {
-          if (estudio[llave].estudioId == idEstudio) {
+      for (var key in this.ExamenSeccion) {
+        for (var llave in this.ExamenSeccion[key].estudio) {
+          if (this.ExamenSeccion[key].estudio[llave].estudioId == idEstudio) {
             this.refereciaService.getReferenciaEstudio(idEstudio).subscribe(
               res => {
-                estudio[llave].referencia = res;
+                this.ExamenSeccion[key].estudio[llave].referencia = res;
                 console.log(res);
               },
               err => {
@@ -374,11 +401,11 @@ export class ExamenGeneralEditComponent implements OnInit {
             break;
           }
         }
-      }
-    }else{
+      }      
+    } else {
       var estudio = this.ExamenEstudioList;
-      for(var key in estudio){
-        if(estudio[key].estudioId == idEstudio){
+      for (var key in estudio) {
+        if (estudio[key].estudioId == idEstudio) {
           this.refereciaService.getReferenciaEstudio(idEstudio).subscribe(
             res => {
               estudio[key].referencia = res;
@@ -395,14 +422,14 @@ export class ExamenGeneralEditComponent implements OnInit {
 
   }
 
-  
+
   guardarReferencia(referencia, esPorSeccion) {
     this.refereciaService.saveReferencia(referencia).subscribe(
       res => {
         this.alerta('Se Añadio la referencia exitosamente', 'success', false);
         Swal.fire({
           type: 'success',
-          title:'Se añadio la referencia',
+          title: 'Se añadio la referencia',
           toast: true,
           position: 'top-end',
           showConfirmButton: false,
@@ -499,12 +526,14 @@ export class ExamenGeneralEditComponent implements OnInit {
             this.examenEstudio.examenId = this.examenGeneral.examenGeneralId;
             this.examenEstudio.porId = true;
             this.examenEstudio.estudioId = result[0].idEstudio;
+            this.examenEstudio.orden = result[0].orden;
             this.guardarExamenEstudio(this.examenEstudio);
           } else {
             console.log("Se guardara estudio para el examen por nuevo " + result[0].nombreEstudio);
             this.examenEstudio.examenId = this.examenGeneral.examenGeneralId;
             this.examenEstudio.porId = false;
             this.examenEstudio.nombreEstudio = result[0].nombreEstudio;
+            this.examenEstudio.orden = result[0].orden;
             this.guardarExamenEstudio(this.examenEstudio);
           }
           console.log("ESTUDIO PARA EL EXAMEN");

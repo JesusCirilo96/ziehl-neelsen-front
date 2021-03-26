@@ -4,13 +4,16 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { RecepcionService } from 'src/app/services/recepcion/recepcion.service';
 import { ExamenGeneralRecepcionService } from 'src/app/services/examenGeneralRecepcion/examen-general-recepcion.service';
 
-import { ExamenGeneralRecepcion } from 'src/app/models/ExamenGeneralRecepcion';
-
 import { User } from '../../../_models/user';
 import { AuthenticationService } from '../../../_services/authentication.service';
 
 import { Informe } from 'src/app/models/Informe';
 import { InformeService } from 'src/app/services/informe/informe.service';
+
+//Models
+import { Paciente } from 'src/app/models/Paciente';
+import { Recepcion } from 'src/app/models/Recepcion'
+import { ExamenGeneralRecepcion } from 'src/app/models/ExamenGeneralRecepcion';
 
 import * as jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
@@ -36,16 +39,49 @@ export class ResultadoEditComponent implements OnInit {
     this.authenticationService.currentUser.subscribe(x => this.currentUser = x);
   }
 
+
+  /**
+   * Inicia Reemplazos
+   */
+
+    pacienteModel: Paciente = {
+      nombre:'',
+      apellidoPaterno:'',
+      apellidoMaterno:'',
+      fechaNacimiento:'',
+      sexo:false,
+      email:'',
+      telefono:''
+    }
+    recepcionModel: Recepcion = {
+      ficha: null,
+      horaIngreso: '',
+      fechaIngreso: ''
+    }
+
+    examenGenRecepcion: ExamenGeneralRecepcion = {
+      examenId:null,
+      recepcionId:null,
+      usuarioId:null,
+      realizado: false,
+      impreso: false,
+      entregado:false,
+      resultado: null
+    }
+
+    examenGeneralRecepcion: any = [];
+
+    
+   /*
+    Termina reemplazos
+   */
+    
+
   textCheked = 'Positivo';
   recepcionDatos: any = [];
   resultadoExamen: any = [];
   resultadoExamenGeneral: any = [];
 
-  examenGenRecepcion: ExamenGeneralRecepcion = {
-    realizado: false,
-    impreso: false,
-    resultado: null
-  }
 
   informe: Informe = {
     informe_id: null,
@@ -63,11 +99,26 @@ export class ResultadoEditComponent implements OnInit {
   getResultado() {
     const parametros = this.activateRoute.snapshot.params;//<---Contiene los parametros que se pasan
     if (parametros.id) {
-      this.recepcionService.getRecepcion(parametros.id).subscribe(
+      this.recepcionService.getRecepcionResultado(parametros.id).subscribe(
         res => {
-          this.recepcionDatos = res;
-          this.obtenerResultadoExamenGeneral(parametros.id);
-          console.log(this.recepcionDatos);
+          this.pacienteModel = res['paciente'];
+          this.recepcionModel = res['recepcion'];
+          //this.obtenerResultadoExamenGeneral(parametros.id);
+          var examenRecepcion = res['recepcionExamen'];
+          for(var key in examenRecepcion){
+            this.examenGeneralRecepcion.push({
+              examenId:examenRecepcion[key].examenId,
+              recepcionId:examenRecepcion[key].recepcion_id,
+              usuarioId:examenRecepcion[key].usuarioId,
+              realizado: examenRecepcion[key].realizado,
+              impreso: examenRecepcion[key].impreso,
+              entregado:examenRecepcion[key].entregado,
+              resultado: JSON.parse(examenRecepcion[key].resultado)
+            });
+
+            console.log(this.examenGeneralRecepcion);
+          }
+
         },
         err => {
           console.log(err);

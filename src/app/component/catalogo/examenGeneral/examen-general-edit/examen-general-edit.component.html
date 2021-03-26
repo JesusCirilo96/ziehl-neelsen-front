@@ -99,10 +99,6 @@
             <mat-icon>ballot</mat-icon>
             <span>Añadir seccion</span>
           </button>
-          <button mat-menu-item (click)="openDialog(seccion.seccion.seccionId)">
-            <mat-icon>local_library</mat-icon>
-            <span>Añadir metodo</span>
-          </button>
         </mat-menu>
       </div>
       <ng-template [ngIf]="ExamenSeccion.length == 0">
@@ -139,7 +135,7 @@
             <mat-icon>text_snippet</mat-icon>
             <span>Añadir estudio</span>
           </button>
-          <button mat-menu-item (click)="openDialog(seccion.seccion.seccionId)">
+          <button mat-menu-item (click)="openDialog(seccion.seccion.seccionId, 0, true)">
             <mat-icon>local_library</mat-icon>
             <span>Añadir metodo</span>
           </button>
@@ -195,7 +191,7 @@
               </div>
               <div class="row margin-up">
                 <div class="col-md-12">
-                  <button type="button" class="btn btn-primary btn-sm" (click)="openDialogReferencia(estudio.estudioId)">Nuevo Metodo</button>
+                  <button type="button" class="btn btn-primary btn-sm" (click)="openDialog(seccion.seccion.seccionId,estudio.estudioId, false)">Nuevo Metodo</button>
                 </div>
               </div>
               
