@@ -6,6 +6,7 @@ export interface ExamenGeneral{
     estado?:boolean;
     precio?:number;
     clave?:string;
+    layout?:number;
     categoriaId?:number;
     fechaCreacion?:string;
     fechaActualizacion?:string;

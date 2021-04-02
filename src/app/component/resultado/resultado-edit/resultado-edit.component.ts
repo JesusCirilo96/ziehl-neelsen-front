@@ -12,6 +12,7 @@ import { InformeService } from 'src/app/services/informe/informe.service';
 
 //Models
 import { Paciente } from 'src/app/models/Paciente';
+import {Atencion} from 'src/app/models/Atencion';
 import { Recepcion } from 'src/app/models/Recepcion'
 import { ExamenGeneralRecepcion } from 'src/app/models/ExamenGeneralRecepcion';
 
@@ -53,6 +54,13 @@ export class ResultadoEditComponent implements OnInit {
       email:'',
       telefono:''
     }
+
+    atencionModel: Atencion={
+      nombre:'',  
+      apellidoPaterno:'',
+      apellidoMaterno:''
+    }
+
     recepcionModel: Recepcion = {
       ficha: null,
       horaIngreso: '',
@@ -103,12 +111,13 @@ export class ResultadoEditComponent implements OnInit {
         res => {
           this.pacienteModel = res['paciente'];
           this.recepcionModel = res['recepcion'];
+          this.atencionModel = res['medico'];
           //this.obtenerResultadoExamenGeneral(parametros.id);
           var examenRecepcion = res['recepcionExamen'];
           for(var key in examenRecepcion){
             this.examenGeneralRecepcion.push({
               examenId:examenRecepcion[key].examenId,
-              recepcionId:examenRecepcion[key].recepcion_id,
+              recepcionId:examenRecepcion[key].recepcionId,
               usuarioId:examenRecepcion[key].usuarioId,
               realizado: examenRecepcion[key].realizado,
               impreso: examenRecepcion[key].impreso,
@@ -133,7 +142,6 @@ export class ResultadoEditComponent implements OnInit {
           this.resultadoExamenGeneral = null;
         } else {
           this.resultadoExamenGeneral = res;
-          this.getInforme();
         }
 
         console.log(this.resultadoExamenGeneral);
@@ -158,15 +166,23 @@ export class ResultadoEditComponent implements OnInit {
   });
 
 
-  guardarResultados(examen, examen_gen_id) {
-    this.examenGenRecepcion.resultado = examen;
-    this.examenGeneralRecepcionService.updateExGenRecepcion(this.recepcionDatos[0].recepcion_id, examen.EXAMEN_GEN_ID, this.examenGenRecepcion).subscribe(
+  guardarResultados(examen) {
+    this.examenGenRecepcion = {
+      examenId:examen.examenId,
+      recepcionId:examen.recepcionId,
+      usuarioId:examen.usuarioId,
+      realizado:examen.realizado,
+      impreso: examen.impreso,
+      entregado:examen.entregado,
+      resultado: JSON.stringify(examen.resultado)
+    }
+    console.log(examen);
+    this.examenGeneralRecepcionService.updateExGenRecepcion(this.examenGenRecepcion).subscribe(
       res => {
         this.Toast.fire({
           type: 'success',
           title: 'Guardado correctamente'
         })
-        this.guardarInforme(examen_gen_id);
       },
       err => {
         console.log(err);
@@ -174,71 +190,6 @@ export class ResultadoEditComponent implements OnInit {
     )
   }
 
-  informes: any = [];
-
-  guardarInforme(examen_gen_id) {
-    this.informe.fecha_informe = this.getToday();
-    this.informe.hora_informe = this.getHour();
-    this.informe.usuario_id = this.currentUser.usuarioId;
-    this.informe.examen_gen_id = examen_gen_id;
-    this.informe.recepcion_id = this.resultadoExamenGeneral[0].recepcion_id;
-    var informes = this.informes;
-    if (Object.keys(informes).length === 0) {
-      this.informeSave();
-    } else {
-      var existe = false;
-      for (var key in informes) {
-        if (this.informes[key].examen_gen_id == examen_gen_id) {
-          existe = true;
-        }
-      }
-      if (!existe) {
-        this.informeSave();
-      }
-    }
-    console.log(this.informe);
-
-  }
-
-  informeSave() {
-    this.informeService.saveInforme(this.informe).subscribe(
-      res => {
-        console.log('ok');
-        this.getInforme();
-      }, err => {
-        console.log(err);
-      }
-    )
-  }
-
-  actualizarInforme(examen_general, impreso, examen) {
-
-    var informes = this.informes;
-
-    for (var key in informes) {
-      if (informes[key].examen_gen_id = examen_general) {
-        this.informe.informe_id = informes[key].informe_id;
-        this.informe.hora_informe = this.getHour();
-        this.informe.fecha_informe = informes[key].fecha_informe;
-        this.informe.usuario_id = informes[key].usuario_id;
-        this.informe.examen_gen_id = informes[key].examen_gen_id;
-        this.informe.recepcion_id = informes[key].recepcion_id;
-        console.log(this.informe);
-        this.informeService.updateInforme(this.informe.informe_id, this.informe).subscribe(
-          res => {
-            console.log('OK');
-            this.getInforme();
-            this.impreso(impreso,examen,examen_general)
-          }, err => {
-            console.log(err);
-          }
-        )
-        break;
-      }
-    }
-
-
-  }
 
   realizado(realizado, examen, examen_gen_id){
     var hecho = false;
@@ -246,7 +197,7 @@ export class ResultadoEditComponent implements OnInit {
       hecho = true;
     }
     examen.realizado = hecho;
-    this.examenGeneralRecepcionService.updateExGenRecepcion(this.recepcionDatos[0].recepcion_id,examen_gen_id,examen).subscribe(
+    this.examenGeneralRecepcionService.updateExGenRecepcion(examen).subscribe(
       res=>{
         //console.log('ok');
       },
@@ -262,25 +213,13 @@ export class ResultadoEditComponent implements OnInit {
       hecho = true;
     }
     examen.impreso = hecho;
-    this.examenGeneralRecepcionService.updateExGenRecepcion(this.recepcionDatos[0].recepcion_id,examen_gen_id,examen).subscribe(
+    this.examenGeneralRecepcionService.updateExGenRecepcion(examen).subscribe(
       res=>{
         this.getResultado();
         //console.log('ok');
       },
       err=>{
         console.log();
-      }
-    )
-  }
-
-  getInforme() {
-    var recepcion = this.resultadoExamenGeneral[0].recepcion_id;
-    this.informeService.getInforme(recepcion).subscribe(
-      res => {
-        this.informes = res;
-        console.log(this.informes);
-      }, err => {
-        console.log(err);
       }
     )
   }

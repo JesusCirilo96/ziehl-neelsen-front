@@ -90,6 +90,7 @@ export class ExamenGeneralEditComponent implements OnInit {
     estado: true,
     precio: 0.0,
     clave: '',
+    layout:1,
     categoriaId: null,
     fechaCreacion: '',
     fechaActualizacion: ''
@@ -124,6 +125,7 @@ export class ExamenGeneralEditComponent implements OnInit {
   examenEstadoCtrl = new FormControl(true);
   examenPrecioCtrl = new FormControl(0.0, [Validators.required]);
   examenClaveCtrl = new FormControl('');
+  examenLayoutCtrl = new FormControl(1);
   examenCategoriaCtrl = new FormControl(null, [Validators.required]);
   examenFechaCreacionCtrl = new FormControl(null);
   examenFechaActualizacionCtrl = new FormControl(null);
@@ -156,6 +158,7 @@ export class ExamenGeneralEditComponent implements OnInit {
             titulo: this.examenGeneral.titulo,
             estado: this.examenGeneral.estado,
             precio: this.examenGeneral.precio,
+            layout: this.examenGeneral.layout,
             clave: this.examenGeneral.clave,
             categoriaId: this.examenGeneral.categoriaId,
             fechaCreacion: this.examenGeneral.fechaCreacion,
@@ -184,6 +187,7 @@ export class ExamenGeneralEditComponent implements OnInit {
       estado: this.examenEstadoCtrl,
       precio: this.examenPrecioCtrl,
       clave: this.examenClaveCtrl,
+      layout: this.examenLayoutCtrl,
       categoriaId: this.examenCategoriaCtrl,
       fechaCreacion: this.examenFechaCreacionCtrl,
       fechaActualizacion: this.examenFechaActualizacionCtrl,

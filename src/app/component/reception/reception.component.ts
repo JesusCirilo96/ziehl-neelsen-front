@@ -374,6 +374,7 @@ export class ReceptionComponent implements OnInit {
         this.ExamenGeneralRecepcion.push({
           NOMBRE: res['examen'].nombre,
           PRECIO: res['examen'].precio,
+          LAYOUT: res['examen'].layout,
           //METODO_EXAMEN_GENERAL: res['examen'].metodo_examen_general,
           EXAMEN_GEN_ID: res['examen'].examenGeneralId,
           SECCION: res['seccion'],

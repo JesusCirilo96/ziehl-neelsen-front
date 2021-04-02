@@ -34,8 +34,8 @@ export class ExamenGeneralRecepcionService {
     return this.http.post(`${this.API_URI}/recepcion/examen/save`, seccion);
   }
 
-  updateExGenRecepcion(recepcion_id:number,examen_gen_id:number, updatedRecepcion:ExamenGeneralRecepcion): Observable<ExamenGeneralRecepcion>{
-    return this.http.put(`${this.API_URI}/examengeneralrecepcion/${recepcion_id}/${examen_gen_id}`, updatedRecepcion);
+  updateExGenRecepcion( updatedRecepcion:ExamenGeneralRecepcion): Observable<ExamenGeneralRecepcion>{
+    return this.http.post(`${this.API_URI}/recepcion/resultado/save`, updatedRecepcion);
   }
   
 }

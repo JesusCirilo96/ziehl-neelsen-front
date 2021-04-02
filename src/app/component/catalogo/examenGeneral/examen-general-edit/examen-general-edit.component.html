@@ -71,6 +71,17 @@
             </mat-form-field>
           </div>
         </div>
+        <div class="row margin-up">
+          <div class="col-md-4">
+            <mat-form-field class="input-full-width">
+              <mat-label>Formato de impresion</mat-label>
+              <input matInput formControlName="layout" required type="number">
+              <mat-error *ngIf="examenLayoutCtrl.hasError('required')">
+                El formato de impresion es obligatorio
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
         <div class="row">
           <div class="col-md-12">
             <small>Fecha creación: {{examenGeneral.fechaCreacion}}</small>
