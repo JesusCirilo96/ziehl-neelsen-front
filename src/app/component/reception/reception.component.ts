@@ -529,7 +529,10 @@ export class ReceptionComponent implements OnInit {
     })
   }
 
-  removerSubExamenSubseccion(examen, subExamen) {
+  removerSubExamenSubSeccion(examenId, seccionId, estudioId) {
+    console.log("EXAMEN ID" + examenId);
+    console.log("SECCION ID" + seccionId);
+    console.log("ESTUDIO ID" + estudioId);
     Swal.fire({
       title: 'Estas Seguro?',
       text: "Se removera el examen!",
@@ -540,33 +543,10 @@ export class ReceptionComponent implements OnInit {
       confirmButtonText: 'Si, remover!'
     }).then((result) => {
       if (result.value) {
-        var index = this.ExamenGeneralRecepcion.map(function (est) { return est.EXAMEN_GEN_ID; }).indexOf(examen);
-        var indexSubExamen = this.ExamenGeneralRecepcion[index].SUB_EXAMEN.map(function (exm) { return exm.NOMBRE; }).indexOf(subExamen);
-        this.ExamenGeneralRecepcion[index].SUB_EXAMEN.splice(indexSubExamen, 1);
-        Swal.fire(
-          'Removido!',
-          'El examen a sido removido.',
-          'success'
-        )
-      }
-    })
-  }
-
-  removerSubExamenSubSeccion(examen, subSeccion, subExamen) {
-    Swal.fire({
-      title: 'Estas Seguro?',
-      text: "Se removera el examen!",
-      type: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Si, remover!'
-    }).then((result) => {
-      if (result.value) {
-        var index = this.ExamenGeneralRecepcion.map(function (est) { return est.EXAMEN_GEN_ID; }).indexOf(examen);
-        var indexSubSeccion = this.ExamenGeneralRecepcion[index].SUB_SECCION.map(function (sub) { return sub.NOMBRE; }).indexOf(subSeccion);
-        var indexSubExamen = this.ExamenGeneralRecepcion[index].SUB_SECCION[indexSubSeccion].EXAMEN.map(function (exm) { return exm.NOMBRE; }).indexOf(subExamen);
-        this.ExamenGeneralRecepcion[index].SUB_SECCION[indexSubSeccion].EXAMEN.splice(indexSubExamen, 1);
+        var index = this.ExamenGeneralRecepcion.map(function (est) { return est.EXAMEN_GEN_ID; }).indexOf(examenId);
+        var indexSubSeccion = this.ExamenGeneralRecepcion[index].SECCION.seccion.map(function (sub) { return sub.seccion.seccionId; }).indexOf(seccionId);
+        var indexSubExamen = this.ExamenGeneralRecepcion[index].SECCION[seccionId].estudio.map(function (exm) { return exm.estudioId; }).indexOf(estudioId);
+        this.ExamenGeneralRecepcion[examenId].SECCION[seccionId].estudio.splice(indexSubExamen, 1);
         Swal.fire(
           'Removido!',
           'El examen a sido removido.',

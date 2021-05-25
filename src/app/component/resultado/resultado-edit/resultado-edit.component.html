@@ -77,6 +77,7 @@
             <mat-icon>print</mat-icon>
           </button>
         </div>
+        
         <div class="col-md-12">
           <mat-card class="form-edit">
             <!--EXAMEN DE RUTINA: 1, CITOMETRIA HEMATICA: 5-->
@@ -157,9 +158,14 @@
                     <div>
                       <div class="row" *ngFor="let seccion of examenGeneral.resultado.SECCION">
                         <div class="col-md-12">
-                          <div class="margin-down row titleSubexamen">
+                          <div class="row margin-down titleSubexamen">
                             <div class="col-md-12">
                               {{seccion.seccion.nombre}}
+                            </div>
+                          </div>
+                          <div class="row margin-down" *ngFor="let metodo of seccion.metodo">
+                            <div class="col-md-12">
+                              <small>Metodo: {{metodo.nombre}}</small>
                             </div>
                           </div>
                           <div class="row margin-down" *ngFor="let estudio of seccion.estudio">
@@ -302,42 +308,6 @@
               </ng-template>
             </ng-template>
 
-            <!--EXAMEN GENERAL DE ORINA 4-->
-
-            <ng-template [ngIf]="examenGeneral.resultado.TIPO_EXAMEN == 4">
-              <div class="row">
-                <div class="col-md-12">
-                  <div>
-                    <!--table-borderless-->
-                    <table class="table table-sm table-borderless">
-                      <tbody *ngFor="let subSeccion of examenGeneral.resultado.SUB_SECCION">
-                        <tr>
-                          <td colspan="4">{{subSeccion.NOMBRE}} </td>
-                        </tr>
-                        <tr *ngFor="let estudio of subSeccion.EXAMEN">
-                          <td class="width-30">
-                            <button mat-icon-button color="warn" aria-label="Example icon-button with a heart icon"
-                              (click)="removerSubExamenSubSeccion(examenGeneral.resultado,examenGeneral.resultado.EXAMEN_GEN_ID, subSeccion.NOMBRE, estudio.NOMBRE)">
-                              <mat-icon>remove</mat-icon>
-                            </button>
-                            {{estudio.NOMBRE}}
-                          </td>
-                          <ng-template
-                            [ngIf]="estudio.NOMBRE != '(N: 1,010 - 1,025)' && estudio.NOMBRE != '(Normal: 3,5 umol/L)'">
-                            <td class="width-20">
-                              <input type="text" class="form-control form-control-sm" [(ngModel)]="estudio.RESULTADO">
-                            </td>
-                            <td class="width-50"></td>
-                          </ng-template>
-                        </tr>
-                      </tbody>
-                    </table>
-                    <span *ngFor="let metodo of examenGeneral.resultado.METODO_EXAMEN_GENERAL" class="metodo">Metodo:
-                      {{metodo.nombre}}</span>
-                  </div>
-                </div>
-              </div>
-            </ng-template>
           </mat-card>
           <div class="form-edit"></div>
         </div>
@@ -539,6 +509,11 @@
                               <div class="margin-down row titleSubexamen">
                                 <div class="col-md-12">
                                   {{seccion.seccion.nombre}}
+                                </div>
+                              </div>
+                              <div class="row margin-down" *ngFor="let metodo of seccion.metodo">
+                                <div class="col-md-12">
+                                  <small>Metodo: {{metodo.nombre}}</small>
                                 </div>
                               </div>
                               <div class="row" *ngFor="let estudio of seccion.estudio">

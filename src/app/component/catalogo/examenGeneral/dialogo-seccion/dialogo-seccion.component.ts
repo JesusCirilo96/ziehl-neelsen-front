@@ -28,6 +28,8 @@ export class DialogoSeccionComponent {
   ListSecciones: any = [];
   seccionId:number;
   orden:number;
+  seleccionado = false;
+  nombreSeccion: string;
 
   getSecciones(){
     this.seccionService.getSecciones ().subscribe(
@@ -36,6 +38,20 @@ export class DialogoSeccionComponent {
       },
       err => console.error(err)
     );
+  }
+
+  responseDialogo() {
+    var response = [];  
+    response.push(
+      {
+        'nombreSeccion': this.nombreSeccion,
+        'porId': this.seleccionado,
+        'idSeccion': this.seccionId,
+        'orden':this.orden
+      }
+    );
+    return response;
+
   }
 
 }

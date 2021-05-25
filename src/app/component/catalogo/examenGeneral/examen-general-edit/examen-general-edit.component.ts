@@ -12,6 +12,7 @@ import { MetodoEstudio } from 'src/app/models/MetodoEstudio';
 import { ExamenEstudio } from 'src/app/models/ExamenEstudio';
 import { SeccionExamen } from 'src/app/models/SeccionExamen';
 import { SeccionEstudio } from 'src/app/models/SeccionEstudio';
+import { ExamenSeccion } from 'src/app/models/ExamenSeccion';
 
 //SERVICES
 import { ExamenGeneralService } from 'src/app/services/examenGeneral/examen-general.service';
@@ -104,7 +105,16 @@ export class ExamenGeneralEditComponent implements OnInit {
     orden: 0
   }
 
-  examenSeccion: SeccionExamen = {
+  examenSeccion: ExamenSeccion = {
+    examenId: null,
+    nombreSeccion: '',
+    porId: false,
+    seccionId: null,
+    orden: 0
+  }
+
+
+  seccionExamen: SeccionExamen = {
     examenId: null,
     seccionId: null,
     orden: 0
@@ -459,11 +469,31 @@ export class ExamenGeneralEditComponent implements OnInit {
 
     dialogSeccion.afterClosed().subscribe(result => {
       if (result != undefined) {
+
+        var porId = result[0].porId;
+        if (porId) {
+          console.log("Se guardara la seccion con el ID de la seccion:: " + result[0].idSeccion);
+          this.examenSeccion.examenId = this.examenGeneral.examenGeneralId;
+          this.examenSeccion.porId = true;
+          this.examenSeccion.seccionId = result[0].idSeccion;
+          this.examenSeccion.orden = result[0].orden;
+          this.guardarExamenSeccion(this.examenSeccion);
+        } else {
+          console.log("Se guardara la seccion por nombre::  " + result[0].nombreSeccion);
+          this.examenSeccion.examenId = this.examenGeneral.examenGeneralId;
+          this.examenSeccion.porId = false;
+          this.examenSeccion.nombreSeccion = result[0].nombreSeccion;
+          this.examenSeccion.orden = result[0].orden;
+          this.guardarExamenSeccion(this.examenSeccion);
+        }
+
         console.log("DIALOGO SECCION CERRADA")
-        this.examenSeccion.examenId = this.examenGeneral.examenGeneralId;
-        this.examenSeccion.seccionId = result[0].seccionId;
-        this.examenSeccion.orden = result[0].orden;
-        this.guardarExamenSeccion(this.examenSeccion);
+
+        /*console.log("DIALOGO SECCION CERRADA")
+        this.seccionExamen.examenId = this.examenGeneral.examenGeneralId;
+        this.seccionExamen.seccionId = result[0].seccionId;
+        this.seccionExamen.orden = result[0].orden;
+        this.guardarExamenSeccion(this.seccionExamen);*/
       }
     });
   }

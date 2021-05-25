@@ -143,8 +143,8 @@
                   <tr *ngFor="let estudio of seccion.estudio">
                     <td colspan="1"></td>
                     <td>
-                      <button mat-icon-button color="warn" aria-label="Example icon-button with a heart icon"
-                        (click)="removerSubExamenSubSeccion(seleccion.EXAMEN_GEN_ID, subSeccion.NOMBRE, estudio.NOMBRE)">
+                      <button mat-icon-button color="warn" aria-label="Remover estudio"
+                        (click)="removerSubExamenSubSeccion(seleccion.EXAMEN_GEN_ID, seccion.seccion.seccionId, estudio.estudioId)">
                         <mat-icon>remove</mat-icon>
                       </button>
                       {{estudio.nombre}}

@@ -3,9 +3,9 @@ import { HttpClient } from '@angular/common/http';
 
 import {ExamenGeneral} from '../../models/ExamenGeneral';
 import {ExamenEstudio} from '../../models/ExamenEstudio';
-import {SeccionExamen} from '../../models/SeccionExamen';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { ExamenSeccion } from 'src/app/models/ExamenSeccion';
 @Injectable({
   providedIn: 'root'
 })
@@ -69,7 +69,7 @@ export class ExamenGeneralService {
    * Guardamos el registro que une examen con secciones
    * @param examenSeccion El objeto de la tabla examenSeccion
    */
-  saveExamenSeccion(examenSeccion: SeccionExamen){
+  saveExamenSeccion(examenSeccion: ExamenSeccion){
     return this.http.post(`${this.API_URI}/examen/seccion/save/`, examenSeccion);
   }
 
