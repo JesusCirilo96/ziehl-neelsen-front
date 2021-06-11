@@ -147,7 +147,7 @@ export class ReceptionComponent implements OnInit {
   examenGeneralRecepcion: ExamenGeneralRecepcion = {
     examenId: null,
     recepcionId: '',
-    usuarioId:null,
+    usuarioId: null,
     realizado: false,
     impreso: false,
     entregado: false,
@@ -209,7 +209,7 @@ export class ReceptionComponent implements OnInit {
           if (!value) {
             return 'Porfavor introduce tu identificador'
           } else {
-            this.recepcion.usuarioId =  Number(value);
+            this.recepcion.usuarioId = Number(value);
             console.log(this.recepcion);
             this.recepcionService.saveRecepcion(this.recepcion).subscribe(
               res => {
@@ -255,7 +255,7 @@ export class ReceptionComponent implements OnInit {
       this.examenGeneralRecepcion = {
         examenId: null,
         recepcionId: this.recepcion.recepcionId,
-        usuarioId:null,
+        usuarioId: null,
         realizado: false,
         impreso: false,
         resultado: null
@@ -284,9 +284,9 @@ export class ReceptionComponent implements OnInit {
       examenId: null,
       recepcionId: '',
       realizado: false,
-      usuarioId:null,
+      usuarioId: null,
       impreso: false,
-      entregado:false,
+      entregado: false,
       resultado: null
     }
 
@@ -369,25 +369,40 @@ export class ReceptionComponent implements OnInit {
   }
 
   getExamenGeneralEstudios(examenId) {
-    this.examenGeneralService.getExamenSecciones(examenId).subscribe(
-      res => {
-        this.ExamenGeneralRecepcion.push({
-          NOMBRE: res['examen'].nombre,
-          PRECIO: res['examen'].precio,
-          LAYOUT: res['examen'].layout,
-          //METODO_EXAMEN_GENERAL: res['examen'].metodo_examen_general,
-          EXAMEN_GEN_ID: res['examen'].examenGeneralId,
-          SECCION: res['seccion'],
-          ESTUDIO: res['estudio']
-        });
+    if (examenId == "" || examenId == undefined) {
+      this.errorRecepcion("Debes seleccionar un examen");
+    } else {
+      var existe = false;
+      for (var key in this.ExamenGeneralRecepcion) {
+        if (this.ExamenGeneralRecepcion[key].EXAMEN_GEN_ID == examenId) {
+          this.errorRecepcion("Este examen ya fue añadido");
+          existe = true;
+        }
+      }
 
-        console.log(this.ExamenGeneralRecepcion)
-        this.subTotal += parseFloat(res['examen'].precio);
-        this.obtenerTotal();
+      if (!existe) {
+        this.examenGeneralService.getExamenSecciones(examenId).subscribe(
+          res => {
+            this.ExamenGeneralRecepcion.push({
+              NOMBRE: res['examen'].nombre,
+              PRECIO: res['examen'].precio,
+              LAYOUT: res['examen'].layout,
+              //METODO_EXAMEN_GENERAL: res['examen'].metodo_examen_general,
+              EXAMEN_GEN_ID: res['examen'].examenGeneralId,
+              SECCION: res['seccion'],
+              ESTUDIO: res['estudio']
+            });
 
-      }, err => {
-        console.log(err)
-      });
+            console.log(this.ExamenGeneralRecepcion)
+            this.subTotal += parseFloat(res['examen'].precio);
+            this.obtenerTotal();
+
+          }, err => {
+            console.log(err)
+          });
+      }
+    }
+
   }
 
   obtenerDescuento(data) {
@@ -534,22 +549,35 @@ export class ReceptionComponent implements OnInit {
     console.log("SECCION ID" + seccionId);
     console.log("ESTUDIO ID" + estudioId);
     Swal.fire({
-      title: 'Estas Seguro?',
-      text: "Se removera el examen!",
+      title: '¿Estas Seguro?',
+      text: "¡Se removera el estudio!",
       type: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
-      confirmButtonText: 'Si, remover!'
+      confirmButtonText: 'Si, remover'
     }).then((result) => {
       if (result.value) {
-        var index = this.ExamenGeneralRecepcion.map(function (est) { return est.EXAMEN_GEN_ID; }).indexOf(examenId);
-        var indexSubSeccion = this.ExamenGeneralRecepcion[index].SECCION.seccion.map(function (sub) { return sub.seccion.seccionId; }).indexOf(seccionId);
-        var indexSubExamen = this.ExamenGeneralRecepcion[index].SECCION[seccionId].estudio.map(function (exm) { return exm.estudioId; }).indexOf(estudioId);
-        this.ExamenGeneralRecepcion[examenId].SECCION[seccionId].estudio.splice(indexSubExamen, 1);
+
+        var examen = this.ExamenGeneralRecepcion;
+        console.log(examen);
+        for (var key in examen) {
+          var seccion = examen[key].SECCION;
+          console.log("SECCION");
+          console.log(seccion);
+          for (var keySeccion in seccion) {
+            if (seccion[keySeccion].seccion.seccionId == seccionId) {
+              console.log("dentro del if");
+              var indexEstudio = this.ExamenGeneralRecepcion[key].SECCION[keySeccion].estudio.map(function (sub) { return sub.estudioId; }).indexOf(estudioId);
+              console.log(indexEstudio);
+              this.ExamenGeneralRecepcion[key].SECCION[keySeccion].estudio.splice(indexEstudio, 1);
+              break;
+            }
+          }
+        }
         Swal.fire(
           'Removido!',
-          'El examen a sido removido.',
+          'El estudio a sido removido.',
           'success'
         )
       }

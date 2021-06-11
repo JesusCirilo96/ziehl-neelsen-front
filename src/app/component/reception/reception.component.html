@@ -181,50 +181,59 @@
 
   </div>
 </div>
-<mat-card class="form-edit precio">
-  <div class="tabla">
-    <table class="table table-borderless table-sm">
-      <tbody>
-        <tr>
-          <td class="text-right">SubTotal</td>
-          <td class="text-right">{{subTotal}}</td>
-        </tr>
-        <tr>
-          <td class="text-right">Descuento</td>
-          <td class="text-right">
-            <input matInput [(ngModel)]="descuento" (ngModelChange)="obtenerDescuento($event)" ng-required="Requerido"
-              type="text" class="validate">
-          </td>
-        </tr>
-        <tr>
-          <td class="text-right">Total</td>
-          <td class="light text-right">{{total}}</td>
-        </tr>
-        <tr>
-          <td class="text-right">Anticipo</td>
-          <td class="text-right">
-            <input matInput [(ngModel)]="anticipo" (ngModelChange)="obtenerAnticipo($event)" ng-required="Requerido"
-              type="text" class="validate">
-          </td>
-        </tr>
-        <tr>
-          <td class="text-right">Restante</td>
-          <td class="text-right">{{restante}}</td>
-        </tr>
-      </tbody>
-    </table>
-    <div class="col-md-12">
-      <div class="row">
-        <div class="col-md-6">
-            <button mat-raised-button color="warn" [swal]="cancelSwal">Cancelar</button>
-        </div>
-        <div class="col-md-6 float-right">
-            <button mat-raised-button color="primary" (click)="saveRecepcion()">Crear orden</button>  
-        </div>
-      </div>
+<div class="form-edit">
+  <div class="row">
+    <div class="col-md-4">
+      <mat-form-field appearance="fill" floatLabel="always">
+        <mat-label>Subtotal</mat-label>
+        <input matInput type="number" class="example-right-align" disabled [(ngModel)]="subTotal" placeholder="0">
+        <span matPrefix>$&nbsp;</span>
+        <span matSuffix>.00</span>
+      </mat-form-field>
+    </div>
+    <div class="col-md-4">
+      <mat-form-field appearance="fill" floatLabel="always">
+        <mat-label>Descuento</mat-label>
+        <input matInput type="number" class="example-right-align" [(ngModel)]="descuento" placeholder="0" (ngModelChange)="obtenerDescuento($event)">
+        <span matPrefix>$&nbsp;</span>
+        <span matSuffix>.00</span>
+      </mat-form-field>
+    </div>
+    <div class="col-md-4">
+      <mat-form-field appearance="fill" floatLabel="always">
+        <mat-label>Total</mat-label>
+        <input matInput type="number" class="example-right-align" disabled [(ngModel)]="total" placeholder="0">
+        <span matPrefix>$&nbsp;</span>
+        <span matSuffix>.00</span>
+      </mat-form-field>
     </div>
   </div>
-</mat-card>
+  <div class="row">
+    
+    <div class="col-md-4">
+      <mat-form-field appearance="fill" floatLabel="always">
+        <mat-label>Anticipo</mat-label>
+        <input matInput type="number" class="example-right-align" [(ngModel)]="anticipo" placeholder="0" (ngModelChange)="obtenerAnticipo($event)">
+        <span matPrefix>$&nbsp;</span>
+        <span matSuffix>.00</span>
+      </mat-form-field>
+    </div>
+    <div class="col-md-4">
+      <mat-form-field appearance="fill" floatLabel="always">
+        <mat-label>Restante</mat-label>
+        <input matInput type="number" class="example-right-align" disabled [(ngModel)]="restante" placeholder="0" >
+        <span matPrefix>$&nbsp;</span>
+        <span matSuffix>.00</span>
+      </mat-form-field>
+    </div>
+  </div>
+  <div class="row text-right">
+    <div class="col-md-12">
+      <button mat-raised-button color="warn" [swal]="cancelSwal">Cancelar</button>
+      <button mat-raised-button color="primary" (click)="saveRecepcion()">Crear orden</button>  
+    </div>
+  </div>
+</div>
 
 <swal #cancelSwal title="Cancelar orden" text="Esta accion no se puede revertir" type='warning' [options]="{
     confirmButtonColor: '#3085d6',
