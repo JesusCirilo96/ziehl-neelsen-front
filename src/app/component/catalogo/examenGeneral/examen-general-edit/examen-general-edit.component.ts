@@ -13,6 +13,7 @@ import { ExamenEstudio } from 'src/app/models/ExamenEstudio';
 import { SeccionExamen } from 'src/app/models/SeccionExamen';
 import { SeccionEstudio } from 'src/app/models/SeccionEstudio';
 import { ExamenSeccion } from 'src/app/models/ExamenSeccion';
+import { ResultadoSelectEstudio } from 'src/app/models/ResultadoSelectEstudio';
 
 //SERVICES
 import { ExamenGeneralService } from 'src/app/services/examenGeneral/examen-general.service';
@@ -20,6 +21,7 @@ import { MetodoService } from 'src/app/services/metodo/metodo.service';
 import { CategoriaService } from 'src/app/services/categoria/categoria.service';
 import { ReferenciaService } from 'src/app/services/referencia/referencia.service';
 import { SeccionService } from 'src/app/services/seccion/seccion.service';
+import { EstudioService } from 'src/app/services/estudio/estudio.service';
 
 //COMPONENTS
 
@@ -28,6 +30,7 @@ import { DialogoComponent } from '../dialogo/dialogo.component';
 import { DialogReferenciaComponent } from '../dialog-referencia/dialog-referencia.component';
 import { DialogoSeccionComponent } from '../dialogo-seccion/dialogo-seccion.component';
 import { DialogoEstudioComponent } from '../dialogo-estudio/dialogo-estudio.component';
+import { DialogoRespuestaComponent } from '../dialogo-respuesta/dialogo-respuesta/dialogo-respuesta.component';
 
 import * as $ from 'jquery';
 
@@ -43,6 +46,7 @@ import { Seccion } from 'src/app/models/Seccion';
 
 export class ExamenGeneralEditComponent implements OnInit {
   constructor(
+    private estudioService: EstudioService,
     private examenGeneralService: ExamenGeneralService,
     private metodoService: MetodoService,
     private refereciaService: ReferenciaService,
@@ -59,6 +63,33 @@ export class ExamenGeneralEditComponent implements OnInit {
   removable = true;
 
   edit: boolean = false;
+
+  addRespuesta: boolean = false;
+  addResponse: string = "";
+  respuestaSelect: any =[];
+
+  ListLayouts: any = [
+    {
+      name:"Rutina",
+      value:1
+    },
+    {
+      name:"Especial",
+      value:2
+    },
+    {
+      name:"U. CONVENCIONALES",
+      value:3
+    },
+    {
+      name:"General de orina",
+      value:4
+    },
+    {
+      name:"Citometria hematica",
+      value:5
+    },
+  ]
 
   ListMetodo: any = [];//lista para los metodos
   Categoria: any = []; //lista para las categorias
@@ -87,7 +118,9 @@ export class ExamenGeneralEditComponent implements OnInit {
     examenGeneralId: null,
     nombre: '',
     alias: '',
-    titulo: '',
+    tituloIzquierdo: '',
+    tituloCentro:'',
+    tituloDerecho:'',
     estado: true,
     precio: 0.0,
     clave: '',
@@ -108,11 +141,13 @@ export class ExamenGeneralEditComponent implements OnInit {
   examenSeccion: ExamenSeccion = {
     examenId: null,
     nombreSeccion: '',
+    titulo:'',
+    textoCent:'',
+    textoDer:'',
     porId: false,
     seccionId: null,
     orden: 0
   }
-
 
   seccionExamen: SeccionExamen = {
     examenId: null,
@@ -126,12 +161,19 @@ export class ExamenGeneralEditComponent implements OnInit {
     orden: 0
   }
 
+  resultadoSelect: ResultadoSelectEstudio = {
+    estudioId: null,
+    resultadoSelect:""
+  }
+
   formExamen: FormGroup;
 
   examenGeneralIdCtrl = new FormControl(null);
   examenNombreCtrl = new FormControl('', [Validators.required]);
   examenAliasCtrl = new FormControl('');
-  examenTituloCtrl = new FormControl('');
+  examenTituloIzqCtrl = new FormControl('');
+  examenTituloCentCtrl = new FormControl('');
+  examenTituloDerCtrl = new FormControl('');
   examenEstadoCtrl = new FormControl(true);
   examenPrecioCtrl = new FormControl(0.0, [Validators.required]);
   examenClaveCtrl = new FormControl('');
@@ -165,7 +207,9 @@ export class ExamenGeneralEditComponent implements OnInit {
             examenGeneralId: this.examenGeneral.examenGeneralId,
             nombre: this.examenGeneral.nombre,
             alias: this.examenGeneral.alias,
-            titulo: this.examenGeneral.titulo,
+            tituloIzq: this.examenGeneral.tituloIzquierdo,
+            tituloCent: this.examenGeneral.tituloCentro,
+            tituloDer: this.examenGeneral.tituloDerecho,
             estado: this.examenGeneral.estado,
             precio: this.examenGeneral.precio,
             layout: this.examenGeneral.layout,
@@ -193,7 +237,9 @@ export class ExamenGeneralEditComponent implements OnInit {
       examenGeneralId: this.examenGeneralIdCtrl,
       nombre: this.examenNombreCtrl,
       alias: this.examenAliasCtrl,
-      titulo: this.examenTituloCtrl,
+      tituloIzq: this.examenTituloIzqCtrl,
+      tituloCent: this.examenTituloCentCtrl,
+      tituloDer: this.examenTituloDerCtrl,
       estado: this.examenEstadoCtrl,
       precio: this.examenPrecioCtrl,
       clave: this.examenClaveCtrl,
@@ -473,27 +519,21 @@ export class ExamenGeneralEditComponent implements OnInit {
         var porId = result[0].porId;
         if (porId) {
           console.log("Se guardara la seccion con el ID de la seccion:: " + result[0].idSeccion);
-          this.examenSeccion.examenId = this.examenGeneral.examenGeneralId;
           this.examenSeccion.porId = true;
           this.examenSeccion.seccionId = result[0].idSeccion;
-          this.examenSeccion.orden = result[0].orden;
-          this.guardarExamenSeccion(this.examenSeccion);
         } else {
           console.log("Se guardara la seccion por nombre::  " + result[0].nombreSeccion);
-          this.examenSeccion.examenId = this.examenGeneral.examenGeneralId;
           this.examenSeccion.porId = false;
           this.examenSeccion.nombreSeccion = result[0].nombreSeccion;
-          this.examenSeccion.orden = result[0].orden;
-          this.guardarExamenSeccion(this.examenSeccion);
+          this.examenSeccion.titulo = result[0].titulo;
+          this.examenSeccion.textoCent = result[0].textoCent;
+          this.examenSeccion.textoDer = result[0].textoDer;
         }
+        this.examenSeccion.examenId = this.examenGeneral.examenGeneralId;
+        this.examenSeccion.orden = result[0].orden;
+        this.guardarExamenSeccion(this.examenSeccion);
 
         console.log("DIALOGO SECCION CERRADA")
-
-        /*console.log("DIALOGO SECCION CERRADA")
-        this.seccionExamen.examenId = this.examenGeneral.examenGeneralId;
-        this.seccionExamen.seccionId = result[0].seccionId;
-        this.seccionExamen.orden = result[0].orden;
-        this.guardarExamenSeccion(this.seccionExamen);*/
       }
     });
   }
@@ -573,6 +613,29 @@ export class ExamenGeneralEditComponent implements OnInit {
           console.log("ESTUDIO PARA EL EXAMEN");
         }
         console.log("DIALOGO ESTUDIO CERRADA")
+      }
+    });
+  }
+
+  hacerComodin(estudioId: number, estado: number) {
+    Swal.fire({
+      title: "¿Estas seguro?",
+      html: "Al hacer comodin el campo, no podras darle algun resultado.",
+      type: "warning",
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Aceptar',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if (result.value) {
+        this.estudioService.updateComodin(estudioId,!estado).subscribe(
+          response =>{
+            this.alerta("Se actualizo correctamente", "success",false);
+          },error=>{
+            this.alertaBoton("Ocurrio un error", "Ocurrio un error mientras se actualizaba el el comodin." + error, 'error')
+          }
+        );
       }
     });
   }
@@ -727,4 +790,37 @@ export class ExamenGeneralEditComponent implements OnInit {
       }
     })
   }
+
+  respuestaDialog: any = [];
+  openDialogRespuesta(estudioId) {
+
+    console.log("El estudio ID ::" + estudioId);
+
+    const dialogoRespuesta = this.dialog.open(DialogoRespuestaComponent, {
+      width: '500px',
+      data: { respuesta: this.respuestaDialog }
+    });
+
+    dialogoRespuesta.afterClosed().subscribe(result => {
+      if (result != undefined) {
+        console.log(result[0].respuestas);
+        this.resultadoSelect = {
+          estudioId: estudioId,
+          resultadoSelect: JSON.stringify(result[0].respuestas)
+        }
+        this.estudioService.updateResultadoSelect(this.resultadoSelect).subscribe(
+          response =>{
+            this.alerta("Se actualizo correctamente", "success",false);
+            this.resultadoSelect = {
+              estudioId: null,
+              resultadoSelect:""
+            }
+          },error=>{
+            this.alertaBoton("Ocurrio un error", "Ocurrio un error mientras se añadian las respuestas" + error, 'error')
+          }
+        );
+      }
+    });
+  }
+
 }

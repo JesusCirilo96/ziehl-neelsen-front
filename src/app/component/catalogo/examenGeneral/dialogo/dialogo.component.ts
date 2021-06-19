@@ -36,4 +36,5 @@ export class DialogoComponent{
       err => console.error(err)
     );
   }
+
 }

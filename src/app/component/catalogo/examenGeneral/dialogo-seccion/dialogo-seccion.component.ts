@@ -30,6 +30,9 @@ export class DialogoSeccionComponent {
   orden:number;
   seleccionado = false;
   nombreSeccion: string;
+  titulo:string;
+  textoCent: string;
+  textoDer: string;
 
   getSecciones(){
     this.seccionService.getSecciones ().subscribe(
@@ -45,6 +48,9 @@ export class DialogoSeccionComponent {
     response.push(
       {
         'nombreSeccion': this.nombreSeccion,
+        'titulo':this.titulo,
+        'textoCent': this.textoCent,
+        'textoDer': this.textoDer,
         'porId': this.seleccionado,
         'idSeccion': this.seccionId,
         'orden':this.orden

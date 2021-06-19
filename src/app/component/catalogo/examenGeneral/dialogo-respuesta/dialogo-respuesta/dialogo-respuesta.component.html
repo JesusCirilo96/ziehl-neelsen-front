@@ -1,0 +1,24 @@
+<!--Cuadro de dialogo-->
+
+<h1 mat-dialog-title>Añade respuestas predeterminadas</h1>
+<div mat-dialog-content>
+  <div class="col-md-12">
+    <div class="row">
+      <mat-form-field class="margin-up input-full-width">
+        <mat-label>Respuestas</mat-label>
+        <mat-select>
+          <mat-option [value]="option.value" *ngFor="let option of respuestaSelect">{{ option.viewValue }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div class="row margin-up"><input type="text" class="form-control form-control-sm width-100"
+        [(ngModel)]="addResponse" placeholder="Escribe la respuesta predterminada" aria-label="Respuesta"></div>
+    <div class="row margin-up-down"><button type="button" class="btn btn-primary btn-sm width-100"
+        (click)="anadirPosibleRespuestaEstudio()">Añadir</button></div>
+  </div>
+
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">Cancelar</button>
+  <button mat-button [mat-dialog-close]="armaRespuesta()" cdkFocusInitial>Guardar</button>
+</div>
