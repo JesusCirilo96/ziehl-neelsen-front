@@ -81,10 +81,22 @@ export class ExamenGeneralService {
     return this.http.post(`${this.API_URI}/examen/save/`, updatedExamenGeneral);
   }
 
+  /**
+   * Elimina el vinculo de examen con la seccion
+   * @param examenId El id del examen a eliminar
+   * @param seccionId El id de la seccion a eliminar
+   * @returns Respuesta del servicio
+   */
   deleteExamenSeccion(examenId: number, seccionId: number){
     return this.http.delete(`${this.API_URI}/examen/seccion/delete/${examenId}/${seccionId}`);
   }
 
+  /**
+   * Elimina el vinculo entre el examen y estudio
+   * @param examenId El id del examen a eliminar
+   * @param estudioId El id del estudio a eliminar
+   * @returns Respuesta del servicio
+   */
   deleteExamenEstudio(examenId: number, estudioId: number){
     return this.http.delete(`${this.API_URI}/examen/estudio/delete/${examenId}/${estudioId}`);
   }

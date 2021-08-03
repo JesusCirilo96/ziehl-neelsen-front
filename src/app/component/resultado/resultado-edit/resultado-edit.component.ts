@@ -7,6 +7,9 @@ import { ExamenGeneralRecepcionService } from 'src/app/services/examenGeneralRec
 import { User } from '../../../_models/user';
 import { AuthenticationService } from '../../../_services/authentication.service';
 
+import {formatDate} from '@angular/common';
+import {MAT_DATE_LOCALE} from '@angular/material/core';
+
 import { Informe } from 'src/app/models/Informe';
 import { InformeService } from 'src/app/services/informe/informe.service';
 
@@ -23,7 +26,10 @@ import Swal from 'sweetalert2';
 @Component({
   selector: 'app-resultado-edit',
   templateUrl: './resultado-edit.component.html',
-  styleUrls: ['./resultado-edit.component.css']
+  styleUrls: ['./resultado-edit.component.css'],
+  providers: [
+    {provide: MAT_DATE_LOCALE, useValue: 'es-ES'}
+  ]
 })
 export class ResultadoEditComponent implements OnInit {
 
@@ -385,6 +391,14 @@ export class ResultadoEditComponent implements OnInit {
     var hora = new Date();
     var now = hora.getHours() + ":" + hora.getMinutes();
     return now;
+  }
+
+  formatearHora(hora: string){
+    return hora.slice(0, -3);
+  }
+
+  formatearFecha(fecha){
+    return formatDate(fecha,'dd/MM/yyyy','en-US');
   }
 
   convertToUpper(word) {

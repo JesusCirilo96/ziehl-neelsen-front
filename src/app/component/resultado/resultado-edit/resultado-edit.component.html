@@ -152,9 +152,22 @@
                             <div class="col-md-4">
                               {{estudio.nombre}}
                             </div>
-                            <div class="col-md-3">
-                              <input type="text" class="form-control form-control-sm" [(ngModel)]="estudio.resultado">
+                            <div class="col-md-3" *ngIf="estudio.resultadoSelect == null || estudio.resultadoSelect.length === 0 ; else elseResultadoSelect">
+                              <input type="text" class="form-control form-control-sm" [(ngModel)]="estudio.resultado"  [disabled]="estudio.comodin">
                             </div>
+                            <ng-template #elseResultadoSelect>
+                              <div class="col-md-3">
+                                <select class="form-select form-select-sm input-full-width" [(ngModel)]="estudio.resultado">
+                                  <option value="" selected>Selecciona</option>
+                                  <option *ngFor="let option of estudio.resultadoSelect" [value]="option.value">{{option.viewValue}}</option>
+                                </select>
+                              </div>
+                              
+                                <button mat-icon-button color="primary" matTooltip="Cambiar a texto editable" aria-label="Cambiar a input">
+                                  <mat-icon>transform</mat-icon>
+                                </button>
+                              
+                            </ng-template>
                           </div>
                         </div>
                       </div>
@@ -388,9 +401,9 @@
                   </tr>
                   <tr>
                     <td>F. de Ingreso:</td>
-                    <td>{{recepcionModel.fechaIngreso}}</td>
+                    <td>{{formatearFecha(recepcionModel.fechaIngreso)}}</td>
                     <td class="text-right">H. de Ingreso:</td>
-                    <td>{{recepcionModel.horaIngreso}}</td>
+                    <td>{{formatearHora(recepcionModel.horaIngreso)}}</td>
                   </tr>
                   <tr>
                     <td>F. de Informe:</td>

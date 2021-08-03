@@ -100,19 +100,7 @@ export class ReceptionComponent implements OnInit {
   Sexo: string;
 
 
-  ExamenGeneralModel: any = [];/*ExamenGeneral = {
-    examen_gen_id: null,
-    alias: '',
-    nombre: '',
-    precio: 0,
-    tipo_examen_id: null,
-    vr_ninos: '',
-    vr_ninas: '',
-    vr_general_n: '',
-    vr_hombre: '',
-    vr_mujer: '',
-    vr_general: ''
-  }*/
+  ExamenGeneralModel: any = [];
   //datos para el examen general
   ExamenGeneral: any = []; //datos para el select de examen general
   ExamenGeneralRecepcion: any = []; //formato para guardar en la base de datos EXAMEN GENERAL
@@ -567,9 +555,7 @@ export class ReceptionComponent implements OnInit {
           console.log(seccion);
           for (var keySeccion in seccion) {
             if (seccion[keySeccion].seccion.seccionId == seccionId) {
-              console.log("dentro del if");
               var indexEstudio = this.ExamenGeneralRecepcion[key].SECCION[keySeccion].estudio.map(function (sub) { return sub.estudioId; }).indexOf(estudioId);
-              console.log(indexEstudio);
               this.ExamenGeneralRecepcion[key].SECCION[keySeccion].estudio.splice(indexEstudio, 1);
               break;
             }

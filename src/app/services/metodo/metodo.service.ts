@@ -80,4 +80,23 @@ export class MetodoService {
     return this.http.post(`${this.API_URI}/metodo/estudio/save/`, metodoEstudio);
   }
 
+  /**
+   * Eliminamos el vinculo entre el metodo y la seccion
+   * @param seccionId El id de la seccion a eliminar
+   * @param metodoId El id del metodo a eliminar
+   * @returns Respuesta del servicio
+   */
+  deleteMetodoSeccion(seccionId: number, metodoId: number){
+    return this.http.delete(`${this.API_URI}/metodo/seccion/delete/${seccionId}/${metodoId}`);
+  }
+  
+  /**
+   * Eliminamos el vinculo entre el estudio y el metodo
+   * @param estudioId El id del estudio a eliminar
+   * @param metodoId El id del metodo a eliminar
+   * @return Respuesta del servicio
+   */
+  deleteMetodoEstudio(estudioId: number, metodoId: number){
+    return this.http.delete(`${this.API_URI}/metodo/estudio/delete/${estudioId}/${metodoId}`);
+  }
 }

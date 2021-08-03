@@ -72,6 +72,7 @@ import { ClasificacionPacienteViewComponent } from './component/catalogo/clasifi
 import { DialogReferenciaComponent } from './component/catalogo/examenGeneral/dialog-referencia/dialog-referencia.component';
 import { DialogoSeccionComponent } from './component/catalogo/examenGeneral/dialogo-seccion/dialogo-seccion.component';
 import { DialogoEstudioComponent } from './component/catalogo/examenGeneral/dialogo-estudio/dialogo-estudio.component';
+import { DialogoRespuestaComponent } from './component/catalogo/examenGeneral/dialogo-respuesta/dialogo-respuesta/dialogo-respuesta.component';
 
 @NgModule({
   declarations: [
@@ -114,13 +115,15 @@ import { DialogoEstudioComponent } from './component/catalogo/examenGeneral/dial
     ClasificacionPacienteViewComponent,
     DialogReferenciaComponent,
     DialogoSeccionComponent,
-    DialogoEstudioComponent
+    DialogoEstudioComponent,
+    DialogoRespuestaComponent
   ],
   entryComponents: [
     DialogoComponent, 
     DialogReferenciaComponent, 
     DialogoSeccionComponent, 
-    DialogoEstudioComponent , 
+    DialogoEstudioComponent ,
+    DialogoRespuestaComponent,
     ModalComponent
   ],
   imports: [

@@ -2,7 +2,9 @@ export interface ExamenGeneral{
     examenGeneralId?:number;
     nombre?:string;
     alias?:string;
-    titulo?:string;
+    tituloIzquierdo?:string;
+    tituloCentro?:string,
+    tituloDerecho?:string,
     estado?:boolean;
     precio?:number;
     clave?:string;
