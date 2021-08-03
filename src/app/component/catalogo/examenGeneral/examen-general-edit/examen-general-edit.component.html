@@ -82,19 +82,19 @@
           <div class="col-md-4">
             <mat-form-field class="input-full-width">
               <mat-label>Titulo izquierdo</mat-label>
-              <input matInput formControlName="tituloIzq" type="text">
+              <input matInput formControlName="tituloIzquierdo" type="text">
             </mat-form-field>
           </div>
           <div class="col-md-4">
             <mat-form-field class="input-full-width">
               <mat-label>Titulo central</mat-label>
-              <input matInput formControlName="tituloCent" type="text">
+              <input matInput formControlName="tituloCentro" type="text">
             </mat-form-field>
           </div>
           <div class="col-md-4">
             <mat-form-field class="input-full-width">
               <mat-label>Titulo derecho</mat-label>
-              <input matInput formControlName="tituloDer" type="text">
+              <input matInput formControlName="tituloDerecho" type="text">
             </mat-form-field>
           </div>
         </div>
@@ -117,22 +117,24 @@
     </mat-card>
 
     <div *ngIf="edit">
-      <mat-card class="form-edit">
+      <div class="form-edit">
         <div class="row">
-          <button mat-icon-button [matMenuTriggerFor]="menuExamen" aria-label="Menu estudios examen">
-            <mat-icon>more_vert</mat-icon>
-            Estudios del examen
-          </button>
-          <mat-menu #menuExamen="matMenu">
-            <button mat-menu-item (click)="openDialogoEstudio(false,0)">
-              <mat-icon>text_snippet</mat-icon>
-              <span>Añadir estudio</span>
+          <div class="col-md-12">
+            <button mat-icon-button [matMenuTriggerFor]="menuExamen" aria-label="Menu estudios examen">
+              <mat-icon>more_vert</mat-icon>
+              Estudios del examen
             </button>
-            <button mat-menu-item (click)="openDialogoSeccion()">
-              <mat-icon>ballot</mat-icon>
-              <span>Añadir seccion</span>
-            </button>
-          </mat-menu>
+            <mat-menu #menuExamen="matMenu">
+              <button mat-menu-item (click)="openDialogoEstudio(false,0,false, '','')">
+                <mat-icon>text_snippet</mat-icon>
+                <span>Añadir estudio</span>
+              </button>
+              <button mat-menu-item (click)="openDialogoSeccion()">
+                <mat-icon>ballot</mat-icon>
+                <span>Añadir seccion</span>
+              </button>
+            </mat-menu>
+          </div>
         </div>
         <ng-template [ngIf]="ExamenSeccion.length == 0 && ExamenEstudioList.length == 0">
           <div class="row margin-up">
@@ -154,11 +156,11 @@
                 {{seccion.seccion.titulo || seccion.seccion.nombre}}
               </button>
               <mat-menu #menu="matMenu">
-                <button mat-menu-item (click)="openDialogoEstudio(true,seccion.seccion.seccionId)">
+                <button mat-menu-item (click)="openDialogoEstudio(true,seccion.seccion.seccionId,false,'','')">
                   <mat-icon>text_snippet</mat-icon>
                   <span>Añadir estudio</span>
                 </button>
-                <button mat-menu-item (click)="openDialog(seccion.seccion.seccionId, 0, true)">
+                <button mat-menu-item (click)="openDialog(seccion.seccion.seccionId, 0, true, false)">
                   <mat-icon>local_library</mat-icon>
                   <span>Añadir metodo</span>
                 </button>
@@ -196,15 +198,33 @@
 
                     <div class="row">
                       <div class="col-md-12 text-right buttons-catalogo">
-                        
+
                       </div>
                     </div>
                     <div *ngIf="!estudio.comodin; else elseComodin" class="row">
                       <div class="col-md-4">
-                        <span class="badge badge-secondary">Posibles respuestas:</span>
+                        <span class="badge badge-secondary">Resultados predeterminado:</span>
+                        <mat-list role="list">
+                          <mat-list-item role="listitem" *ngFor="let resultado of estudio.resultadoSelect">
+                            <button mat-icon-button aria-label="-"
+                              (click)="deleteRespuestaPredeterminada(estudio.estudioId,estudio.resultadoSelect, resultado.value)"
+                              matTooltip="Eliminar">
+                              <mat-icon>remove</mat-icon>
+                            </button>
+                            {{resultado.viewValue}}
+                          </mat-list-item>
+                        </mat-list>
                       </div>
                       <div class="col-md-4">
                         <span class="badge badge-secondary">Metodos:</span>
+                        <mat-list-item role="listitem" *ngFor="let metodo of estudio.metodo">
+                          <button mat-icon-button aria-label="-"
+                            (click)="removeMetodo(0,estudio.estudioId, metodo.metodoId, false, false)"
+                            matTooltip="Eliminar">
+                            <mat-icon>remove</mat-icon>
+                          </button>
+                          {{metodo.nombre}}
+                        </mat-list-item>
                       </div>
                       <div class="col-md-4">
                         <span class="badge badge-secondary">Referencias:</span>
@@ -226,30 +246,28 @@
                         Acciones
                       </button>
                       <mat-menu #menuEstudio="matMenu">
-                        <button mat-menu-item>
+                        <button mat-menu-item
+                          (click)="openDialogoEstudio(true,seccion.seccion.seccionId,true,estudio.estudioId,estudio.nombre,estudio.orden)">
                           <mat-icon>create</mat-icon>
                           <span>Editar</span>
                         </button>
-                        <button mat-menu-item 
-                          [disabled]="estudio.comodin"
+                        <button mat-menu-item [disabled]="estudio.comodin"
                           (click)="openDialogReferencia(estudio.estudioId,true)">
                           <mat-icon>ballot</mat-icon>
                           <span>Añadir referencia</span>
                         </button>
-                        <button mat-menu-item
-                          [disabled]="estudio.comodin"
-                          (click)="openDialog(seccion.seccion.seccionId,estudio.estudioId, false)">
+                        <button mat-menu-item [disabled]="estudio.comodin"
+                          (click)="openDialog(seccion.seccion.seccionId,estudio.estudioId, false, false)">
                           <mat-icon>text_snippet</mat-icon>
                           <span>Añadir metodo</span>
                         </button>
-                        <button mat-menu-item
-                        (click)="hacerComodin(estudio.estudioId, estudio.comodin)" >
+                        <button mat-menu-item (click)="openDialogRespuesta(estudio.estudioId, estudio.resultadoSelect, seccion.seccion.seccionId)">
+                          <mat-icon>list_alt</mat-icon>
+                          <span>Resultado predet.</span>
+                        </button>
+                        <button mat-menu-item (click)="hacerComodin(estudio.estudioId, estudio.comodin)">
                           <mat-icon>assignment_late</mat-icon>
                           <span>Comodin</span>
-                        </button>
-                        <button mat-menu-item [disabled]="estudio.comodin" (click)="openDialogRespuesta(estudio.estudioId)">
-                          <mat-icon>note_add</mat-icon>
-                          <span>Respuestas</span>
                         </button>
                         <button mat-menu-item
                           (click)="removerEstudioPorSeccion(seccion.seccion.seccionId, estudio.estudioId, estudio.nombre)">
@@ -269,8 +287,7 @@
             <div class="row">
               <div class="col-md-12">
                 <mat-chip-list aria-label="Seleccion de metodo">
-                  <mat-chip [selectable]="selectable" [removable]="removable" (removed)="removeMetodo(1)"
-                    *ngFor="let metodo of seccion.metodo">
+                  <mat-chip [selectable]="selectable" [removable]="removable" *ngFor="let metodo of seccion.metodo" (removed)="removeMetodo(seccion.seccion.seccionId, 0, metodo.metodoId, true, false)">
                     {{metodo.nombre}}
                     <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
                   </mat-chip>
@@ -281,7 +298,7 @@
         </mat-card>
 
         <mat-accordion *ngFor="let estudio of ExamenEstudioList" class="form-edit col-md-12">
-          <mat-expansion-panel (afterExpand)="obtenerReferencia(estudio.estudioId)">
+          <mat-expansion-panel>
             <mat-expansion-panel-header>
               <mat-panel-title>
                 {{estudio.nombre}}
@@ -292,53 +309,73 @@
                 </div>
               </mat-panel-description>
             </mat-expansion-panel-header>
-            <div class="row">
-              <div class="col-md-12 text-right buttons-catalogo">
-                <button mat-button [matMenuTriggerFor]="menuEstudioExamen" aria-label="Menu estudio examen">
-                  Acciones
-                </button>
-                <mat-menu #menuEstudioExamen="matMenu">
-                  <button mat-menu-item (click)="openDialogReferencia(estudio.estudioId, false)">
-                    <mat-icon>ballot</mat-icon>
-                    <span>Añadir referencia</span>
-                  </button>
-                  <button mat-menu-item (click)="openDialogReferencia(estudio.estudioId)">
-                    <mat-icon>text_snippet</mat-icon>
-                    <span>Añadir metodo</span>
-                  </button>
-                  <button mat-menu-item>
-                    <mat-icon>create</mat-icon>
-                    <span>Editar</span>
-                  </button>
-                  <button mat-menu-item (click)="removerEstudioPorExamen(estudio.estudioId, estudio.nombre)">
-                    <mat-icon>delete_forever</mat-icon>
-                    <span>Eliminar</span>
-                  </button>
-                </mat-menu>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-md-12">
-                <span class="badge badge-secondary">Referencias:</span>
-              </div>
-            </div>
             <div class="row margin-up">
-              <div class="col-md-6" *ngFor="let referencia of estudio.referencia">
-                <strong>{{referencia.clasificacion.nombre}}</strong>
-                <p>Femenino: {{referencia.referenciaFemenino}}</p>
-                <p>Masculino {{referencia.referenciaMasculino}}</p>
-                <p>General: {{referencia.referenciaGeneral}}</p>
+              <div class="col-md-4">
+                <span class="badge badge-secondary">Resultados predeterminado:</span>
+                <mat-list role="list">
+                  <mat-list-item role="listitem" *ngFor="let resultado of estudio.resultadoSelect">
+                    <button mat-icon-button aria-label="-"
+                      (click)="deleteRespuestaPredeterminada(estudio.estudioId,estudio.resultadoSelect, resultado.value)"
+                      matTooltip="Eliminar">
+                      <mat-icon>remove</mat-icon>
+                    </button>
+                    {{resultado.viewValue}}
+                  </mat-list-item>
+                </mat-list>
+                <button class="width-100" mat-button color="primary"
+                  (click)="openDialogRespuesta(estudio.estudioId, estudio.resultadoSelect, seccion.seccion.seccionId)">Añadir</button>
               </div>
-            </div>
-            <div class="row margin-up">
-              <div class="col-md-12">
+              <div class="col-md-4">
                 <span class="badge badge-secondary">Metodos:</span>
+                <mat-list-item role="listitem" *ngFor="let metodo of estudio.metodo">
+                  <button mat-icon-button aria-label="-"
+                    (click)="removeMetodo(0,estudio.estudioId, metodo.metodoId, false, true)"
+                    matTooltip="Eliminar">
+                    <mat-icon>remove</mat-icon>
+                  </button>
+                  {{metodo.nombre}}
+                </mat-list-item>
+              </div>
+              <div class="col-md-4">
+                <span class="badge badge-secondary">Referencias:</span>
+                <div class="row">
+                  <div class="col-md-12" *ngFor="let referencia of estudio.referencia">
+                    <strong>{{referencia.clasificacion.nombre}}</strong>
+                    <p>Femenino: {{referencia.referenciaFemenino}}</p>
+                    <p>Masculino {{referencia.referenciaMasculino}}</p>
+                    <p>General: {{referencia.referenciaGeneral}}</p>
+                  </div>
+                </div>
               </div>
             </div>
 
+            <mat-action-row>
+              <button mat-button [matMenuTriggerFor]="menuEstudioExamen" aria-label="Menu estudio examen">
+                Acciones
+              </button>
+              <mat-menu #menuEstudioExamen="matMenu">
+                <button mat-menu-item (click)="openDialogReferencia(estudio.estudioId, false)">
+                  <mat-icon>ballot</mat-icon>
+                  <span>Añadir referencia</span>
+                </button>
+                <button mat-menu-item (click)="openDialog(0,estudio.estudioId, false, true)">
+                  <mat-icon>text_snippet</mat-icon>
+                  <span>Añadir metodo</span>
+                </button>
+                <button mat-menu-item>
+                  <mat-icon>create</mat-icon>
+                  <span>Editar</span>
+                </button>
+                <button mat-menu-item (click)="removerEstudioPorExamen(estudio.estudioId, estudio.nombre)">
+                  <mat-icon>delete_forever</mat-icon>
+                  <span>Eliminar</span>
+                </button>
+              </mat-menu>
+            </mat-action-row>
+
           </mat-expansion-panel>
         </mat-accordion>
-      </mat-card>
+      </div>
     </div>
   </div>
 </div>

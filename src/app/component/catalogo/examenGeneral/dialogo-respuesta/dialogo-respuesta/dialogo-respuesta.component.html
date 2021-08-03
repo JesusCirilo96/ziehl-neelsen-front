@@ -5,14 +5,14 @@
   <div class="col-md-12">
     <div class="row">
       <mat-form-field class="margin-up input-full-width">
-        <mat-label>Respuestas</mat-label>
+        <mat-label>Vista previa de los resultados</mat-label>
         <mat-select>
           <mat-option [value]="option.value" *ngFor="let option of respuestaSelect">{{ option.viewValue }}</mat-option>
         </mat-select>
       </mat-form-field>
     </div>
     <div class="row margin-up"><input type="text" class="form-control form-control-sm width-100"
-        [(ngModel)]="addResponse" placeholder="Escribe la respuesta predterminada" aria-label="Respuesta"></div>
+        [(ngModel)]="addResponse" placeholder="Escribe el resultado predeterminado" aria-label="Respuesta"></div>
     <div class="row margin-up-down"><button type="button" class="btn btn-primary btn-sm width-100"
         (click)="anadirPosibleRespuestaEstudio()">Añadir</button></div>
   </div>

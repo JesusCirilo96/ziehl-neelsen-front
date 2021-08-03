@@ -1,4 +1,4 @@
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import {MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 
 export interface DialogData {
@@ -10,7 +10,7 @@ export interface DialogData {
   templateUrl: './dialogo-respuesta.component.html',
   styleUrls: ['./dialogo-respuesta.component.css']
 })
-export class DialogoRespuestaComponent {
+export class DialogoRespuestaComponent implements OnInit {
 
   constructor(
     public dialogRef: MatDialogRef<DialogoRespuestaComponent>,
@@ -20,13 +20,25 @@ export class DialogoRespuestaComponent {
   addResponse: string = "";
   respuestaSelect: any =[];
 
+  ngOnInit(){
+    console.log(this.data)
+    if(this.data != null){
+      this.respuestaSelect = this.data
+    }
+  
+  }
+
   onNoClick(): void {
     this.dialogRef.close();
   }
 
+  
+
   anadirPosibleRespuestaEstudio(){
-    this.respuestaSelect.push({value:this.addResponse,viewValue:this.addResponse});
-    console.log(this.respuestaSelect);
+    if(this.addResponse != ""){
+      this.respuestaSelect.push({value:this.addResponse,viewValue:this.addResponse});
+    }
+    this.addResponse = "";
   }
 
   armaRespuesta(){

@@ -6,7 +6,8 @@ import { FormControl } from '@angular/forms';
 import { map, startWith } from 'rxjs/operators';
 
 export interface DialogData {
-  metodo: JSON;
+  estudioOrden:number,
+  estudioNombre: string
 }
 
 export interface User {
@@ -30,6 +31,8 @@ export class DialogoEstudioComponent implements OnInit {
   seleccionado = false;
   orden: number;
 
+  actualizarDatos = true;
+
   nombreEstudio: string;
 
   EstudiosDisponibles: any = [];
@@ -38,6 +41,12 @@ export class DialogoEstudioComponent implements OnInit {
   filteredOptions: Observable<User[]>;
 
   ngOnInit() {
+    console.log(this.data);
+    if(this.data[0].estudioNombre != ""){
+      this.nombreEstudio = this.data[0].estudioNombre;
+      this.orden = this.data[0].estudioOrden;
+      this.actualizarDatos = false;
+    }
     this.getEstudios();
     this.filteredOptions = this.myControl.valueChanges
       .pipe(

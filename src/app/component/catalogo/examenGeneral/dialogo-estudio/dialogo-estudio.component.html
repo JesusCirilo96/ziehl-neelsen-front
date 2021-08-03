@@ -1,4 +1,4 @@
-<h1 mat-dialog-title>Añadir estudio</h1>
+<h1 mat-dialog-title>{{actualizarDatos ? 'Añadir estudio': 'Actualizar estudio'}}</h1>
 <div mat-dialog-content>
   <ng-template [ngIf]="!seleccionado">
     <div class="row">
@@ -36,9 +36,11 @@
       </mat-form-field>
     </div>
   </div>
-  <div class="row">
-    <mat-slide-toggle [(ngModel)]="seleccionado">Seleccionar uno existente</mat-slide-toggle>
-  </div>
+  <ng-template [ngIf]="actualizarDatos">
+    <div class="row">
+      <mat-slide-toggle [(ngModel)]="seleccionado">Seleccionar uno existente</mat-slide-toggle>
+    </div>
+  </ng-template>
 </div>
 <div mat-dialog-actions>
   <button mat-button (click)="onNoClick()">Cancelar</button>
