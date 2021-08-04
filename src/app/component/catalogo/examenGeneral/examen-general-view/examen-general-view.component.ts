@@ -18,7 +18,6 @@ export class ExamenGeneralViewComponent implements OnInit {
   cols: any[];
 
   examenGeneralColumns: string[] = [
-    'examenGeneralId',
     'nombre',
     'alias',
     'precio',

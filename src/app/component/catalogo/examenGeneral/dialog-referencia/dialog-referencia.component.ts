@@ -1,10 +1,20 @@
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import {MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 
 import { ClasificacionPacienteService } from 'src/app/services/clasificacionPaciente/clasificacion-paciente.service';
 
 export interface DialogData {
-  metodo:JSON;
+  editar:boolean,
+  seccion:{
+    clasificacion: {
+      clasificacionPacienteId: number
+    },
+    nota:string,
+    orden:number,
+    referenciaFemenino:string,
+    referenciaGeneral:string,
+    referenciaMasculino: string
+  }
 }
 
 @Component({
@@ -12,7 +22,7 @@ export interface DialogData {
   templateUrl: './dialog-referencia.component.html',
   styleUrls: ['./dialog-referencia.component.css']
 })
-export class DialogReferenciaComponent {
+export class DialogReferenciaComponent implements OnInit{
 
   constructor(
     private clasificacionService: ClasificacionPacienteService,
@@ -31,6 +41,22 @@ export class DialogReferenciaComponent {
   referenciaMasculino: string
   referenciaFemenino:string;
   referenciaGeneral: string;
+  orden: number;
+  nota: string;
+
+  ngOnInit(){
+    this.orden = 0;
+    this.nota = "";
+    if(this.data.editar){
+      this.clasificacionId = this.data.seccion.clasificacion.clasificacionPacienteId;
+      this.referenciaMasculino = this.data.seccion.referenciaMasculino;
+      this.referenciaFemenino = this.data.seccion.referenciaFemenino;
+      this.referenciaGeneral = this.data.seccion.referenciaGeneral;
+      this.orden = this.data.seccion.orden
+      this.nota = this.data.seccion.nota;
+    }
+
+  }
 
   getClasificacion(){
     this.clasificacionService.getClasificacionPacientes().subscribe(
@@ -39,6 +65,22 @@ export class DialogReferenciaComponent {
       },
       err => console.error(err)
     );
+  }
+
+  responseDialogo() {
+    var response = [];
+    
+    response.push(
+      {
+        'clasificacionId': this.clasificacionId,
+        'referenciaMasculino':this.referenciaMasculino,
+        'referenciaFemenino':this.referenciaFemenino,
+        'referenciaGeneral':this.referenciaGeneral,
+        'orden': this.orden,
+        'nota': this.nota
+      }
+    );
+    return response;
   }
 
 }

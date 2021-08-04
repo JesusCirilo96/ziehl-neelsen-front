@@ -3,5 +3,6 @@ export interface SeccionEstudio{
     porId?:boolean,
     estudioId?:number,
     seccionId?:number,
-    orden?:number
+    orden?:number,
+    examenGeneralId?:number
 }

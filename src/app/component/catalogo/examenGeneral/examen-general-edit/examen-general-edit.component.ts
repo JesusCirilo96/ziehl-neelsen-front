@@ -97,11 +97,14 @@ export class ExamenGeneralEditComponent implements OnInit {
   ExamenEstudioList: any = [];//Lista para los estudios de los examenes
   ReferenciaEstudio: any = [];
   referencia: Referencia = {
+    referenciaId:null,
     clasificacionId: null,
     estudioId: null,
     femenino: '',
     masculino: '',
-    general: ''
+    general: '',
+    orden:0,
+    nota:''
   }
 
   metodoSeccion: MetodoSeccion = {
@@ -486,28 +489,62 @@ export class ExamenGeneralEditComponent implements OnInit {
   }
 
   /*DIALOGO REFERENCIA */
-
-  referenciaDialog: any = [];
-  openDialogReferencia(estudioId, esPorSeccion) {
-
-    console.log("El estudio ID ::" + estudioId);
+  openDialogReferencia(estudioId, esPorSeccion, editar, seccioData) {
+    var referenciaDialog;
+    if(editar){
+      console.log(seccioData);
+      referenciaDialog = { editar: true, seccion : seccioData}
+    }else{
+      referenciaDialog = { editar: false}
+    }
 
     const dialogReferencia = this.dialog.open(DialogReferenciaComponent, {
       width: '500px',
-      data: { referencia: this.referenciaDialog }
+      data: referenciaDialog
     });
 
     dialogReferencia.afterClosed().subscribe(result => {
       if (result != undefined) {
-        this.referencia = {
-          clasificacionId: result[0].clasificacionId,
-          estudioId: estudioId,
-          femenino: result[0].referenciaFemenino,
-          masculino: result[0].referenciaMasculino,
-          general: result[0].referenciaGeneral
+        if(!editar){
+          this.referencia = {
+            clasificacionId: result[0].clasificacionId,
+            estudioId: estudioId,
+            femenino: result[0].referenciaFemenino,
+            masculino: result[0].referenciaMasculino,
+            general: result[0].referenciaGeneral,
+            orden: result[0].orden,
+            nota: result[0].nota
+          }
+          console.log(this.referencia)
+          this.guardarReferencia(this.referencia, esPorSeccion);
+        }else{
+          this.referencia = {
+            referenciaId: seccioData.referenciaId,
+            clasificacionId: result[0].clasificacionId,
+            femenino: result[0].referenciaFemenino,
+            masculino: result[0].referenciaMasculino,
+            general: result[0].referenciaGeneral,
+            orden: result[0].orden,
+            nota: result[0].nota
+          }
+          this.refereciaService.updateReferencia(this.referencia).subscribe(
+            res => {
+              this.alerta('Se actualizo la referencia exitosamente', 'success', false);
+              Swal.fire({
+                type: 'success',
+                title: 'Se añadio la referencia',
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000
+              });
+              this.obtenerReferencia(estudioId, esPorSeccion);
+            },
+            err => {
+              this.alertaBoton('Verificar datos introducidos', 'Error: ' + err, 'warning')
+            }
+          );
         }
-        console.log(this.referencia)
-        this.guardarReferencia(this.referencia, esPorSeccion);
       }
     });
   }
@@ -569,38 +606,91 @@ export class ExamenGeneralEditComponent implements OnInit {
       err => {
         this.alertaBoton('Verificar datos introducidos', 'Error: ' + err, 'warning')
       }
-    )
+    );
+  }
+
+  eliminarReferencia(referenciaId, estudioId, porSeccion){
+    
+    Swal.fire({
+      title: "¿Estas seguro?",
+      html: "Se va a eliminar la referencia",
+      type: "warning",
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Aceptar',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if (result.value) {
+        this.refereciaService.deleteReferencia(referenciaId).subscribe(
+          res => {
+            this.alerta("Se elimino correctamente", "success", false);
+            this.obtenerReferencia(estudioId, porSeccion);
+          }, error => {
+            this.alertaBoton("Ocurrio un error", "Ocurrio un error mientras se eliminaba" + error, 'error')
+          }
+        );
+      }
+    });
+
   }
 
   /*DIALOGO SECCION */
 
-  dialogoSeccion: any = [];
-  openDialogoSeccion() {
+  openDialogoSeccion(editar, seccionEditar, orden) {
+    if(!editar){
+      seccionEditar = {editar:false};
+    }else{
+      seccionEditar = {editar:true, datos: seccionEditar, orden: orden}
+    }
 
     const dialogSeccion = this.dialog.open(DialogoSeccionComponent, {
       width: '500px',
-      data: { referencia: this.dialogoSeccion }
+      data: seccionEditar
     });
 
     dialogSeccion.afterClosed().subscribe(result => {
       if (result != undefined) {
-
-        var porId = result[0].porId;
-        if (porId) {
-          console.log("Se guardara la seccion con el ID de la seccion:: " + result[0].idSeccion);
-          this.examenSeccion.porId = true;
-          this.examenSeccion.seccionId = result[0].idSeccion;
-        } else {
-          console.log("Se guardara la seccion por nombre::  " + result[0].nombreSeccion);
+        if(editar){
           this.examenSeccion.porId = false;
+          this.examenSeccion.seccionId = seccionEditar.datos.seccionId; 
           this.examenSeccion.nombreSeccion = result[0].nombreSeccion;
           this.examenSeccion.titulo = result[0].titulo;
           this.examenSeccion.textoCent = result[0].textoCent;
           this.examenSeccion.textoDer = result[0].textoDer;
+          this.examenSeccion.examenId = this.examenGeneral.examenGeneralId;
+          this.examenSeccion.orden = result[0].orden;
+
+          console.log(this.examenSeccion);
+
+          this.examenGeneralService.updatExamenSeccion(this.examenSeccion).subscribe(
+            res => {
+              this.alerta('Se Añadio la seccion exitosamente', 'success', false);
+              this.getExamenSeccion(this.examenGeneral.examenGeneralId);
+            },
+            err => {
+              this.alertaBoton('Verificar datos introducidos', 'Error: ' + err, 'warning')
+            }
+          )
+        }else{
+          var porId = result[0].porId;
+          if (porId) {
+            console.log("Se guardara la seccion con el ID de la seccion:: " + result[0].idSeccion);
+            this.examenSeccion.porId = true;
+            this.examenSeccion.seccionId = result[0].idSeccion;
+          } else {
+            console.log("Se guardara la seccion por nombre::  " + result[0].nombreSeccion);
+            this.examenSeccion.porId = false;
+            this.examenSeccion.nombreSeccion = result[0].nombreSeccion;
+            this.examenSeccion.titulo = result[0].titulo;
+            this.examenSeccion.textoCent = result[0].textoCent;
+            this.examenSeccion.textoDer = result[0].textoDer;
+          }
+          this.examenSeccion.examenId = this.examenGeneral.examenGeneralId;
+          this.examenSeccion.orden = result[0].orden;
+          this.guardarExamenSeccion(this.examenSeccion);
         }
-        this.examenSeccion.examenId = this.examenGeneral.examenGeneralId;
-        this.examenSeccion.orden = result[0].orden;
-        this.guardarExamenSeccion(this.examenSeccion);
+        
 
         console.log("DIALOGO SECCION CERRADA")
       }
@@ -667,13 +757,18 @@ export class ExamenGeneralEditComponent implements OnInit {
           this.seccionEstudio.nombreEstudio = result[0].nombreEstudio;
           this.seccionEstudio.seccionId = seccionId;
           this.seccionEstudio.orden = result[0].orden;
+          this.seccionEstudio.examenGeneralId = this.examenGeneral.examenGeneralId;
           console.log(this.seccionEstudio);
           this.seccionService.updateSeccionEstudio(this.seccionEstudio).subscribe(
             response => {
               console.log(response);
               if (response['errorCode'] == "OK") {
                 this.alerta('Actualizado correctamente', 'success', false);
-                this.getSeccionEstudios(seccionId);
+                if(seccionId == 0){
+                  this.getExamenEstudios(this.examenGeneral.examenGeneralId);
+                }else{
+                  this.getSeccionEstudios(seccionId);
+                }
               }
             },
             error => {

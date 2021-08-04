@@ -84,21 +84,16 @@
             <ng-template [ngIf]="examenGeneral.resultado.LAYOUT == 5">
               <div class="row">
                 <div class="col-md-12">
-                  <div class="row">
-                    <div class="col-md-6"></div>
-                    <div class="col-md-6 text-center titleSubexamen">VALORES DE REFERENCIA</div>
-                  </div>
-                  <div class="row">
-                    <div class="col-md-6"></div>
-                    <div class="col-md-6 text-center"><span class="titleSubexamen">Masculino</span>&nbsp;<span
-                        class="titleSubexamen">Femenino</span> </div>
-                  </div>
                   <ng-template [ngIf]="examenGeneral.resultado.SECCION">
                     <div>
                       <!--table-borderless-->
                       <table class="table table-sm table-borderless">
                         <tbody *ngFor="let seccion of examenGeneral.resultado.SECCION">
-                          <tr class="titleSubexamen">{{seccion.seccion.nombre}}</tr>
+                          <tr>
+                            <td class="titleSubexamen">{{seccion.seccion.titulo}}</td>
+                            <td class="titleSubExamen">{{seccion.seccion.textoCent}}</td>
+                            <td class="titleSubExamen text-center" [innerHTML]="seccion.seccion.textoDer"></td>
+                          </tr>
                           <tr *ngFor="let estudio of seccion.estudio">
                             <td class="width-30">{{estudio.nombre}}</td>
                             <td class="width-20">

@@ -41,7 +41,6 @@ export class DialogoEstudioComponent implements OnInit {
   filteredOptions: Observable<User[]>;
 
   ngOnInit() {
-    console.log(this.data);
     if(this.data[0].estudioNombre != ""){
       this.nombreEstudio = this.data[0].estudioNombre;
       this.orden = this.data[0].estudioOrden;

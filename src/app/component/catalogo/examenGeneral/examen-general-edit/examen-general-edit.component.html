@@ -16,7 +16,7 @@
             <button mat-button id="examenGeneralEstado" (click)="activarInactivar()"></button>
             <button mat-flat-button color="primary" id="examenGeneralGuardar"
               [disabled]="!examenGeneral.estado || !formExamen.valid">Guardar</button>
-            <button mat-flat-button color="warn" (click)="cancelarEdicion()">Cancelar</button>
+            <button mat-flat-button color="warn" (click)="cancelarEdicion()">{{edit ? 'Cerrar': 'Cancelar'}}</button>
           </div>
         </div>
 
@@ -129,9 +129,13 @@
                 <mat-icon>text_snippet</mat-icon>
                 <span>Añadir estudio</span>
               </button>
-              <button mat-menu-item (click)="openDialogoSeccion()">
+              <button mat-menu-item (click)="openDialogoSeccion(false,'',0)">
                 <mat-icon>ballot</mat-icon>
                 <span>Añadir seccion</span>
+              </button>
+              <button mat-menu-item (click)="openDialog(seccion.seccion.seccionId, 0, true, false)">
+                <mat-icon>local_library</mat-icon>
+                <span>Añadir metodo</span>
               </button>
             </mat-menu>
           </div>
@@ -156,6 +160,11 @@
                 {{seccion.seccion.titulo || seccion.seccion.nombre}}
               </button>
               <mat-menu #menu="matMenu">
+                <button mat-menu-item
+                  (click)="openDialogoSeccion(true, seccion.seccion, seccion.orden)">
+                  <mat-icon>create</mat-icon>
+                  <span>Editar</span>
+                </button>
                 <button mat-menu-item (click)="openDialogoEstudio(true,seccion.seccion.seccionId,false,'','')">
                   <mat-icon>text_snippet</mat-icon>
                   <span>Añadir estudio</span>
@@ -173,8 +182,7 @@
             <div class="col-md-4">
               {{seccion.seccion.textoCent}}
             </div>
-            <div class="col-md-4">
-              {{seccion.seccion.textoDer}}
+            <div class="col-md-4" class="text-center" [innerHTML]="seccion.seccion.textoDer">
             </div>
           </div>
 
@@ -230,9 +238,22 @@
                         <span class="badge badge-secondary">Referencias:</span>
                         <div class="row">
                           <div class="col-md-12" *ngFor="let referencia of estudio.referencia">
+                            <button mat-icon-button [matMenuTriggerFor]="menuRefSecc" aria-label="opciones" matTooltip="Opciones">
+                              <mat-icon>more_vert</mat-icon>
+                            </button>
+                            <mat-menu #menuRefSecc="matMenu">
+                              <button mat-menu-item (click)="openDialogReferencia(estudio.estudioId,true, true, referencia)">
+                                <mat-icon>create</mat-icon>
+                                <span>Editar</span>
+                              </button>
+                              <button mat-menu-item (click)="eliminarReferencia(referencia.referenciaId, estudio.estudioId, true)">
+                                <mat-icon>delete_forever</mat-icon>
+                                <span>Eliminar</span>
+                              </button>
+                            </mat-menu>
                             <strong>{{referencia.clasificacion.nombre}}</strong>
-                            <p>Femenino: {{referencia.referenciaFemenino}}</p>
                             <p>Masculino {{referencia.referenciaMasculino}}</p>
+                            <p>Femenino: {{referencia.referenciaFemenino}}</p>
                             <p>General: {{referencia.referenciaGeneral}}</p>
                           </div>
                         </div>
@@ -252,16 +273,17 @@
                           <span>Editar</span>
                         </button>
                         <button mat-menu-item [disabled]="estudio.comodin"
-                          (click)="openDialogReferencia(estudio.estudioId,true)">
-                          <mat-icon>ballot</mat-icon>
+                          (click)="openDialogReferencia(estudio.estudioId,true, false, '')">
+                          <mat-icon>people</mat-icon>
                           <span>Añadir referencia</span>
                         </button>
                         <button mat-menu-item [disabled]="estudio.comodin"
                           (click)="openDialog(seccion.seccion.seccionId,estudio.estudioId, false, false)">
-                          <mat-icon>text_snippet</mat-icon>
+                          <mat-icon>local_library</mat-icon>
                           <span>Añadir metodo</span>
                         </button>
-                        <button mat-menu-item (click)="openDialogRespuesta(estudio.estudioId, estudio.resultadoSelect, seccion.seccion.seccionId)">
+                        <button mat-menu-item [disabled]="estudio.comodin"
+                          (click)="openDialogRespuesta(estudio.estudioId, estudio.resultadoSelect, seccion.seccion.seccionId)">
                           <mat-icon>list_alt</mat-icon>
                           <span>Resultado predet.</span>
                         </button>
@@ -322,8 +344,6 @@
                     {{resultado.viewValue}}
                   </mat-list-item>
                 </mat-list>
-                <button class="width-100" mat-button color="primary"
-                  (click)="openDialogRespuesta(estudio.estudioId, estudio.resultadoSelect, seccion.seccion.seccionId)">Añadir</button>
               </div>
               <div class="col-md-4">
                 <span class="badge badge-secondary">Metodos:</span>
@@ -340,10 +360,24 @@
                 <span class="badge badge-secondary">Referencias:</span>
                 <div class="row">
                   <div class="col-md-12" *ngFor="let referencia of estudio.referencia">
+                    <button mat-icon-button [matMenuTriggerFor]="menuRefExamen" aria-label="opciones" matTooltip="Opciones">
+                      <mat-icon>more_vert</mat-icon>
+                    </button>
+                    <mat-menu #menuRefExamen="matMenu">
+                      <button mat-menu-item (click)="openDialogReferencia(estudio.estudioId,false, true, referencia)">
+                        <mat-icon>create</mat-icon>
+                        <span>Editar</span>
+                      </button>
+                      <button mat-menu-item (click)="eliminarReferencia(referencia.referenciaId, estudio.estudioId, false)">
+                        <mat-icon>delete_forever</mat-icon>
+                        <span>Eliminar</span>
+                      </button>
+                    </mat-menu>
                     <strong>{{referencia.clasificacion.nombre}}</strong>
                     <p>Femenino: {{referencia.referenciaFemenino}}</p>
-                    <p>Masculino {{referencia.referenciaMasculino}}</p>
+                    <p>Masculino: {{referencia.referenciaMasculino}}</p>
                     <p>General: {{referencia.referenciaGeneral}}</p>
+                    <div *ngIf="referencia.nota != '' ">Nota: {{referencia.nota}}</div>
                   </div>
                 </div>
               </div>
@@ -354,17 +388,23 @@
                 Acciones
               </button>
               <mat-menu #menuEstudioExamen="matMenu">
-                <button mat-menu-item (click)="openDialogReferencia(estudio.estudioId, false)">
-                  <mat-icon>ballot</mat-icon>
+                <button mat-menu-item
+                (click)="openDialogoEstudio(true,0,true,estudio.estudioId,estudio.nombre,estudio.orden)">
+                <mat-icon>create</mat-icon>
+                <span>Editar</span>
+              </button>
+                <button mat-menu-item (click)="openDialogReferencia(estudio.estudioId, false, false, '')">
+                  <mat-icon>people</mat-icon>
                   <span>Añadir referencia</span>
                 </button>
                 <button mat-menu-item (click)="openDialog(0,estudio.estudioId, false, true)">
-                  <mat-icon>text_snippet</mat-icon>
+                  <mat-icon>local_library</mat-icon>
                   <span>Añadir metodo</span>
                 </button>
-                <button mat-menu-item>
-                  <mat-icon>create</mat-icon>
-                  <span>Editar</span>
+                <button mat-menu-item [disabled]="estudio.comodin"
+                  (click)="openDialogRespuesta(estudio.estudioId, estudio.resultadoSelect, seccion.seccion.seccionId)">
+                  <mat-icon>list_alt</mat-icon>
+                  <span>Resultado predet.</span>
                 </button>
                 <button mat-menu-item (click)="removerEstudioPorExamen(estudio.estudioId, estudio.nombre)">
                   <mat-icon>delete_forever</mat-icon>

@@ -74,6 +74,14 @@ export class ExamenGeneralService {
   }
 
   /**
+   * Actualiza datos del examen seccion
+   * @param examenSeccion Objeto con los datos a actualizar
+   */
+  updatExamenSeccion(examenSeccion: ExamenSeccion){
+    return this.http.put(`${this.API_URI}/examen/seccion/update/`, examenSeccion);
+  }
+
+  /**
    * Actualizamos los datos del examen general
    * @param updatedExamenGeneral El examen a actualizar
    */

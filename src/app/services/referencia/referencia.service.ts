@@ -34,10 +34,10 @@ export class ReferenciaService {
 
   /**
    * Borramos la referencia
-   * @param id 
+   * @param referenciaId 
    */
-  deleteReferencia(id:number){
-    return this.http.delete(`${this.API_URI}/referencia/${id}`);
+  deleteReferencia(referenciaId:number){
+    return this.http.delete(`${this.API_URI}/referencia/delete/${referenciaId}`);
   }
 
   /**
@@ -53,6 +53,6 @@ export class ReferenciaService {
    * @param updatedReferencia El objeto de la referencia a actualizar
    */
   updateReferencia(updatedReferencia:Referencia): Observable<Referencia>{
-    return this.http.put(`${this.API_URI}/referencia/save`, updatedReferencia);
+    return this.http.put(`${this.API_URI}/referencia/update`, updatedReferencia);
   }
 }
