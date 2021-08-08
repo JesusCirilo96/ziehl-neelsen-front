@@ -68,7 +68,7 @@ export class MetodoEditComponent implements OnInit {
   saveNewMetodo(){
     this.metodoService.saveMetodo(this.formMetodo.value).subscribe(
       res=>{
-        this.router.navigate(['/metodo'])
+        this.router.navigate(['/examen'])
       },
       err=>{
         console.log(err);
@@ -79,7 +79,7 @@ export class MetodoEditComponent implements OnInit {
   updateMetodo(){
     this.metodoService.updateMetodo(this.formMetodo.value).subscribe(
       res=>{
-        this.router.navigate(['/metodo'])
+        this.router.navigate(['/examen'])
         this.edit = false;
       },
       err=>{
@@ -89,7 +89,7 @@ export class MetodoEditComponent implements OnInit {
   }
 
   cancelarEdicion(){
-    this.router.navigate(['/metodo']);
+    this.router.navigate(['/examen']);
   }
 
   activarInactivar(){

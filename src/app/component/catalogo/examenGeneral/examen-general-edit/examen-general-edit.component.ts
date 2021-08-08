@@ -258,7 +258,7 @@ export class ExamenGeneralEditComponent implements OnInit {
     this.examenGeneralService.saveExamenGeneral(this.formExamen.value).subscribe(
       res => {
         this.alerta('Se Guardo el Examen', 'success', false);
-        this.router.navigate(['/examengeneral'])
+        this.router.navigate(['/examen'])
       },
       err => {
         this.alertaBoton('Verificar datos introducidos', 'Error: ' + err, 'warning')
@@ -270,7 +270,7 @@ export class ExamenGeneralEditComponent implements OnInit {
   updateExamenGeneral() {
     this.examenGeneralService.updateExamenGeneral(this.formExamen.value).subscribe(
       res => {
-        this.router.navigate(['/examengeneral'])
+        this.router.navigate(['/examen'])
         this.edit = false;
       },
       err => {
@@ -280,7 +280,7 @@ export class ExamenGeneralEditComponent implements OnInit {
   }
 
   cancelarEdicion() {
-    this.router.navigate(['/examengeneral']);
+    this.router.navigate(['/examen']);
   }
 
   activarInactivar() {

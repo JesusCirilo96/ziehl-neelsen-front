@@ -79,7 +79,7 @@ export class ClasificacionPacienteEditComponent implements OnInit {
   saveClasificacion(){
     this.clasificacionService.saveClasificacion(this.formClasificacion.value).subscribe(
       res=>{
-        this.router.navigate(['/clasificacion/paciente'])
+        this.router.navigate(['/examen'])
       },
       err=>{
         console.log(err);
@@ -91,7 +91,7 @@ export class ClasificacionPacienteEditComponent implements OnInit {
     console.log(this.formClasificacion.value);
     this.clasificacionService.updateClasificacion(this.formClasificacion.value).subscribe(
       res=>{
-        this.router.navigate(['/clasificacion/paciente'])
+        this.router.navigate(['/examen'])
         this.edit = false;
       },
       err=>{
@@ -101,7 +101,7 @@ export class ClasificacionPacienteEditComponent implements OnInit {
   }
 
   cancelarEdicion(){
-    this.router.navigate(['/clasificacion/paciente']);
+    this.router.navigate(['/examen']);
   }
 
   activarInactivar(){

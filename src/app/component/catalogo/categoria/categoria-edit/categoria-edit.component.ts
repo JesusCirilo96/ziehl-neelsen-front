@@ -72,7 +72,7 @@ export class CategoriaEditComponent implements OnInit {
   saveCategoria(){
     this.categoriaService.saveCategoria(this.formCategoria.value).subscribe(
       res=>{
-        this.router.navigate(['/categoria'])
+        this.router.navigate(['/examen'])
       },
       err=>{
         console.log(err);
@@ -83,7 +83,7 @@ export class CategoriaEditComponent implements OnInit {
   updateCategoria(){
     this.categoriaService.updateCategorias(this.formCategoria.value).subscribe(
       res=>{
-        this.router.navigate(['/categoria'])
+        this.router.navigate(['/examen'])
         this.edit = false;
       },
       err=>{
@@ -93,7 +93,7 @@ export class CategoriaEditComponent implements OnInit {
   }
 
   cancelarEdicion(){
-    this.router.navigate(['/categoria']);
+    this.router.navigate(['/examen']);
   }
 
   activarInactivar(){

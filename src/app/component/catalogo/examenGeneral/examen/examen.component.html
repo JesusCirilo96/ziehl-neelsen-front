@@ -1,0 +1,25 @@
+
+<div class="container-fluid page">
+  <div class="d-flex page__box p-3 mt-2">Examen</div>
+  <div class="page__content shadow p-3 position-relative">
+    <mat-tab-group>
+        <mat-tab *ngFor="let submenu of rolMenu[index].submenu" label="{{submenu.nombre}}"> 
+          <div class="vista" *ngIf="submenu.ruta == '/examengeneral'">
+            <app-examen-general-view></app-examen-general-view>
+          </div>
+          <div class="vista" *ngIf="submenu.ruta == '/categoria'">
+            <app-categoria-view></app-categoria-view>
+          </div>
+          <div class="vista" *ngIf="submenu.ruta == '/seccion'">
+            Quitar
+          </div>
+          <div class="vista" *ngIf="submenu.ruta == '/metodo'">
+            <app-metodo-view></app-metodo-view>
+          </div>
+          <div class="vista" *ngIf="submenu.ruta == '/clasificacion/paciente'">
+            <app-clasificacion-paciente-view></app-clasificacion-paciente-view>
+          </div>
+        </mat-tab>
+    </mat-tab-group>
+  </div>
+</div>

@@ -9,7 +9,7 @@ import { User } from './_models';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   currentUser: User;
 
   constructor(
@@ -17,6 +17,15 @@ export class AppComponent {
       private authenticationService: AuthenticationService
   ) {
       this.authenticationService.currentUser.subscribe(x => this.currentUser = x);
+  }
+
+  sideBarOpen= true;
+  ngOnInit(){
+
+  }
+
+  sideBarToggler(){
+    this.sideBarOpen = !this.sideBarOpen;
   }
 
   logout() {

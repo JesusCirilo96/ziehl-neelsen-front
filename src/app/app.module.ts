@@ -57,7 +57,8 @@ import { ResultadoEditComponent } from './component/resultado/resultado-edit/res
 import { HematicaComponent } from './component/resultado/pdfLayout/hematica/hematica.component';
 import { MainNavComponent } from './main-nav/main-nav.component';
 import { LayoutModule } from '@angular/cdk/layout';
-import { MatToolbarModule, MatButtonModule, MatSidenavModule, MatIconModule, MatListModule } from '@angular/material';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatToolbarModule, MatButtonModule, MatIconModule, MatListModule, MatMenuModule, MatDividerModule } from '@angular/material';
 import { LoginComponent } from './component/login/login.component';
 import { DescuentoViewComponent } from './component/catalogo/descuento/descuento-view/descuento-view.component';
 import { DescuentoEditComponent } from './component/catalogo/descuento/descuento-edit/descuento-edit.component';
@@ -73,6 +74,11 @@ import { DialogReferenciaComponent } from './component/catalogo/examenGeneral/di
 import { DialogoSeccionComponent } from './component/catalogo/examenGeneral/dialogo-seccion/dialogo-seccion.component';
 import { DialogoEstudioComponent } from './component/catalogo/examenGeneral/dialogo-estudio/dialogo-estudio.component';
 import { DialogoRespuestaComponent } from './component/catalogo/examenGeneral/dialogo-respuesta/dialogo-respuesta/dialogo-respuesta.component';
+import { SidenavComponent } from './sidenav/sidenav.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
+import { ExamenComponent } from './component/catalogo/examenGeneral/examen/examen.component';
+import { AdministracionComponent } from './component/administracion/administracion.component';
+import { PerfilComponent } from './component/perfil/perfil.component';
 
 @NgModule({
   declarations: [
@@ -116,7 +122,12 @@ import { DialogoRespuestaComponent } from './component/catalogo/examenGeneral/di
     DialogReferenciaComponent,
     DialogoSeccionComponent,
     DialogoEstudioComponent,
-    DialogoRespuestaComponent
+    DialogoRespuestaComponent,
+    SidenavComponent,
+    DashboardComponent,
+    ExamenComponent,
+    AdministracionComponent,
+    PerfilComponent
   ],
   entryComponents: [
     DialogoComponent, 
@@ -136,6 +147,7 @@ import { DialogoRespuestaComponent } from './component/catalogo/examenGeneral/di
     FormsModule,
     ReactiveFormsModule,//añadir para los formGruoups
     TreeTableModule, LayoutModule, MatToolbarModule, MatButtonModule, MatSidenavModule, MatIconModule, MatListModule,
+    MatMenuModule, MatDividerModule,
     NgxPrintModule
   ],
   providers: [

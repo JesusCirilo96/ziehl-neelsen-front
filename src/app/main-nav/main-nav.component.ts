@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { AuthenticationService } from '../_services';
@@ -15,8 +15,9 @@ import { map } from 'rxjs/operators';*/
 })
 export class MainNavComponent {
 
-  currentUser: User;
+  @Output() toggleSidebarForMe: EventEmitter<any> = new EventEmitter();
 
+  currentUser: User;
   rolMenu: any = [];
 
 /* isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
@@ -50,11 +51,12 @@ export class MainNavComponent {
     this.rolMenu = JSON.parse(localStorage.getItem("currentMenu"));
   }
 
+  toggleSidebar() {
+    this.toggleSidebarForMe.emit();
+  }
+
   logout() {
       this.authenticationService.logout();
       this.router.navigate(['/login']);
   }
-
- 
-
 }

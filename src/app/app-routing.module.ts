@@ -53,9 +53,14 @@ import {ClasificacionPacienteViewComponent} from './component/catalogo/clasifica
 
 import { CanActivate } from '@angular/router/src/utils/preactivation';
 import { SeccionService } from './services/seccion/seccion.service';
+import { DashboardComponent } from './dashboard/dashboard.component';
+import { ExamenComponent } from './component/catalogo/examenGeneral/examen/examen.component';
 
 var routes: Routes = [
-  { path: '', component: HomeComponent, canActivate: [AuthGuard] },
+  { path: '', redirectTo:'home', pathMatch:'full',canActivate: [AuthGuard] },
+  { path: 'home', component:HomeComponent},
+  { path: 'dashboard', component:DashboardComponent},
+  { path: 'examen', component:ExamenComponent},
   { path: 'login', component: LoginComponent },
   { path: 'recepcion', component: ReceptionComponent, canActivate: [AuthGuard] },
   { path: 'categoria', component: CategoriaViewComponent, canActivate: [AuthGuard] },

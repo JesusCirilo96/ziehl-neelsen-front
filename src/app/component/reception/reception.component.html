@@ -1,243 +1,247 @@
-<div class="row all-table">
-  <div class="col-md-12">
+<div class="container-fluid page">
+  <div class="d-flex page__box p-3 mt-2">Recepción</div>
+  <div class="page__content shadow p-3 position-relative">
     <div class="row">
-      <div class="col-md-6">
-        <div class="title-catalogos">
-          <span>Recepción</span>
-        </div>
-      </div>
-    </div>
-    <mat-card class="all-table">
-      <div class="row">
-        <div class="col-md-6 text-left">
-          Datos del paciente
-        </div>
-        <div class="col-md-6 text-right">
-          <p>
-            <span class="badge badge-info">Folio: &nbsp;{{ficha}}</span>
-          </p>
-        </div>
-      </div>
-      <div class="row row-edit-recepcion">
-        <div class="col-md-6">
-          <form class="example-form">
-            <mat-form-field class="input-full-width">
-              <input type="text" placeholder="Nombre del paciente" matInput [formControl]="myControl" required
-                [matAutocomplete]="auto">
-              <mat-autocomplete #auto="matAutocomplete" (optionSelected)="obtenerPaciente($event.option.value)">
-                <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
-                  {{option}}
-                </mat-option>
-              </mat-autocomplete>
-            </mat-form-field>
-          </form>
-        </div>
-        <div class="col-md-3">
-          <mat-form-field class="input-full-width">
-            <input matInput [(ngModel)]="fechaNacimiento" placeholder="Fecha de Nacimiento">
-          </mat-form-field>
-        </div>
-        <div class="col-md-3">
-          <mat-form-field class="input-full-width">
-            <mat-label>Sexo</mat-label>
-            <mat-select [(ngModel)]="Sexo">
-              <mat-option *ngFor="let sex of sexo" [value]="sex.value">
-                {{sex.viewValue}}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-md-12 text-right">
-          <small class="form-text text-muted">
-            <a routerLink="/paciente/add">¿Registrar nuevo paciente?</a>
-          </small>
-        </div>
-      </div>
-      <div class="row row-edit-recepcion">
-        <div class="col-md-6">
-          <form class="form-atencion">
-            <mat-form-field class="input-full-width">
-              <input type="text" placeholder="Nombre del Medico" matInput [formControl]="controlAtencion" required
-                [matAutocomplete]="autoAtencion">
-              <mat-autocomplete #autoAtencion="matAutocomplete" (optionSelected)="obtenerAtencion($event.option.value)">
-                <mat-option *ngFor="let optionAtencion of filteredOptionsAtencion | async" [value]="optionAtencion">
-                  {{optionAtencion}}
-                </mat-option>
-              </mat-autocomplete>
-            </mat-form-field>
-            <small class="form-text text-muted">
-              <a routerLink="/atencion/add">¿Registrar medico?</a>
-            </small>
-          </form>
-        </div>
-      </div>
-      <div class="row row-edit-recepcion">
-        <div class="col-md-12">
-          <mat-form-field class="input-full-width">
-            <textarea [(ngModel)]="recepcion.muestras" matInput placeholder="Muestras" maxlength="250"></textarea>
-          </mat-form-field>
-        </div>
-      </div>
-      <div class="row row-edit-recepcion">
-        <div class="col-md-12">
-          <mat-form-field class="input-full-width">
-            <textarea [(ngModel)]="recepcion.notas" matInput placeholder="Notas" maxlength="250"></textarea>
-          </mat-form-field>
-        </div>
-      </div>
-    </mat-card>
-  </div>
-  <div class="col-md 12 form-edit">
-    <mat-card>
-      <div class="row">
-        <div class="col-md-5">
-          <form [formGroup]="stateForm">
-            <mat-form-field class="input-full-width">
-              <input type="text" matInput placeholder="Seleccionar Examen" formControlName="stateGroup"
-                [matAutocomplete]="autoGroup">
-              <mat-autocomplete #autoGroup="matAutocomplete" (optionSelected)="obtenerIdExamen($event.option.value)">
-                <mat-optgroup *ngFor="let group of stateGroupOptions | async" [label]="group.letter">
-                  <mat-option *ngFor="let name of group.names" [value]="name">
-                    {{name}}
+      <div class="col-md-12">
+        <mat-card class="all-table">
+          <div class="row">
+            <div class="col-md-6 text-left">
+              Datos del paciente
+            </div>
+            <div class="col-md-6 text-right">
+              <p>
+                <span class="badge badge-info">Folio: &nbsp;{{ficha}}</span>
+              </p>
+            </div>
+          </div>
+          <div class="row row-edit-recepcion">
+            <div class="col-md-6">
+              <form class="example-form">
+                <mat-form-field class="input-full-width">
+                  <input type="text" placeholder="Nombre del paciente" matInput [formControl]="myControl" required
+                    [matAutocomplete]="auto">
+                  <mat-autocomplete #auto="matAutocomplete" (optionSelected)="obtenerPaciente($event.option.value)">
+                    <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+                      {{option}}
+                    </mat-option>
+                  </mat-autocomplete>
+                </mat-form-field>
+              </form>
+            </div>
+            <div class="col-md-3">
+              <mat-form-field class="input-full-width">
+                <input matInput [(ngModel)]="fechaNacimiento" placeholder="Fecha de Nacimiento">
+              </mat-form-field>
+            </div>
+            <div class="col-md-3">
+              <mat-form-field class="input-full-width">
+                <mat-label>Sexo</mat-label>
+                <mat-select [(ngModel)]="Sexo">
+                  <mat-option *ngFor="let sex of sexo" [value]="sex.value">
+                    {{sex.viewValue}}
                   </mat-option>
-                </mat-optgroup>
-              </mat-autocomplete>
-            </mat-form-field>
-          </form>
-          <button mat-button color="primary" (click)="addExamenGeneral()">
-            Añadir Examen
-          </button>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12 text-right">
+              <small class="form-text text-muted">
+                <a routerLink="/paciente/add">¿Registrar nuevo paciente?</a>
+              </small>
+            </div>
+          </div>
+          <div class="row row-edit-recepcion">
+            <div class="col-md-6">
+              <form class="form-atencion">
+                <mat-form-field class="input-full-width">
+                  <input type="text" placeholder="Nombre del Medico" matInput [formControl]="controlAtencion" required
+                    [matAutocomplete]="autoAtencion">
+                  <mat-autocomplete #autoAtencion="matAutocomplete"
+                    (optionSelected)="obtenerAtencion($event.option.value)">
+                    <mat-option *ngFor="let optionAtencion of filteredOptionsAtencion | async" [value]="optionAtencion">
+                      {{optionAtencion}}
+                    </mat-option>
+                  </mat-autocomplete>
+                </mat-form-field>
+                <small class="form-text text-muted">
+                  <a routerLink="/atencion/add">¿Registrar medico?</a>
+                </small>
+              </form>
+            </div>
+          </div>
+          <div class="row row-edit-recepcion">
+            <div class="col-md-12">
+              <mat-form-field class="input-full-width">
+                <textarea [(ngModel)]="recepcion.muestras" matInput placeholder="Muestras" maxlength="250"></textarea>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="row row-edit-recepcion">
+            <div class="col-md-12">
+              <mat-form-field class="input-full-width">
+                <textarea [(ngModel)]="recepcion.notas" matInput placeholder="Notas" maxlength="250"></textarea>
+              </mat-form-field>
+            </div>
+          </div>
+        </mat-card>
+      </div>
+      <div class="col-md-12 form-edit">
+        <mat-card>
+          <div class="row">
+            <div class="col-md-5">
+              <form [formGroup]="stateForm">
+                <mat-form-field class="input-full-width">
+                  <input type="text" matInput placeholder="Seleccionar Examen" formControlName="stateGroup"
+                    [matAutocomplete]="autoGroup">
+                  <mat-autocomplete #autoGroup="matAutocomplete"
+                    (optionSelected)="obtenerIdExamen($event.option.value)">
+                    <mat-optgroup *ngFor="let group of stateGroupOptions | async" [label]="group.letter">
+                      <mat-option *ngFor="let name of group.names" [value]="name">
+                        {{name}}
+                      </mat-option>
+                    </mat-optgroup>
+                  </mat-autocomplete>
+                </mat-form-field>
+              </form>
+              <button mat-button color="primary" (click)="addExamenGeneral()">
+                Añadir Examen
+              </button>
+            </div>
+          </div>
+        </mat-card>
+        <div class="form-edit"></div>
+
+
+        <mat-accordion *ngFor="let seleccion of ExamenGeneralRecepcion" class="form-edit">
+          <mat-expansion-panel>
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                <button class="fas fa-times" matTooltip="Remover examen"
+                  (click)="removerExamenGeneral(seleccion.EXAMEN_GEN_ID)"></button>
+                &nbsp;
+                {{seleccion.NOMBRE}}
+              </mat-panel-title>
+              <mat-panel-description>
+                <div class="width-100 text-right">
+                  $ {{seleccion.PRECIO}}
+                </div>
+              </mat-panel-description>
+            </mat-expansion-panel-header>
+            <div class="row">
+              <div class="col-md-12" *ngFor="let seccion of seleccion.SECCION">
+                <div>
+                  <table class="table table-sm table-borderless">
+                    <thead>
+                      <th colspan="2">
+                        {{seccion.seccion.nombre}}
+                      </th>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let estudio of seccion.estudio">
+                        <td colspan="1"></td>
+                        <td>
+                          <button mat-icon-button color="warn" aria-label="Remover estudio"
+                            (click)="removerSubExamenSubSeccion(seleccion.EXAMEN_GEN_ID, seccion.seccion.seccionId, estudio.estudioId)">
+                            <mat-icon>remove</mat-icon>
+                          </button>
+                          {{estudio.nombre}}
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-12">
+                <div>
+                  <table class="table table-sm table-borderless">
+                    <tbody>
+                      <tr *ngFor="let subExamen of seleccion.ESTUDIO">
+                        <td>
+                          <button mat-icon-button color="warn" aria-label="Example icon-button with a heart icon"
+                            (click)="removerSubExamenSubseccion(seleccion.EXAMEN_GEN_ID,subExamen.NOMBRE)">
+                            <mat-icon>remove</mat-icon>
+                          </button>
+                          {{subExamen.nombre}}
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </mat-expansion-panel>
+        </mat-accordion>
+
+
+      </div>
+    </div>
+    <div class="form-edit">
+      <div class="row">
+        <div class="col-md-4">
+          <mat-form-field appearance="fill" floatLabel="always">
+            <mat-label>Subtotal</mat-label>
+            <input matInput type="number" class="example-right-align" disabled [(ngModel)]="subTotal" placeholder="0">
+            <span matPrefix>$&nbsp;</span>
+            <span matSuffix>.00</span>
+          </mat-form-field>
+        </div>
+        <div class="col-md-4">
+          <mat-form-field appearance="fill" floatLabel="always">
+            <mat-label>Descuento</mat-label>
+            <input matInput type="number" class="example-right-align" [(ngModel)]="descuento" placeholder="0"
+              (ngModelChange)="obtenerDescuento($event)">
+            <span matPrefix>$&nbsp;</span>
+            <span matSuffix>.00</span>
+          </mat-form-field>
+        </div>
+        <div class="col-md-4">
+          <mat-form-field appearance="fill" floatLabel="always">
+            <mat-label>Total</mat-label>
+            <input matInput type="number" class="example-right-align" disabled [(ngModel)]="total" placeholder="0">
+            <span matPrefix>$&nbsp;</span>
+            <span matSuffix>.00</span>
+          </mat-form-field>
         </div>
       </div>
-    </mat-card>
-    <div class="form-edit"></div>
+      <div class="row">
 
-
-    <mat-accordion *ngFor="let seleccion of ExamenGeneralRecepcion" class="form-edit">
-      <mat-expansion-panel>
-        <mat-expansion-panel-header>
-          <mat-panel-title>
-            <button class="fas fa-times" matTooltip="Remover examen"
-              (click)="removerExamenGeneral(seleccion.EXAMEN_GEN_ID)"></button>
-            &nbsp;
-            {{seleccion.NOMBRE}}
-          </mat-panel-title>
-          <mat-panel-description>
-            <div class="width-100 text-right">
-              $ {{seleccion.PRECIO}}
-            </div>
-          </mat-panel-description>
-        </mat-expansion-panel-header>
-        <div class="row">
-          <div class="col-md-12" *ngFor="let seccion of seleccion.SECCION">
-            <div>
-              <table class="table table-sm table-borderless">
-                <thead>
-                  <th colspan="2">
-                    {{seccion.seccion.nombre}}
-                  </th>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let estudio of seccion.estudio">
-                    <td colspan="1"></td>
-                    <td>
-                      <button mat-icon-button color="warn" aria-label="Remover estudio"
-                        (click)="removerSubExamenSubSeccion(seleccion.EXAMEN_GEN_ID, seccion.seccion.seccionId, estudio.estudioId)">
-                        <mat-icon>remove</mat-icon>
-                      </button>
-                      {{estudio.nombre}}
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
+        <div class="col-md-4">
+          <mat-form-field appearance="fill" floatLabel="always">
+            <mat-label>Anticipo</mat-label>
+            <input matInput type="number" class="example-right-align" [(ngModel)]="anticipo" placeholder="0"
+              (ngModelChange)="obtenerAnticipo($event)">
+            <span matPrefix>$&nbsp;</span>
+            <span matSuffix>.00</span>
+          </mat-form-field>
         </div>
-
-        <div class="row">
-          <div class="col-md-12">
-            <div>
-              <table class="table table-sm table-borderless">
-                <tbody>
-                  <tr *ngFor="let subExamen of seleccion.ESTUDIO">
-                    <td>
-                      <button mat-icon-button color="warn" aria-label="Example icon-button with a heart icon"
-                        (click)="removerSubExamenSubseccion(seleccion.EXAMEN_GEN_ID,subExamen.NOMBRE)">
-                        <mat-icon>remove</mat-icon>
-                      </button>
-                      {{subExamen.nombre}}
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
+        <div class="col-md-4">
+          <mat-form-field appearance="fill" floatLabel="always">
+            <mat-label>Restante</mat-label>
+            <input matInput type="number" class="example-right-align" disabled [(ngModel)]="restante" placeholder="0">
+            <span matPrefix>$&nbsp;</span>
+            <span matSuffix>.00</span>
+          </mat-form-field>
         </div>
-      </mat-expansion-panel>
-    </mat-accordion>
-    
+      </div>
+      <div class="row text-right">
+        <div class="col-md-12">
+          <button mat-raised-button color="warn" [swal]="cancelSwal">Cancelar</button>
+          <button mat-raised-button color="primary" (click)="saveRecepcion()">Crear orden</button>
+        </div>
+      </div>
+    </div>
 
-  </div>
-</div>
-<div class="form-edit">
-  <div class="row">
-    <div class="col-md-4">
-      <mat-form-field appearance="fill" floatLabel="always">
-        <mat-label>Subtotal</mat-label>
-        <input matInput type="number" class="example-right-align" disabled [(ngModel)]="subTotal" placeholder="0">
-        <span matPrefix>$&nbsp;</span>
-        <span matSuffix>.00</span>
-      </mat-form-field>
-    </div>
-    <div class="col-md-4">
-      <mat-form-field appearance="fill" floatLabel="always">
-        <mat-label>Descuento</mat-label>
-        <input matInput type="number" class="example-right-align" [(ngModel)]="descuento" placeholder="0" (ngModelChange)="obtenerDescuento($event)">
-        <span matPrefix>$&nbsp;</span>
-        <span matSuffix>.00</span>
-      </mat-form-field>
-    </div>
-    <div class="col-md-4">
-      <mat-form-field appearance="fill" floatLabel="always">
-        <mat-label>Total</mat-label>
-        <input matInput type="number" class="example-right-align" disabled [(ngModel)]="total" placeholder="0">
-        <span matPrefix>$&nbsp;</span>
-        <span matSuffix>.00</span>
-      </mat-form-field>
-    </div>
-  </div>
-  <div class="row">
-    
-    <div class="col-md-4">
-      <mat-form-field appearance="fill" floatLabel="always">
-        <mat-label>Anticipo</mat-label>
-        <input matInput type="number" class="example-right-align" [(ngModel)]="anticipo" placeholder="0" (ngModelChange)="obtenerAnticipo($event)">
-        <span matPrefix>$&nbsp;</span>
-        <span matSuffix>.00</span>
-      </mat-form-field>
-    </div>
-    <div class="col-md-4">
-      <mat-form-field appearance="fill" floatLabel="always">
-        <mat-label>Restante</mat-label>
-        <input matInput type="number" class="example-right-align" disabled [(ngModel)]="restante" placeholder="0" >
-        <span matPrefix>$&nbsp;</span>
-        <span matSuffix>.00</span>
-      </mat-form-field>
-    </div>
-  </div>
-  <div class="row text-right">
-    <div class="col-md-12">
-      <button mat-raised-button color="warn" [swal]="cancelSwal">Cancelar</button>
-      <button mat-raised-button color="primary" (click)="saveRecepcion()">Crear orden</button>  
-    </div>
-  </div>
-</div>
-
-<swal #cancelSwal title="Cancelar orden" text="Esta accion no se puede revertir" type='warning' [options]="{
+    <swal #cancelSwal title="Cancelar orden" text="Esta accion no se puede revertir" type='warning' [options]="{
     confirmButtonColor: '#3085d6',
     confirmButtonText:  'Cancelar'
-  }" [focusCancel]="true" (confirm)="iniciarNUevo()">
+    }" [focusCancel]="true" (confirm)="iniciarNUevo()">
 
-</swal>
+    </swal>
+
+
+  </div>
+</div>
