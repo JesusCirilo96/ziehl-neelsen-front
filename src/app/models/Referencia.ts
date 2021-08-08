@@ -7,4 +7,6 @@ export interface Referencia{
     general?:string;
     orden?:number;
     nota?:string;
+    sufijo?:string;
+    prefijo?:string;
 }

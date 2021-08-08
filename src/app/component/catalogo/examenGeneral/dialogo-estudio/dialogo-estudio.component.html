@@ -1,48 +1,382 @@
 <h1 mat-dialog-title>{{actualizarDatos ? 'Añadir estudio': 'Actualizar estudio'}}</h1>
 <div mat-dialog-content>
-  <ng-template [ngIf]="!seleccionado">
+  <div *ngIf="!actualizarDatos; else elseAnadir">
+
+    <ng-template [ngIf]="!seleccionado">
+      <div class="row">
+        <div class="col-md-12">
+          <mat-form-field class="input-full-width">
+            <mat-label>Nombre del estudio</mat-label>
+            <input matInput [(ngModel)]="nombreEstudio" type="text">
+          </mat-form-field>
+        </div>
+      </div>
+    </ng-template>
+
+    <ng-template [ngIf]="seleccionado">
+      <div class="row">
+        <div class="col-md-12">
+          <form class="example-form">
+            <mat-form-field class="input-full-width">
+              <mat-label>Selecciona</mat-label>
+              <input type="text" matInput [formControl]="myControl" [matAutocomplete]="auto">
+              <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+                <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+                  {{option.name}}
+                </mat-option>
+              </mat-autocomplete>
+            </mat-form-field>
+          </form>
+        </div>
+      </div>
+    </ng-template>
     <div class="row">
       <div class="col-md-12">
         <mat-form-field class="input-full-width">
-          <mat-label>Nombre del estudio</mat-label>
-          <input matInput [(ngModel)]="nombreEstudio" type="text">
+          <mat-label>Orden</mat-label>
+          <input matInput [(ngModel)]="orden" type="number">
         </mat-form-field>
       </div>
     </div>
-  </ng-template>
 
-  <ng-template [ngIf]="seleccionado">
-    <div class="row">
-      <div class="col-md-12">
-        <form class="example-form">
-          <mat-form-field class="input-full-width">
-            <mat-label>Selecciona</mat-label>
-            <input type="text" matInput [formControl]="myControl" [matAutocomplete]="auto">
-            <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
-              <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
-                {{option.name}}
-              </mat-option>
-            </mat-autocomplete>
-          </mat-form-field>
-        </form>
+  </div>
+  <ng-template #elseAnadir>
+    <!--Seccion datos del estudio-->
+    <div class="card margin-up">
+      <div class="card-body">
+        <h5 class="card-title">Datos del estudio:</h5>
+        <div class="row">
+          <div class="col-md-6">
+            <div *ngIf="!seleccionado; else elseSeleccionado">
+              <div class="row">
+                <div class="col-md-12">
+                  <mat-form-field class="input-full-width">
+                    <mat-label>Nombre del estudio</mat-label>
+                    <input matInput [(ngModel)]="estudio.nombre" type="text">
+                  </mat-form-field>
+                </div>
+              </div>
+            </div>
+            <ng-template #elseSeleccionado>
+              <div class="row">
+                <div class="col-md-12">
+                  <form class="example-form">
+                    <mat-form-field class="input-full-width">
+                      <mat-label>Selecciona</mat-label>
+                      <input type="text" matInput [formControl]="myControl" [matAutocomplete]="auto">
+                      <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+                        <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+                          {{option.name}}
+                        </mat-option>
+                      </mat-autocomplete>
+                    </mat-form-field>
+                  </form>
+                </div>
+              </div>
+            </ng-template>
+          </div>
+          <div class="col-md-6">
+            <mat-form-field class="input-full-width">
+              <mat-label>Orden</mat-label>
+              <input matInput [(ngModel)]="orden" type="number">
+            </mat-form-field>
+          </div>
+
+        </div>
+
+        <div class="row margin-down">
+          <mat-slide-toggle [(ngModel)]="seleccionado">Seleccionar uno existente</mat-slide-toggle>
+        </div>
+
       </div>
     </div>
-  </ng-template>
-  <div class="row">
-    <div class="col-md-12">
-      <mat-form-field class="input-full-width">
-        <mat-label>Orden</mat-label>
-        <input matInput [(ngModel)]="orden" type="number">
-      </mat-form-field>
+
+    <!--Seccion de resultados predeterminados-->
+    <div class="card margin-up">
+      <div class="card-body">
+        <h5 class="card-title">Resultados fijos:</h5>
+        <div class="row">
+          <div class="col-md-6">
+            <mat-form-field class="input-full-width">
+              <mat-label>Resultado fijo</mat-label>
+              <input matInput [(ngModel)]="anadirResPred" type="text">
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div class="row margin-down">
+          <div class="col-md-12 text-right buttons-catalogo">
+            <button mat-raised-button (click)="anadirPosibleRespuestaEstudio()">Agregar resultado</button>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-12">
+            <table class="table table-sm table-bordered">
+              <thead>
+                <tr>
+                  <th>Resultado</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let resultado of respuestaSelect; index as i;">
+                  <td>
+                    <button mat-icon-button color="warn" aria-label="remover" matTooltip="Remover"
+                      (click)="removerPosibleRespuestaEstudio(i)">
+                      <mat-icon>remove</mat-icon>
+                    </button>
+                    {{resultado.viewValue}}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
     </div>
+
+
+
+    <!--Seccion de referencias-->
+    <div class="card margin-up">
+      <div class="card-body">
+        <h5 class="card-title">Referencias del estudio:</h5>
+        <div class="row margin-up">
+          <div class="col-md-3">
+            <mat-form-field class="input-full-width">
+              <mat-label>Clasificacion paciente</mat-label>
+              <mat-select [(ngModel)]="referencia.clasificacionId" required>
+                <mat-option *ngFor="let clasificacion of ListClasificacion"
+                  [value]="clasificacion.clasificacionPacienteId">
+                  {{clasificacion.nombre}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="col-md-3"></div>
+          <div class="col-md-3"></div>
+          <div class="col-md-3"></div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-3">
+            <mat-form-field class="input-full-width">
+              <mat-label>Prefijo</mat-label>
+              <input matInput [(ngModel)]="referencia.prefijo" type="text">
+            </mat-form-field>
+          </div>
+          <div class="col-md-3">
+            <mat-form-field class="input-full-width">
+              <mat-label>Masculino</mat-label>
+              <input matInput [(ngModel)]="referencia.masculino" type="text">
+            </mat-form-field>
+          </div>
+          <div class="col-md-3">
+            <mat-form-field class="input-full-width">
+              <mat-label>Femenino</mat-label>
+              <input matInput [(ngModel)]="referencia.femenino" type="text">
+            </mat-form-field>
+          </div>
+          <div class="col-md-3">
+            <mat-form-field class="input-full-width">
+              <mat-label>General</mat-label>
+              <input matInput [(ngModel)]="referencia.general" type="text">
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-3">
+            <mat-form-field class="input-full-width">
+              <mat-label>Orden</mat-label>
+              <input matInput [(ngModel)]="referencia.orden" type="number">
+            </mat-form-field>
+          </div>
+          <div class="col-md-6">
+            <mat-form-field class="input-full-width">
+              <mat-label>Nota</mat-label>
+              <input matInput [(ngModel)]="referencia.nota" type="text">
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div class="row margin-down">
+          <div class="col-md-12 text-right buttons-catalogo">
+            <button mat-raised-button (click)="anadirReferencia()">Agregar referencia</button>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-12">
+            <table class="table table-sm table-bordered input-full-width">
+              <thead>
+                <tr>
+                  <th class="width-10">Orden</th>
+                  <th class="width-10">Prefijo</th>
+                  <th class="width-20">Masculino</th>
+                  <th class="width-20">Femenino</th>
+                  <th class="width-20">General</th>
+                  <th class="width-20">Nota</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let referencia of listReferencias; index as indiceRef;">
+                  <td class="width-10">
+                    <button mat-icon-button color="warn" aria-label="remover" matTooltip="Remover"
+                      (click)="removerReferencia(indiceRef)">
+                      <mat-icon>remove</mat-icon>
+                    </button>
+                    {{referencia.orden}}
+                  </td>
+                  <td class="width-10">{{referencia.prefijo}}</td>
+                  <td class="width-20 ref-font" [innerHTML]="referencia.masculino"></td>
+                  <td class="width-20 ref-font" [innerHTML]="referencia.femenino"></td>
+                  <td class="width-20 ref-font" [innerHTML]="referencia.general"></td>
+                  <td class="width-20">{{referencia.nota}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!--seccion de metodos-->
+    <div class="card margin-up">
+      <div class="card-body">
+        <h5 class="card-title">Metodos del estudio:</h5>
+        <div class="row margin-up">
+          <div class="col-md-6">
+            <mat-form-field class="input-full-width">
+              <mat-label>Método</mat-label>
+              <mat-select [(ngModel)]="metodo.metodoId" required>
+                <mat-option *ngFor="let metodo of ListMetodo" [value]="metodo.metodoId">{{metodo.nombre}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div class="row margin-down">
+          <div class="col-md-12 text-right buttons-catalogo">
+            <button mat-raised-button (click)="anadirMetodo()">Agregar metodo</button>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-12">
+            <table class="table table-sm table-bordered input-full-width">
+              <thead>
+                <tr>
+                  <th>Nombre del metodo</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let metodo of listMetodos; index as indiceMet;">
+                  <td>
+                    <button mat-icon-button color="warn" aria-label="remover" matTooltip="Remover"
+                      (click)="removerMetodo(indiceMet)">
+                      <mat-icon>remove</mat-icon>
+                    </button>
+                    {{metodo.nombre}}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+
+    <div class="row margin-up-down">
+      <div class="col-md-12 text-right buttons-catalogo">
+        <button mat-raised-button color="primary" (click)="anadirEstudio()">Agregar registro</button>
+      </div>
+    </div>
+
+    <!--Seccion de registros-->
+    <div class="card margin-up">
+      <div class="card-body">
+        <h5 class="card-title">Registros</h5>
+        <div class="row margin-up">
+          <table class="table table-sm table-bordered input-full-width">
+            <thead>
+              <tr>
+                <th class="width-10">Orden</th>
+                <th class="width-10">¿Comodin?</th>
+                <th class="width-20">Nombre</th>
+                <th class="width-20">Resp. fijo</th>
+                <th class="width-20">Referencia</th>
+                <th class="width-20">Metodo</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let data of estudioSave; index as indiceEst">
+                <td class="width-10 ref-font">
+                  <button mat-icon-button color="warn" aria-label="remover"
+                    (click)="removerEstudio(indiceEst)">
+                    <mat-icon>remove</mat-icon>
+                  </button>
+                  {{data.ordenEstudio}}
+                </td>
+                <td class="width-10 ref-font">
+                  {{data.estudio.comodin ? 'Si' : 'No' }}
+                </td>
+                <td class="width-20 ref-font">{{data.estudio.nombre}}</td>
+                <td class="width-20 ref-font">
+                  <span *ngFor="let resultado of data.resultadoPred">
+                    {{resultado.viewValue}}
+                  </span>
+                </td>
+                <td class="width-20">
+                  <div *ngFor="let referencia of data.referencia">
+                    <div class="row" *ngIf="referencia.general != ''; else elseReferenciaRutina">
+                      <div class="col-md-4 text-right ref-font" [innerHTML]="referencia.prefijo"></div>
+                      <div class="col-md-8 text-left ref-font" [innerHTML]="referencia.general"></div>
+                    </div>
+                    <ng-template #elseReferenciaRutina>
+                      <div class="row">
+                        <div class="col-md-4 text-right ref-font" [innerHTML]="referencia.prefijo"></div>
+                        <div class="col-md-4 text-right ref-font" [innerHTML]="referencia.masculino">
+                        </div>
+                        <div class="col-md-4 text-left ref-font" [innerHTML]="referencia.femenino"></div>
+                      </div>
+                    </ng-template>
+                    <div *ngIf="referencia.nota != ''" class="ref-font">{{referencia.nota}}</div>
+                  </div>
+                </td>
+                <td class="width-20 ref-font">
+                  <span class="font-9" *ngFor="let metodo of data.metodo">{{metodo.nombre}}</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="row margin-up-down">
+          <div class="col-md-12 text-right buttons-catalogo">
+            <button mat-raised-button class="success" (click)="guardarEstudio()">Guardar estudios</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </ng-template>
+
+</div>
+
+<div *ngIf="!actualizarDatos; else elseButton">
+  <div mat-dialog-actions>
+    <button mat-button (click)="onNoClick()">Cancelar</button>
+    <button mat-button [mat-dialog-close]="responseDialogo()" cdkFocusInitial>Guardar</button>
   </div>
-  <ng-template [ngIf]="actualizarDatos">
-    <div class="row">
-      <mat-slide-toggle [(ngModel)]="seleccionado">Seleccionar uno existente</mat-slide-toggle>
-    </div>
-  </ng-template>
 </div>
-<div mat-dialog-actions>
-  <button mat-button (click)="onNoClick()">Cancelar</button>
-  <button mat-button [mat-dialog-close]="responseDialogo()" cdkFocusInitial>Ok</button>
-</div>
+<ng-template #elseButton>
+  <div mat-dialog-actions>
+    <button mat-button [mat-dialog-close]="responseDialogo()">Cerrar</button>
+  </div>
+</ng-template>

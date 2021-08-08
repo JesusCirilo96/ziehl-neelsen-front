@@ -67,4 +67,12 @@ export class EstudioService {
     return this.http.post(`${this.API_URI}/estudio/save/`, updatedEstudio);
   }
 
+  /**
+   * Guardamos listas de estudios
+   * @param estudio El objeto con los datos del estudio
+   */
+   saveEstudioMasivo(estudio: any){
+    return this.http.post(`${this.API_URI}/estudio/save/masivo/`, estudio);
+  }
+
 }

@@ -157,8 +157,8 @@
             <div class="col-md-4">
               <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
                 <mat-icon>more_vert</mat-icon>
-                {{seccion.seccion.titulo || seccion.seccion.nombre}}
               </button>
+              <span [innerHTML]="seccion.seccion.titulo"></span>
               <mat-menu #menu="matMenu">
                 <button mat-menu-item
                   (click)="openDialogoSeccion(true, seccion.seccion, seccion.orden)">
@@ -252,9 +252,11 @@
                               </button>
                             </mat-menu>
                             <strong>{{referencia.clasificacion.nombre}}</strong>
+                            <p>{{referencia.prefijo}}</p>
                             <p>Masculino {{referencia.referenciaMasculino}}</p>
                             <p>Femenino: {{referencia.referenciaFemenino}}</p>
                             <p>General: {{referencia.referenciaGeneral}}</p>
+                            <p>{{referencia.sufijo}}</p>
                           </div>
                         </div>
                       </div>
@@ -374,9 +376,11 @@
                       </button>
                     </mat-menu>
                     <strong>{{referencia.clasificacion.nombre}}</strong>
+                    <p>{{referencia.prefijo}}</p>
                     <p>Femenino: {{referencia.referenciaFemenino}}</p>
                     <p>Masculino: {{referencia.referenciaMasculino}}</p>
                     <p>General: {{referencia.referenciaGeneral}}</p>
+                    <p>{{referencia.sufijo}}</p>
                     <div *ngIf="referencia.nota != '' ">Nota: {{referencia.nota}}</div>
                   </div>
                 </div>

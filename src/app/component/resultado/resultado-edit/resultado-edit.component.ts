@@ -91,7 +91,7 @@ export class ResultadoEditComponent implements OnInit {
    */
     
 
-  textCheked = 'Positivo';
+  textCheked = 'Susceptibilidad';
   recepcionDatos: any = [];
   resultadoExamen: any = [];
   resultadoExamenGeneral: any = [];

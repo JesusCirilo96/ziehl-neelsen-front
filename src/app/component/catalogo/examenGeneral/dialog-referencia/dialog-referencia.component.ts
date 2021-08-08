@@ -13,7 +13,9 @@ export interface DialogData {
     orden:number,
     referenciaFemenino:string,
     referenciaGeneral:string,
-    referenciaMasculino: string
+    referenciaMasculino: string,
+    sufijo:string,
+    prefijo:string
   }
 }
 
@@ -43,10 +45,14 @@ export class DialogReferenciaComponent implements OnInit{
   referenciaGeneral: string;
   orden: number;
   nota: string;
+  sufijo: string;
+  prefijo:string;
 
   ngOnInit(){
     this.orden = 0;
     this.nota = "";
+    this.prefijo="";
+    this.sufijo="";
     if(this.data.editar){
       this.clasificacionId = this.data.seccion.clasificacion.clasificacionPacienteId;
       this.referenciaMasculino = this.data.seccion.referenciaMasculino;
@@ -54,6 +60,8 @@ export class DialogReferenciaComponent implements OnInit{
       this.referenciaGeneral = this.data.seccion.referenciaGeneral;
       this.orden = this.data.seccion.orden
       this.nota = this.data.seccion.nota;
+      this.sufijo = this.data.seccion.sufijo;
+      this.prefijo = this.data.seccion.prefijo;
     }
 
   }
@@ -77,7 +85,9 @@ export class DialogReferenciaComponent implements OnInit{
         'referenciaFemenino':this.referenciaFemenino,
         'referenciaGeneral':this.referenciaGeneral,
         'orden': this.orden,
-        'nota': this.nota
+        'nota': this.nota,
+        'sufijo': this.sufijo,
+        'prefijo': this.prefijo
       }
     );
     return response;

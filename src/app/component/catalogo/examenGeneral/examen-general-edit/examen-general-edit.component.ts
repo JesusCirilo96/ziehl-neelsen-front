@@ -104,7 +104,9 @@ export class ExamenGeneralEditComponent implements OnInit {
     masculino: '',
     general: '',
     orden:0,
-    nota:''
+    nota:'',
+    sufijo:'',
+    prefijo:''
   }
 
   metodoSeccion: MetodoSeccion = {
@@ -497,6 +499,7 @@ export class ExamenGeneralEditComponent implements OnInit {
     }else{
       referenciaDialog = { editar: false}
     }
+    
 
     const dialogReferencia = this.dialog.open(DialogReferenciaComponent, {
       width: '500px',
@@ -513,7 +516,9 @@ export class ExamenGeneralEditComponent implements OnInit {
             masculino: result[0].referenciaMasculino,
             general: result[0].referenciaGeneral,
             orden: result[0].orden,
-            nota: result[0].nota
+            nota: result[0].nota,
+            sufijo: result[0].sufijo,
+            prefijo: result[0].prefijo
           }
           console.log(this.referencia)
           this.guardarReferencia(this.referencia, esPorSeccion);
@@ -525,7 +530,9 @@ export class ExamenGeneralEditComponent implements OnInit {
             masculino: result[0].referenciaMasculino,
             general: result[0].referenciaGeneral,
             orden: result[0].orden,
-            nota: result[0].nota
+            nota: result[0].nota,
+            sufijo: result[0].sufijo,
+            prefijo: result[0].prefijo
           }
           this.refereciaService.updateReferencia(this.referencia).subscribe(
             res => {
@@ -728,7 +735,6 @@ export class ExamenGeneralEditComponent implements OnInit {
    * o para el examen 
    */
   openDialogoEstudio(paraSeccion, seccionId, update, estudioId, estudioNombre, estudioOrden) {
-
     if (update) {
       this.dialogoEstudioActualiza = [
         {
@@ -740,13 +746,15 @@ export class ExamenGeneralEditComponent implements OnInit {
       this.dialogoEstudioActualiza = [
         {
           "estudioOrden": 0,
-          "estudioNombre": ""
+          "estudioNombre": "",
+          "examenId":this.examenGeneral.examenGeneralId,
+          "seccionId": seccionId
         }
       ]
     }
 
     const dialogoEstudio = this.dialog.open(DialogoEstudioComponent, {
-      width: '500px',
+      width: '99%',
       data: this.dialogoEstudioActualiza
     });
 
@@ -764,18 +772,19 @@ export class ExamenGeneralEditComponent implements OnInit {
               console.log(response);
               if (response['errorCode'] == "OK") {
                 this.alerta('Actualizado correctamente', 'success', false);
-                if(seccionId == 0){
-                  this.getExamenEstudios(this.examenGeneral.examenGeneralId);
-                }else{
-                  this.getSeccionEstudios(seccionId);
-                }
               }
             },
             error => {
               this.alertaBoton('Verificar los datos', 'Error' + error, 'warning')
             }
           );
-        } else {
+        } 
+        if(seccionId == 0){
+          this.getExamenEstudios(this.examenGeneral.examenGeneralId);
+        }else{
+          this.getSeccionEstudios(seccionId);
+        }
+        /* else {
           var porId = result[0].porId;
           if (paraSeccion) {
             if (porId) {
@@ -812,7 +821,7 @@ export class ExamenGeneralEditComponent implements OnInit {
             }
             console.log("ESTUDIO PARA EL EXAMEN");
           }
-        }
+        }*/
         console.log("DIALOGO ESTUDIO CERRADA")
       }
     });

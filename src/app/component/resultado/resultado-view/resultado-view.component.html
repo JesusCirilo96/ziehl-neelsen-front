@@ -7,7 +7,8 @@
   <div class="row form-edit">
     <div class="col-md-3">
       <mat-form-field class="input-full-width">
-        <input matInput [matDatepicker]="picker" [(ngModel)]="Fecha" (ngModelChange)="filtrarPorDia($event)" placeholder="Filtrar por dia">
+        <input matInput [matDatepicker]="picker" [(ngModel)]="Fecha" (ngModelChange)="filtrarPorDia($event)"
+          placeholder="Filtrar por dia">
         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
         <mat-datepicker touchUi #picker></mat-datepicker>
       </mat-form-field>
@@ -15,6 +16,11 @@
   </div>
   <div class="row mat-elevation-z8">
     <div class="col-md-12 text-right">
+      <button mat-icon-button aria-label="-"
+      (click)="getRecepcion()"
+      matTooltip="Actualizar tabla">
+      <mat-icon>update</mat-icon>
+    </button>
       <mat-form-field class="table-filter">
         <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filtrar">
       </mat-form-field>

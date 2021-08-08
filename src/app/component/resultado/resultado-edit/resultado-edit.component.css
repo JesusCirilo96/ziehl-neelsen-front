@@ -12,9 +12,17 @@
     padding-bottom: 0%;
 }
 #title-resultado-normal{
+    margin-left: 1em;
+    margin-right: 1em;
     -webkit-print-color-adjust: exact;
     border: 1px solid #000000;
     background-color: #66CD00 ;
+}
+.sinMargen{
+    margin-left: 0px;
+    margin-right: 0px;
+    padding-left: 0px;
+    padding-right: 0px;
 }
 
 .no-margin{
@@ -65,6 +73,14 @@
     font-size: 9pt;
 }
 
+.ref-font{
+    font-size: 10pt;
+}
+
 .orina{
+    font-size: 8pt;
+}
+
+#resultado{
     font-size: 8pt;
 }

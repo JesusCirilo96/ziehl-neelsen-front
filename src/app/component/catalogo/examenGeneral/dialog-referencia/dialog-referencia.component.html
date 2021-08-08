@@ -18,6 +18,12 @@
     <div class="col-md-12">
       <div class="row">
         <mat-form-field class="input-full-width">
+            <mat-label>Prefijo</mat-label>
+            <input matInput [(ngModel)]="prefijo" type="text">
+          </mat-form-field>
+      </div>
+      <div class="row">
+        <mat-form-field class="input-full-width">
           <mat-label>Maculino</mat-label>
           <input matInput [(ngModel)]="referenciaMasculino" type="text">
         </mat-form-field>
@@ -33,6 +39,12 @@
           <mat-label>General</mat-label>
           <input matInput [(ngModel)]="referenciaGeneral" type="text">
         </mat-form-field>
+      </div>
+      <div class="row">
+        <mat-form-field class="input-full-width">
+            <mat-label>Sufijo</mat-label>
+            <input matInput [(ngModel)]="sufijo" type="text">
+          </mat-form-field>
       </div>
       <div class="row">
         <mat-form-field class="input-full-width">
