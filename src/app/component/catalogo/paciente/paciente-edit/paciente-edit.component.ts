@@ -111,7 +111,7 @@ export class PacienteEditComponent implements OnInit {
   saveNewPaciente(){
     this.pacienteService.savePaciente(this.formPaciente.value).subscribe(
       res=>{
-        this.router.navigate(['/paciente'])
+        this.router.navigate(['/administracion'])
       },
       err=>{
         console.log(err);
@@ -123,7 +123,7 @@ export class PacienteEditComponent implements OnInit {
   updatePaciente(){
     this.pacienteService.updatePaciente(this.formPaciente.value).subscribe(
       res=>{
-        this.router.navigate(['/paciente'])
+        this.router.navigate(['/administracion'])
         this.edit = false;
       },
       err=>{
@@ -133,7 +133,7 @@ export class PacienteEditComponent implements OnInit {
   }
 
   cancelarEdicion(){
-    this.router.navigate(['/paciente']);
+    this.router.navigate(['/administracion']);
   }
 
   activarInactivar(){

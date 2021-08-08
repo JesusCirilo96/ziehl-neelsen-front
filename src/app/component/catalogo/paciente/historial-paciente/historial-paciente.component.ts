@@ -29,9 +29,9 @@ export class HistorialPacienteComponent implements OnInit {
   cols: any[];
 
   recepcionColumns: string[] = [
-    'fecha_ingreso',
-    'hora_ingreso',
-    'ficha',
+    'folio',
+    'fechaIngreso',
+    'horaIngreso',
     'accion'
   ];
   dataSource = new MatTableDataSource<Element>();
@@ -49,32 +49,18 @@ export class HistorialPacienteComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.getUsuario();
+    this.getRecepcion();
     this.dataSource.paginator = this.paginator;
   }
 
-  getUsuario() {
+  getRecepcion(){
     const parametros = this.activateRoute.snapshot.params;//<---Contiene los parametros que se pasan
-    if (parametros.id) {
-      this.pacienteService.getPaciente(parametros.id).subscribe(
-        response => {
-          this.paciente = response;
-          this.getRecepcion(parametros.id);
-          console.log(response);
-        },
-        error => {
-          console.log(error)
-        }
-      )
-    }
-  }
-
-  getRecepcion(paciente_id){
-    this.recepcionService.getHistorialRecepcion(paciente_id).subscribe(
+    this.recepcionService.getHistorialRecepcion(parametros.id).subscribe(
       response=>{
         console.log(response);
         this.recepcion = response;
-        this.dataSource = this.recepcion;
+        this.dataSource = this.recepcion.historial;
+        this.paciente = this.recepcion.paciente;
       }
     )
   }

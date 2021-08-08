@@ -17,8 +17,8 @@ export class RecepcionService {
 
   }
 
-  getHistorialRecepcion(paciente_id: number){
-    return this.http.get(`${this.API_URI}/recepcion/historial/${paciente_id}`);
+  getHistorialRecepcion(pacienteId: number){
+    return this.http.get(`${this.API_URI}/recepcion/historial/${pacienteId}`);
   }
 
   /**

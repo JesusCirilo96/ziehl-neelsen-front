@@ -1,74 +1,81 @@
-<mat-card class="col-md-12 form-edit">
-  Datos del paciente
-  <mat-divider></mat-divider>
-  <div class="row form-edit">
-    <div class="col-md-12">
-      <table class="table table-sm table-borderless">
-        <tbody>
-          <tr>
-            <td>Nombre:</td>
-            <td>{{paciente.nombre}} {{paciente.apellidoPaterno}} {{paciente.apellidoMaterno}}</td>
-            <td>Correo:</td>
-            <td>{{paciente.email}}</td>
-          </tr>
-          <tr>
-            <td>Edad:</td>
-            <td>{{calcularEdad(paciente.fechaNacimiento)}}</td>
-            <td>Telefono:</td>
-            <td>{{paciente.telefono}}</td>
-          </tr>
-          <tr>
-            <td>Sexo:</td>
-            <td class="text-left">{{masculinoOfemenio(paciente.sexo)}}</td>
-            <td colspan="2"></td>
-          </tr>
-        </tbody>
-      </table>
+<div class="container-fluid page vista-resultado">
+  <div class="d-flex page__box p-3 mt-2">Historial</div>
+  <div class="page__content shadow p-3 position-relative">
+    
+    <mat-card class="col-md-12 form-edit">
+      Datos del paciente
+      <mat-divider></mat-divider>
+      <div class="row form-edit">
+        <div class="col-md-12">
+          <table class="table table-sm table-borderless">
+            <tbody>
+              <tr>
+                <td>Nombre:</td>
+                <td>{{paciente.nombre}} {{paciente.apellidoPaterno}} {{paciente.apellidoMaterno}}</td>
+                <td>Correo:</td>
+                <td>{{paciente.email}}</td>
+              </tr>
+              <tr>
+                <td>Edad:</td>
+                <td>{{calcularEdad(paciente.fechaNacimiento)}}</td>
+                <td>Telefono:</td>
+                <td>{{paciente.telefono}}</td>
+              </tr>
+              <tr>
+                <td>Sexo:</td>
+                <td class="text-left">{{masculinoOfemenio(paciente.sexo)}}</td>
+                <td colspan="2"></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </mat-card>
+    
+    <div class="col-md-12 form-edit">
+      <div class="row mat-elevation-z8">
+        <div class="col-md-12 text-right">
+          <mat-form-field class="table-filter">
+            <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filtrar">
+          </mat-form-field>
+        </div>
+        <div class="col-md-12">
+          <table mat-table [dataSource]="dataSource" class="input-full-width">
+            <!-- fecha ingreso-->
+            <ng-container matColumnDef="folio">
+              <th mat-header-cell class="width-10 thead" *matHeaderCellDef> Folio </th>
+              <td mat-cell class="width-10" *matCellDef="let element"> {{element.folio}} </td>
+            </ng-container>
+    
+            <!-- hora ingreso -->
+            <ng-container matColumnDef="fechaIngreso">
+              <th mat-header-cell class="width-10 thead" *matHeaderCellDef> Fecha Ingreso</th>
+              <td mat-cell class="width-10" *matCellDef="let element"> {{element.fechaIngreso}} </td>
+            </ng-container>
+    
+            <!-- folio -->
+            <ng-container matColumnDef="horaIngreso">
+              <th mat-header-cell class="width-10 thead" *matHeaderCellDef> Hora Ingreso </th>
+              <td mat-cell class="width-10" *matCellDef="let element"> {{element.horaIngreso}} </td>
+            </ng-container>
+    
+            <!-- accion -->
+            <ng-container matColumnDef="accion">
+              <th mat-header-cell class="width-10" *matHeaderCellDef></th>
+              <td mat-cell class="width-10" *matCellDef="let element">
+                  <a [routerLink]="['/resultado/edit/', element.recepcionId]">ver</a>
+              </td>
+            </ng-container>
+    
+            <tr mat-header-row *matHeaderRowDef="recepcionColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: recepcionColumns;"></tr>
+          </table>
+        </div>
+        <div class="col-md-12">
+          <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+        </div>
+      </div>
     </div>
-  </div>
-</mat-card>
 
-<div class="col-md-12 form-edit">
-  <div class="row mat-elevation-z8">
-    <div class="col-md-12 text-right">
-      <mat-form-field class="table-filter">
-        <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filtrar">
-      </mat-form-field>
-    </div>
-    <div class="col-md-12">
-      <table mat-table [dataSource]="dataSource" class="input-full-width">
-        <!-- fecha ingreso-->
-        <ng-container matColumnDef="fecha_ingreso">
-          <th mat-header-cell class="width-10 thead" *matHeaderCellDef> Fecha Ingreso </th>
-          <td mat-cell class="width-10" *matCellDef="let element"> {{element.fecha_ingreso}} </td>
-        </ng-container>
-
-        <!-- hora ingreso -->
-        <ng-container matColumnDef="hora_ingreso">
-          <th mat-header-cell class="width-10 thead" *matHeaderCellDef> Hora Ingreso</th>
-          <td mat-cell class="width-10" *matCellDef="let element"> {{element.hora_ingreso}} </td>
-        </ng-container>
-
-        <!-- folio -->
-        <ng-container matColumnDef="ficha">
-          <th mat-header-cell class="width-10 thead" *matHeaderCellDef> Folio </th>
-          <td mat-cell class="width-10" *matCellDef="let element"> {{element.ficha}} </td>
-        </ng-container>
-
-        <!-- accion -->
-        <ng-container matColumnDef="accion">
-          <th mat-header-cell class="width-10" *matHeaderCellDef></th>
-          <td mat-cell class="width-10" *matCellDef="let element">
-              <a [routerLink]="['/resultado/edit/', element.recepcion_id]">ver</a>
-          </td>
-        </ng-container>
-
-        <tr mat-header-row *matHeaderRowDef="recepcionColumns"></tr>
-        <tr mat-row *matRowDef="let row; columns: recepcionColumns;"></tr>
-      </table>
-    </div>
-    <div class="col-md-12">
-      <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
-    </div>
   </div>
 </div>

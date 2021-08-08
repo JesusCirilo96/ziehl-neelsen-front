@@ -1,8 +1,8 @@
-<div class="container-fluid page">
+<div class="container-fluid page vista-resultado">
   <div class="d-flex page__box p-3 mt-2">Resultados</div>
   <div class="page__content shadow p-3 position-relative">
     
-    <div class="row">
+    <div class="row vista">
       <div class="col-md-12">
         <div class="row form-edit">
           <div class="col-md-3">
@@ -49,6 +49,8 @@
                 <th mat-header-cell class="width-10" *matHeaderCellDef></th>
                 <td mat-cell class="width-10" *matCellDef="let element">
                   <a [routerLink]="['/resultado/edit/', element.recepcionId]">ver</a>
+                  |
+                  <a [routerLink]="['/paciente/historial/', element.pacienteId]">Historial</a>
                 </td>
               </ng-container>
 

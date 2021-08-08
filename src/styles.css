@@ -197,3 +197,14 @@ body,html{
     color: black;
     font-size: 1rem;
 }
+
+.vista{
+    margin-left: 2em;
+    margin-right: 2em;
+    margin-bottom: 2em;
+}
+
+.vista-resultado{
+    margin-left: 1rem;
+    margin-right: 1rem;
+}
