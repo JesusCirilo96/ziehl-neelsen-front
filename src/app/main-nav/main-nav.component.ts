@@ -55,6 +55,10 @@ export class MainNavComponent {
     this.toggleSidebarForMe.emit();
   }
 
+  perfil(){
+    this.router.navigate(['/perfil']);
+  }
+
   logout() {
       this.authenticationService.logout();
       this.router.navigate(['/login']);

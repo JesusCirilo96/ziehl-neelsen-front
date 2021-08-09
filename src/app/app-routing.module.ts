@@ -56,6 +56,8 @@ import { SeccionService } from './services/seccion/seccion.service';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { ExamenComponent } from './component/catalogo/examenGeneral/examen/examen.component';
 import { AdministracionComponent } from './component/administracion/administracion.component';
+import { PerfilComponent } from './component/perfil/perfil.component';
+import { ConfiguracionComponent } from './component/configuracion/configuracion.component';
 
 var routes: Routes = [
   { path: '', redirectTo:'home', pathMatch:'full',canActivate: [AuthGuard] },
@@ -63,6 +65,8 @@ var routes: Routes = [
   { path: 'dashboard', component:DashboardComponent},
   { path: 'examen', component:ExamenComponent},
   { path: 'administracion', component:AdministracionComponent},
+  { path: 'perfil', component:PerfilComponent },
+  { path: 'configuracion', component: ConfiguracionComponent},
   { path: 'login', component: LoginComponent },
   { path: 'recepcion', component: ReceptionComponent, canActivate: [AuthGuard] },
   { path: 'categoria', component: CategoriaViewComponent, canActivate: [AuthGuard] },

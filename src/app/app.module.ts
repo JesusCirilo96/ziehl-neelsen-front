@@ -79,6 +79,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { ExamenComponent } from './component/catalogo/examenGeneral/examen/examen.component';
 import { AdministracionComponent } from './component/administracion/administracion.component';
 import { PerfilComponent } from './component/perfil/perfil.component';
+import { ConfiguracionComponent } from './component/configuracion/configuracion.component';
 
 @NgModule({
   declarations: [
@@ -127,7 +128,8 @@ import { PerfilComponent } from './component/perfil/perfil.component';
     DashboardComponent,
     ExamenComponent,
     AdministracionComponent,
-    PerfilComponent
+    PerfilComponent,
+    ConfiguracionComponent
   ],
   entryComponents: [
     DialogoComponent, 

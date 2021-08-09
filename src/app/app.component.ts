@@ -19,7 +19,7 @@ export class AppComponent implements OnInit {
       this.authenticationService.currentUser.subscribe(x => this.currentUser = x);
   }
 
-  sideBarOpen= true;
+  sideBarOpen= false;
   ngOnInit(){
 
   }

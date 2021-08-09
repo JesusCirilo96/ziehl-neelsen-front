@@ -1,4 +1,4 @@
-<mat-toolbar>
+<mat-toolbar *ngIf="currentUser">
   <mat-toolbar-row class="justify-content-between">
     <button mat-icon-button (click)="toggleSidebar()">
       <mat-icon>menu</mat-icon>
@@ -12,7 +12,7 @@
             <mat-icon class="user-image-icon ml-1">keyboard_arrow_down</mat-icon>
           </button>
           <mat-menu #menu="matMenu">
-            <button mat-menu-item>
+            <button mat-menu-item (click)="perfil()">
               <mat-icon>face</mat-icon>
               Ver perfil
             </button>

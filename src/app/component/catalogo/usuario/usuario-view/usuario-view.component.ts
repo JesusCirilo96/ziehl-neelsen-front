@@ -54,5 +54,4 @@ export class UsuarioViewComponent implements OnInit {
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
-
 }

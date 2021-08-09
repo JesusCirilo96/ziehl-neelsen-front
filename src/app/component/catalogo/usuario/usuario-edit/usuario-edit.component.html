@@ -95,6 +95,31 @@
                 <button mat-flat-button color="primary">Nuevo Rol</button>
               </div>
             </div>
+
+            <div class="row">
+              <div class="col-md-3">
+                Menus y submenus disponibles
+              </div>
+            </div>
+            <div class="row margin-up margin-left">
+              <div class="col-md-3">
+                <div *ngFor="let menu of menus" class="row">
+                  <mat-checkbox [(ngModel)]="menu.pertenece" [ngModelOptions]="{standalone: true}" class="">{{menu.nombre}}</mat-checkbox>
+                  <div *ngIf="menu.submenu != null" class="col-md-12">
+                    <div *ngFor="let submenu of menu.submenu" class="row margin-left">
+                      <mat-checkbox [(ngModel)]="submenu.pertenece" [ngModelOptions]="{standalone: true}">{{submenu.nombre}}</mat-checkbox>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="row margin-up">
+              <div class="col-md-12" class="buttons-catalogo">
+                <button mat-flat-button color="primary" (click)="guardarMenus()">Guardar menus</button>
+              </div>
+            </div>
+
             <div class="row">
               <div class="col-md-12">
                 <mat-tab-group>

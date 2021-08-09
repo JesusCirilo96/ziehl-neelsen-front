@@ -11,6 +11,8 @@ import * as $ from 'jquery';
 import { ValueConverter } from '@angular/compiler/src/render3/view/template';
 import { ThrowStmt } from '@angular/compiler';
 
+import { MenuService } from 'src/app/services/menu/menu.service';
+
 @Component({
   selector: 'app-usuario-edit',
   templateUrl: './usuario-edit.component.html',
@@ -18,6 +20,7 @@ import { ThrowStmt } from '@angular/compiler';
 })
 export class UsuarioEditComponent implements OnInit {
   constructor(
+    private menuService: MenuService,
     private usuarioService: UsuarioService,
     private router: Router,
     private activateRoute: ActivatedRoute,
@@ -31,6 +34,8 @@ export class UsuarioEditComponent implements OnInit {
 
   Roles: any = [];
   rolEscogido: number;
+
+  menus: any=[];
 
   formUsuario: FormGroup;
 
@@ -86,7 +91,6 @@ export class UsuarioEditComponent implements OnInit {
       this.rolService.getRolByUsuario(parametros.id).subscribe(
         res => {
           this.usuario = res['usuario'];
-          this.rolUsuario = res['rol'];
           this.formUsuario.patchValue({
             usuarioId: this.usuario.usuarioId,
             nombre: this.usuario.nombre,
@@ -99,8 +103,13 @@ export class UsuarioEditComponent implements OnInit {
             fechaCreacion: this.usuario.fechaCreacion,
             fechaActualizacion: this.usuario.fechaActualizacion
           });
-          console.log(this.rolUsuario[0].rolId)
-          this.obteneMenuRol(this.rolUsuario[0].rolId);
+          if(this.rolUsuario = res['rol'] != null ){
+            this.rolUsuario = res['rol'];
+            this.obteneMenuRol(this.rolUsuario[0].rolId);
+          }else{
+            this.rolUsuario= [];
+          }
+          
           this.edit = true;
           this.mostrarEstado(this.usuario.estado);
           //this.getRol(this.usuario.rol);
@@ -181,11 +190,130 @@ export class UsuarioEditComponent implements OnInit {
     this.rolService.getRolMenu(rolId).subscribe(
       response =>{
         this.rolMenu = response['menu']
+        this.obtenerMenus();
         console.log(this.rolMenu);
       },error =>{
         console.log("Error al obtener los menus por ID del rol: " + error)
       }
     );
+  }
+
+  obtenerMenus() {
+    this.menuService.getAllMenuSubmenu().subscribe(
+      response => {
+        console.log(this.rolMenu);
+        var rolMenu = this.rolMenu;
+        var menu = [];
+        for (var key1 in response) {
+          console.log(response[key1].nombre);
+          var pertenece = false;
+          var submenu = []; 
+          var subMenuRol;
+          for (var key in rolMenu) {
+            console.log("ROLMENU ID:: " + rolMenu[key].menuId );
+            console.log("RESPONSE ID:: " + response[key].menuId );
+            if (rolMenu[key].menuId == response[key1].menuId) {
+              pertenece = true;
+              subMenuRol = rolMenu[key].submenu;
+              break;
+            }
+          }
+          console.log("Pertenece:::" + pertenece);
+          if (pertenece) {
+            if (response[key1].dropdown) {
+              var subMenuResponse = response[key1].submenu;
+              for (var keySub in subMenuResponse) {
+                var tieneSubmenu = false;
+                for (var keySub2 in subMenuRol) {
+                  if (subMenuRol[keySub2].subMenuId === subMenuResponse[keySub].subMenuId) {
+                    tieneSubmenu = true
+                    break;
+                  }
+                }
+                if (tieneSubmenu) {
+                  submenu.push({
+                    dropdown: subMenuResponse[keySub].dropdown,
+                    icono: subMenuResponse[keySub].icono,
+                    menuId: subMenuResponse[keySub].subMenuId,
+                    nombre: subMenuResponse[keySub].nombre,
+                    ruta: subMenuResponse[keySub].ruta,
+                    pertenece: tieneSubmenu
+                  });
+                } else {
+                  submenu.push({
+                    dropdown: subMenuResponse[keySub].dropdown,
+                    icono: subMenuResponse[keySub].icono,
+                    menuId: subMenuResponse[keySub].subMenuId,
+                    nombre: subMenuResponse[keySub].nombre,
+                    ruta: subMenuResponse[keySub].ruta,
+                    pertenece: tieneSubmenu
+                  });
+                }
+              }
+            }
+            menu.push({
+              dropdown: response[key1].dropdown,
+              icono: response[key1].icono,
+              menuId: response[key1].menuId,
+              nombre: response[key1].nombre,
+              ruta: response[key1].ruta,
+              submenu: submenu,
+              pertenece: pertenece
+            });
+          } else {
+            if (response[key1].dropdown) {
+              var subMenuResponse = response[key1].submenu;
+              for (var keySub in subMenuResponse) {
+                var tieneSubmenu = false;
+                for (var keySub2 in subMenuRol) {
+                  if (subMenuRol[keySub2].subMenuId === subMenuResponse[keySub].subMenuId) {
+                    tieneSubmenu = true
+                    break;
+                  }
+                }
+                if (tieneSubmenu) {
+                  submenu.push({
+                    dropdown: subMenuResponse[keySub].dropdown,
+                    icono: subMenuResponse[keySub].icono,
+                    menuId: subMenuResponse[keySub].subMenuId,
+                    nombre: subMenuResponse[keySub].nombre,
+                    ruta: subMenuResponse[keySub].ruta,
+                    pertenece: tieneSubmenu
+                  });
+                } else {
+                  submenu.push({
+                    dropdown: subMenuResponse[keySub].dropdown,
+                    icono: subMenuResponse[keySub].icono,
+                    menuId: subMenuResponse[keySub].subMenuId,
+                    nombre: subMenuResponse[keySub].nombre,
+                    ruta: subMenuResponse[keySub].ruta,
+                    pertenece: tieneSubmenu
+                  });
+                }
+              }
+            }
+            menu.push({
+              dropdown: response[key1].dropdown,
+              icono: response[key1].icono,
+              menuId: response[key1].menuId,
+              nombre: response[key1].nombre,
+              ruta: response[key1].ruta,
+              submenu: submenu,
+              pertenece: pertenece
+            });
+          }
+        }
+        this.menus = menu;
+        console.log(this.menus);
+      }, error => {
+        console.log("Error al obtener los menus con submenus " + error)
+      }
+    );
+  }
+
+  guardarMenus(){
+    console.log("LOS MENUS A GUARDAR");
+    console.log(this.menus);
   }
 
 }
