@@ -32,10 +32,14 @@ export class MainNavComponent {
       private authenticationService: AuthenticationService
   ) {
       this.authenticationService.currentUser.subscribe(x => this.currentUser = x);
+      //this.obteneMenuRol(this.currentUser.usuarioId);
+      
   }
 
   ngOnInit() {
-    this.obteneMenuRol(this.currentUser.usuarioId);
+    
+    
+    
   }
 
   obteneMenuRol(rolId){
@@ -60,6 +64,7 @@ export class MainNavComponent {
   }
 
   logout() {
+      this.toggleSidebar();
       this.authenticationService.logout();
       this.router.navigate(['/login']);
   }

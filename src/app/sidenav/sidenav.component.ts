@@ -15,6 +15,7 @@ export class SidenavComponent implements OnInit {
     private rolService: RolService,
     private authenticationService: AuthenticationService) {
     this.authenticationService.currentUser.subscribe(x => this.currentUser = x);
+      
   }
 
   currentUser: User;
@@ -25,15 +26,16 @@ export class SidenavComponent implements OnInit {
   }
 
   obteneMenuRol(rolId) {
-    if (localStorage.getItem("currentMenu") === null) {
+    /*if (localStorage.getItem("currentMenu") === null) {
       this.rolService.getRolMenu(rolId).subscribe(
         response => {
+          this.rolMenu = response['menu'];
           localStorage.setItem("currentMenu", JSON.stringify(response['menu']));
         }, error => {
           console.log("Error al obtener los menus por ID del rol: " + error)
         }
       );
-    }
+    }*/
     this.rolMenu = JSON.parse(localStorage.getItem("currentMenu"));
     console.log(this.rolMenu);
   }

@@ -21,7 +21,9 @@ export class AppComponent implements OnInit {
 
   sideBarOpen= false;
   ngOnInit(){
-
+    if(this.currentUser == null){
+      this.logout();
+    }
   }
 
   sideBarToggler(){
