@@ -39,6 +39,7 @@ import { ExamenGeneralEditComponent } from './component/catalogo/examenGeneral/e
 //Material components
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 import {MaterialComponents} from './materialComponents';
+import { NgxChartsModule } from '@swimlane/ngx-charts';
 //services
 import {SeccionService} from './services/seccion/seccion.service';
 import {MetodoService} from './services/metodo/metodo.service';
@@ -80,6 +81,8 @@ import { ExamenComponent } from './component/catalogo/examenGeneral/examen/exame
 import { AdministracionComponent } from './component/administracion/administracion.component';
 import { PerfilComponent } from './component/perfil/perfil.component';
 import { ConfiguracionComponent } from './component/configuracion/configuracion.component';
+import { PersonasComponent } from './component/catalogo/personas/personas.component';
+import { SubmenuComponent } from './component/catalogo/submenu/submenu.component';
 
 @NgModule({
   declarations: [
@@ -129,7 +132,9 @@ import { ConfiguracionComponent } from './component/configuracion/configuracion.
     ExamenComponent,
     AdministracionComponent,
     PerfilComponent,
-    ConfiguracionComponent
+    ConfiguracionComponent,
+    PersonasComponent,
+    SubmenuComponent
   ],
   entryComponents: [
     DialogoComponent, 
@@ -137,6 +142,7 @@ import { ConfiguracionComponent } from './component/configuracion/configuracion.
     DialogoSeccionComponent, 
     DialogoEstudioComponent ,
     DialogoRespuestaComponent,
+    SubmenuComponent,
     ModalComponent
   ],
   imports: [
@@ -150,7 +156,8 @@ import { ConfiguracionComponent } from './component/configuracion/configuracion.
     ReactiveFormsModule,//añadir para los formGruoups
     TreeTableModule, LayoutModule, MatToolbarModule, MatButtonModule, MatSidenavModule, MatIconModule, MatListModule,
     MatMenuModule, MatDividerModule,
-    NgxPrintModule
+    NgxPrintModule,
+    NgxChartsModule
   ],
   providers: [
     SeccionService,

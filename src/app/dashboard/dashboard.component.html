@@ -1,8 +1,157 @@
 <div class="container-fluid page">
   <div class="d-flex page__box p-3 mt-2">Dashboard</div>
   <div class="page__content shadow p-3 position-relative">
-    <div class="page__content-data position-absolute text-center">
-      Dashboard
+    <div class="">
+
+      <link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet">
+
+      <div class="grey-bg container-fluid">
+        <section id="minimal-statistics">
+          <div class="row">
+            <div class="col-12 mt-3 mb-1">
+              <h4 class="text-uppercase">Estadisticas</h4>
+              <p>Estadisticas calculadas al dia de hoy</p>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-xl-3 col-sm-6 col-12">
+              <div class="card">
+                <div class="card-content">
+                  <div class="card-body">
+                    <div class="media d-flex">
+                      <div class="align-self-center">
+                        <i class="icon-pencil icon-size float-left"></i>
+                      </div>
+                      <div class="media-body text-right">
+                        <h3>278</h3>
+                        <span>Clientes hoy</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+            <div class="col-xl-3 col-sm-6 col-12">
+              <div class="card">
+                <div class="card-content">
+                  <div class="card-body">
+                    <div class="media d-flex">
+                      <div class="align-self-center">
+                        <i class="icon-speech icon-size float-left"></i>
+                      </div>
+                      <div class="media-body text-right">
+                        <h3>156</h3>
+                        <span>Examenes</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-xl-3 col-sm-6 col-12">
+              <div class="card">
+                <div class="card-content">
+                  <div class="card-body">
+                    <div class="media d-flex">
+                      <div class="align-self-center">
+                        <i class="icon-graph icon-size float-left"></i>
+                      </div>
+                      <div class="media-body text-right">
+                        <h3>50 % </h3>
+                        <span>Actividades que ayer</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-xl-3 col-sm-6 col-12">
+              <div class="card">
+                <div class="card-content">
+                  <div class="card-body">
+                    <div class="media d-flex">
+                      <div class="align-self-center">
+                        <i class="icon-pointer icon-size float-left"></i>
+                      </div>
+                      <div class="media-body text-right">
+                        <h3>423</h3>
+                        <span>Total de visitas hoy</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="stats-subtitle">
+
+          <div class="row form-edit">
+            <div class="col-xl-6 col-md-12">
+              <div class="card">
+                <div class="card-content">
+                  <div class="card-body cleartfix">
+                    <div class="media align-items-stretch">
+                      <div class="align-self-center">
+                        <h1 class="mr-2">$76,456.00</h1>
+                      </div>
+                      <div class="media-body">
+                        <h4>Total de ventas</h4>
+                        <span>Ventas de este mes</span>
+                      </div>
+                      <div class="align-self-center">
+                        <i class="icon-heart icon-size"></i>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-xl-6 col-md-12">
+              <div class="card">
+                <div class="card-content">
+                  <div class="card-body cleartfix">
+                    <div class="media align-items-stretch">
+                      <div class="align-self-center">
+                        <h1 class="mr-2">$36,000.00</h1>
+                      </div>
+                      <div class="media-body">
+                        <h4>Promedio</h4>
+                        <span>Ventas promedio al dia</span>
+                      </div>
+                      <div class="align-self-center">
+                        <i class="icon-wallet icon-size"></i>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <div class="row">
+            <div class="col-12 mt-3 mb-1">
+              <h4 class="text-uppercase">Graficas</h4>
+              <p>Estadisticas en graficas</p>
+            </div>
+          </div>
+
+          <div class="row">
+            <ngx-charts-pie-grid [view]="view" [scheme]="colorScheme" [results]="single" (select)="onSelect($event)">
+            </ngx-charts-pie-grid>
+          </div>
+
+        </section>
+
+      </div>
+
+
     </div>
   </div>
 </div>

@@ -58,10 +58,12 @@ import { ExamenComponent } from './component/catalogo/examenGeneral/examen/exame
 import { AdministracionComponent } from './component/administracion/administracion.component';
 import { PerfilComponent } from './component/perfil/perfil.component';
 import { ConfiguracionComponent } from './component/configuracion/configuracion.component';
+import { PersonasComponent } from './component/catalogo/personas/personas.component';
 
 var routes: Routes = [
-  { path: '', redirectTo:'home', pathMatch:'full',canActivate: [AuthGuard] },
-  { path: 'home', component:HomeComponent},
+  { path: '', redirectTo:'inicio', pathMatch:'full',canActivate: [AuthGuard] },
+  { path: 'personas', component:PersonasComponent ,canActivate: [AuthGuard] },
+  { path: 'inicio', component:HomeComponent},
   { path: 'dashboard', component:DashboardComponent},
   { path: 'examen', component:ExamenComponent},
   { path: 'administracion', component:AdministracionComponent},

@@ -4,13 +4,6 @@
   </div>
   <mat-divider></mat-divider>
   <h2 matSubheader class="mt-2">Aplicaciones</h2>
-  <a mat-list-item routerLink="/home" routerLinkActive="list-item-active">
-    <mat-icon>Inicio</mat-icon> Inicio
-  </a>
-  <a mat-list-item routerLink="/dashboard" routerLinkActive="list-item-active">
-    <mat-icon>dashboard</mat-icon> Dashboard
-  </a>
-
   <a *ngFor="let menu of rolMenu" mat-list-item routerLink="{{menu.ruta}}" routerLinkActive="list-item-active">
    <mat-icon>{{menu.icono}}</mat-icon>
    {{menu.nombre}}

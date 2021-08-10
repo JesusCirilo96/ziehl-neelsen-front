@@ -1,1 +1,5 @@
 @import "../component/home/home.component.css";
+
+.icon-size{
+    font-size: 2em;
+}

@@ -3,6 +3,10 @@ import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms'
 import { ActivatedRoute, Router } from '@angular/router';
 import { MenuService } from '../../../services/menu/menu.service';
 import { Menu } from '../../../models/Menu';
+import { MatDialog } from '@angular/material/dialog';
+import { SubmenuComponent } from '../submenu/submenu.component';
+
+import * as $ from 'jquery';
 
 @Component({
   selector: 'app-menu',
@@ -11,14 +15,15 @@ import { Menu } from '../../../models/Menu';
 })
 export class MenuComponent implements OnInit {
   constructor(
+    public dialog: MatDialog,
     private menuService: MenuService,
     private router: Router,
     private activateRoute: ActivatedRoute,
     private _formBuilder: FormBuilder) { }
+    
 
   edit: boolean = false;
   formMenu: FormGroup;
-  formSubmenu: FormGroup;
 
   menu: Menu = {
     menuId: null,
@@ -29,26 +34,19 @@ export class MenuComponent implements OnInit {
     estado: true
   }
 
+  menuSubmenu: any = [];
+
   //controls para formulario de menu
   menuIdCtrl = new FormControl(null);
   menuNombreCtrl = new FormControl('', [Validators.required]);
   menuRutaCtrl = new FormControl('', [Validators.required]);
-  menuDropdownCtrl = new FormControl('', [Validators.required]);
+  menuDropdownCtrl = new FormControl(false, [Validators.required]);
   menuIconoCtrl = new FormControl('');
   menuEstadoCtrl = new FormControl(true);
 
-  //controls para formulario de sub menu
-  submenuIdCtrl = new FormControl(null);
-  submenuNombreCtrl = new FormControl('', [Validators.required]);
-  submenuRutaCtrl = new FormControl('', [Validators.required]);
-  submenuDropdownCtrl = new FormControl(false, [Validators.required]);
-  submenuIconoCtrl = new FormControl('');
-  submenuEstadoCtrl = new FormControl(true);
-
 
   ngOnInit() {
-    $("#seccionEstado").hide();
-    const parametros = this.activateRoute.snapshot.params;//<---Contiene los parametros que se pasan
+    $("#seccionGuardar").hide();
 
     this.formMenu = this._formBuilder.group({
       menuId: this.menuIdCtrl,
@@ -59,40 +57,25 @@ export class MenuComponent implements OnInit {
       estado: this.menuEstadoCtrl
     });
 
-    this.formSubmenu = this._formBuilder.group({
-      subMenuId: this.submenuIdCtrl,
-      nombre: this.submenuNombreCtrl,
-      ruta: this.submenuRutaCtrl,
-      dropdown: this.submenuDropdownCtrl,
-      icono: this.submenuIconoCtrl,
-      estado: this.submenuEstadoCtrl
-    });
-
-    if (parametros.id) {
-      this.menuService.getMenu(parametros.id).subscribe(
-        response => {
-          this.menu = response;
-          this.formMenu.patchValue({
-            menuId: this.menu.menuId,
-            nombre: this.menu.nombre,
-            ruta: this.menu.ruta,
-            dropdown: this.menu.dropdown,
-            icono: this.menu.icono,
-            estado: this.menu.estado
-          });
-          this.edit = true;
-          //this.mostrarEstado(this.menu.estado);
-        }, error => {
-          console.log("Error al obtener el menu por ID: " + error)
-        }
-      );
-    }
+    this.obtenerMenuSubmenu();
   }
 
-  /*guardarRol() {
+  guardarMenu() {
+    console.log(this.formMenu.value.dropdown);
+    if(this.formMenu.value.estado == true){
+      this.formMenu.patchValue({
+        dropdown:true
+      })
+    }
+    if(this.formMenu.value.dropdown == false){
+      this.formMenu.patchValue({
+        dropdown:false
+      })
+    }
+    console.log(this.formMenu.value);
     this.menuService.saveMenu(this.formMenu.value).subscribe(
       res => {
-        this.router.navigate(['/rol'])
+        //this.router.navigate(['/administracion'])
       },
       err => {
         console.log(err);
@@ -100,10 +83,10 @@ export class MenuComponent implements OnInit {
     )
   }
 
-  actualizarRol() {
+  actualizarMenu() {
     this.menuService.updateMenu(this.formMenu.value).subscribe(
       res => {
-        this.router.navigate(['/rol'])
+        //this.router.navigate(['/administracion'])
         this.edit = false;
       },
       err => {
@@ -112,21 +95,26 @@ export class MenuComponent implements OnInit {
     )
   }
 
-  cancelarEdicion() {
-    this.router.navigate(['/rol']);
+  obtenerMenuSubmenu(){
+    this.menuService.getAllMenuSubmenu().subscribe(
+      respuesta =>{
+        console.log(respuesta);
+        this.menuSubmenu = respuesta;
+      },err=>{
+
+      }
+    )
   }
 
-  activarInactivar() {
-    if (this.menu.estado === false) {
-      this.formMenu.patchValue({
-        estado: true
-      });
-    } else if (this.menu.estado === true) {
-      this.formMenu.patchValue({
-        estado: false
-      });
-    }
-    this.actualizarRol();
+  cancelarEdicion() {
+    this.formMenu.patchValue({
+      menuId: this.menu.menuId,
+      nombre: this.menu.nombre,
+      ruta: this.menu.ruta,
+      dropdown: this.menu.dropdown,
+      icono: this.menu.icono,
+      estado: this.menu.estado
+    });
   }
 
   mostrarEstado(estadoId) {
@@ -141,5 +129,50 @@ export class MenuComponent implements OnInit {
       $("#menuEstado").show();
     }
   }
-*/
+
+  editarSubmenu(submenu: any, editar:boolean): void{
+    console.log(submenu);
+    var submenuDialog;
+    if(editar){
+      submenuDialog = { editar: true, subMenu : submenu}
+    }else{
+      submenuDialog = { editar: false}
+    }
+
+    const dialogReferencia = this.dialog.open(SubmenuComponent, {
+      width: '50%',
+      data: submenuDialog
+    });
+
+    dialogReferencia.afterClosed().subscribe(result => {
+      if (result != undefined) {
+        this.obtenerMenuSubmenu();
+      }
+    });
+  }
+
+  eliminarSubmenu(submenuId:number):void{
+    console.log(submenuId);
+  }
+
+  editarMenu(menu: any):void{
+    console.log(menu);
+    var dropdown = "false";
+    if(menu.dropdown){
+      dropdown = "true"
+    }
+    this.formMenu.patchValue({
+      menuId: menu.menuId,
+      nombre: menu.nombre,
+      ruta: menu.ruta,
+      dropdown: dropdown,
+      icono: menu.icono,
+      estado: menu.estado
+    });
+  }
+
+  eliminarMenu(menuId:any){
+
+  }
+
 }

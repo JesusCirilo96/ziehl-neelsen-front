@@ -1,0 +1,21 @@
+<div class="container-fluid page">
+  <div class="d-flex page__box p-3 mt-2">Personas</div>
+  <div class="page__content shadow p-3 position-relative">
+    <mat-tab-group>
+      <mat-tab *ngFor="let submenu of rolMenu[index].submenu" label="{{submenu.nombre}}">
+        <div class="vista" *ngIf="submenu.ruta == '/paciente'">
+          <app-paciente-view></app-paciente-view>
+        </div>
+        <div class="vista" *ngIf="submenu.ruta == '/atencion'">
+          <app-atencion-view></app-atencion-view>
+        </div>
+        <div class="vista" *ngIf="submenu.ruta == '/usuario'">
+          <app-usuario-view></app-usuario-view>
+        </div>
+        <div class="vista" *ngIf="submenu.ruta == '/rol'">
+          <app-rol-view></app-rol-view>
+        </div>
+      </mat-tab>
+    </mat-tab-group>
+  </div>
+</div>
