@@ -38,8 +38,8 @@ import { ExamenGeneralEditComponent } from './component/catalogo/examenGeneral/e
 
 //Material components
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
-import {MaterialComponents} from './materialComponents';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
+import {MaterialComponents} from './materialComponents';
 //services
 import {SeccionService} from './services/seccion/seccion.service';
 import {MetodoService} from './services/metodo/metodo.service';
