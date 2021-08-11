@@ -79,7 +79,7 @@ export class RolEditComponent implements OnInit {
   guardarRol() {
     this.rolService.saveRol(this.formRol.value).subscribe(
       res => {
-        this.router.navigate(['/administracion'])
+        this.router.navigate(['/personas'])
       },
       err => {
         console.log(err);
@@ -90,7 +90,7 @@ export class RolEditComponent implements OnInit {
   actualizarRol() {
     this.rolService.updateRol(this.formRol.value).subscribe(
       res => {
-        this.router.navigate(['/administracion'])
+        this.router.navigate(['/personas'])
         this.edit = false;
       },
       err => {

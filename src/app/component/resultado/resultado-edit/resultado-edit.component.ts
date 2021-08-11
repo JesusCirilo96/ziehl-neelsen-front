@@ -405,14 +405,43 @@ export class ResultadoEditComponent implements OnInit {
     return word.toUpperCase();
   }
 
-  removerSubExamenSubSeccion(examenArray,examen, subSeccion, subExamen) {
-    console.log(examenArray);
-    console.log('examen' + examen);
-    console.log('suseccion' + subSeccion);
-    console.log('subexamen' + subExamen);
+  removerSubExamenSubSeccion(indiceExamen: number, seccionId: number, estudioId: number): void {
+    console.log("EXAMEN ID" + indiceExamen);
+    console.log("SECCION ID" + seccionId);
+    console.log("ESTUDIO ID" + estudioId);
     Swal.fire({
-      title: 'Estas Seguro?',
-      text: "Se removera el examen!",
+      title: '¿Estas Seguro?',
+      text: "¡Se removera el estudio!",
+      type: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Si, remover'
+    }).then((result) => {
+      if (result.value) {
+        var examen = this.examenGeneralRecepcion[indiceExamen].resultado;
+        console.log(examen);
+          var seccion = examen.SECCION;
+          for (var keySeccion in seccion) {
+            if (seccion[keySeccion].seccion.seccionId == seccionId) {
+              var indexEstudio = this.examenGeneralRecepcion[indiceExamen].resultado.SECCION[keySeccion].estudio.map(function (sub) { return sub.estudioId; }).indexOf(estudioId);
+              this.examenGeneralRecepcion[indiceExamen].resultado.SECCION[keySeccion].estudio.splice(indexEstudio, 1);
+              break;
+            }
+          }
+        Swal.fire(
+          'Removido!',
+          'El estudio a sido removido.',
+          'success'
+        )
+      }
+    })
+  }
+
+  removerEstudioExamen(indiceEstudio: number, indiceGeneral: number):void{
+    Swal.fire({
+      title: '¿Estas Seguro?',
+      text: "¡Se removera el estudio!",
       type: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
@@ -420,17 +449,14 @@ export class ResultadoEditComponent implements OnInit {
       confirmButtonText: 'Si, remover!'
     }).then((result) => {
       if (result.value) {
-        var index = this.resultadoExamenGeneral.map(function (est) { return est.examen_gen_id; }).indexOf(examen);
-        var indexSubSeccion = this.resultadoExamenGeneral[index].resultado.SUB_SECCION.map(function (sub) { return sub.NOMBRE; }).indexOf(subSeccion);
-        var indexSubExamen = this.resultadoExamenGeneral[index].resultado.SUB_SECCION[indexSubSeccion].EXAMEN.map(function (exm) { return exm.NOMBRE; }).indexOf(subExamen);
-        this.resultadoExamenGeneral[index].resultado.SUB_SECCION[indexSubSeccion].EXAMEN.splice(indexSubExamen, 1);
+        this.examenGeneralRecepcion[indiceGeneral].resultado.ESTUDIO.splice(indiceEstudio, 1)
         Swal.fire(
           'Removido!',
           'El examen a sido removido.',
           'success'
         )
       }
-    })
+    });
   }
 
 }

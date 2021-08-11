@@ -38,7 +38,6 @@ import { ExamenGeneralEditComponent } from './component/catalogo/examenGeneral/e
 
 //Material components
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
-import { NgxChartsModule } from '@swimlane/ngx-charts';
 import {MaterialComponents} from './materialComponents';
 //services
 import {SeccionService} from './services/seccion/seccion.service';
@@ -156,8 +155,7 @@ import { SubmenuComponent } from './component/catalogo/submenu/submenu.component
     ReactiveFormsModule,//añadir para los formGruoups
     TreeTableModule, LayoutModule, MatToolbarModule, MatButtonModule, MatSidenavModule, MatIconModule, MatListModule,
     MatMenuModule, MatDividerModule,
-    NgxPrintModule,
-    NgxChartsModule
+    NgxPrintModule
   ],
   providers: [
     SeccionService,

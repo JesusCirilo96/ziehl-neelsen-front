@@ -135,7 +135,7 @@ export class UsuarioEditComponent implements OnInit {
   saveNewUsuario() {
     this.usuarioService.saveUsuario(this.formUsuario.value).subscribe(
       res => {
-        this.router.navigate(['/administracion'])
+        this.router.navigate(['/personas'])
       },
       err => {
         console.log(err);
@@ -147,7 +147,7 @@ export class UsuarioEditComponent implements OnInit {
     console.log(this.formUsuario.value)
     this.usuarioService.updateUsuario(this.formUsuario.value).subscribe(
       res => {
-        this.router.navigate(['/administracion'])
+        this.router.navigate(['/personas'])
         this.edit = false;
       },
       err => {
@@ -157,7 +157,7 @@ export class UsuarioEditComponent implements OnInit {
   }
 
   cancelarEdicion() {
-    this.router.navigate(['/administracion']);
+    this.router.navigate(['/personas']);
   }
 
   activarInactivar() {

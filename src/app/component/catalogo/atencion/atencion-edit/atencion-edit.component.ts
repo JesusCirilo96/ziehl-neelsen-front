@@ -77,7 +77,7 @@ export class AtencionEditComponent implements OnInit {
   saveNewAtencion(){
     this.atencionService.saveAtencion(this.formAtencion.value).subscribe(
       res=>{
-        this.router.navigate(['/administracion'])
+        this.router.navigate(['/personas'])
       },
       err=>{
         console.log(err);
@@ -89,7 +89,7 @@ export class AtencionEditComponent implements OnInit {
   updateAtencion(){
     this.atencionService.updateAtencion(this.formAtencion.value).subscribe(
       res=>{
-        this.router.navigate(['/administracion'])
+        this.router.navigate(['/personas'])
         this.edit = false;
       },
       err=>{
@@ -99,7 +99,7 @@ export class AtencionEditComponent implements OnInit {
   }
 
   cancelarEdicion(){
-    this.router.navigate(['/administracion']);
+    this.router.navigate(['/personas']);
   }
 
   activarInactivar(){

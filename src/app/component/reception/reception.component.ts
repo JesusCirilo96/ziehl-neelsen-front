@@ -551,8 +551,6 @@ export class ReceptionComponent implements OnInit {
         console.log(examen);
         for (var key in examen) {
           var seccion = examen[key].SECCION;
-          console.log("SECCION");
-          console.log(seccion);
           for (var keySeccion in seccion) {
             if (seccion[keySeccion].seccion.seccionId == seccionId) {
               var indexEstudio = this.ExamenGeneralRecepcion[key].SECCION[keySeccion].estudio.map(function (sub) { return sub.estudioId; }).indexOf(estudioId);
@@ -568,6 +566,28 @@ export class ReceptionComponent implements OnInit {
         )
       }
     })
+  }
+
+  removerEstudioExamen(indiceEstudio: number, indiceGeneral: number):void{
+    Swal.fire({
+      title: '¿Estas Seguro?',
+      text: "¡Se removera el estudio!",
+      type: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Si, remover!'
+    }).then((result) => {
+      if (result.value) {
+        console.log(this.ExamenGeneralRecepcion[indiceGeneral]);
+        this.ExamenGeneralRecepcion[indiceGeneral].ESTUDIO.splice(indiceEstudio, 1)
+        Swal.fire(
+          'Removido!',
+          'El examen a sido removido.',
+          'success'
+        )
+      }
+    });
   }
 
   //fin de remover examenes

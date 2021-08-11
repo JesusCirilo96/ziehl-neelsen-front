@@ -113,7 +113,7 @@
         <div class="form-edit"></div>
 
 
-        <mat-accordion *ngFor="let seleccion of ExamenGeneralRecepcion" class="form-edit">
+        <mat-accordion *ngFor="let seleccion of ExamenGeneralRecepcion; index as indiceExamen" class="form-edit">
           <mat-expansion-panel>
             <mat-expansion-panel-header>
               <mat-panel-title>
@@ -142,7 +142,7 @@
                         <td colspan="1"></td>
                         <td>
                           <button mat-icon-button color="warn" aria-label="Remover estudio"
-                            (click)="removerSubExamenSubSeccion(seleccion.EXAMEN_GEN_ID, seccion.seccion.seccionId, estudio.estudioId)">
+                            (click)="removerSubExamenSubSeccion(seleccion.examenId, seccion.seccion.seccionId, estudio.estudioId)">
                             <mat-icon>remove</mat-icon>
                           </button>
                           {{estudio.nombre}}
@@ -159,10 +159,10 @@
                 <div>
                   <table class="table table-sm table-borderless">
                     <tbody>
-                      <tr *ngFor="let subExamen of seleccion.ESTUDIO">
+                      <tr *ngFor="let subExamen of seleccion.ESTUDIO; index as indiceEstudio">
                         <td>
                           <button mat-icon-button color="warn" aria-label="Example icon-button with a heart icon"
-                            (click)="removerSubExamenSubseccion(seleccion.EXAMEN_GEN_ID,subExamen.NOMBRE)">
+                            (click)="removerEstudioExamen(indiceEstudio, indiceExamen)">
                             <mat-icon>remove</mat-icon>
                           </button>
                           {{subExamen.nombre}}
