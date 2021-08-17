@@ -60,4 +60,8 @@ export class RecepcionService {
   updateRecepcion(sub_seccion_id:string, updateRecepcion:Recepcion): Observable<Recepcion>{
     return this.http.put(`${this.API_URI}/recepcion/${sub_seccion_id}`, updateRecepcion);
   }
+
+  updateBandera(recepcionId:number, opcion: string, valor:boolean){
+    return this.http.get(`${this.API_URI}/recepcion/update/bandera/${recepcionId}/${opcion}/${valor}`);
+  }
 }

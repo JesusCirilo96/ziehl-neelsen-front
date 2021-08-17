@@ -7,15 +7,15 @@ import { ExamenGeneralRecepcionService } from 'src/app/services/examenGeneralRec
 import { User } from '../../../_models/user';
 import { AuthenticationService } from '../../../_services/authentication.service';
 
-import {formatDate} from '@angular/common';
-import {MAT_DATE_LOCALE} from '@angular/material/core';
+import { formatDate } from '@angular/common';
+import { MAT_DATE_LOCALE } from '@angular/material/core';
 
 import { Informe } from 'src/app/models/Informe';
 import { InformeService } from 'src/app/services/informe/informe.service';
 
 //Models
 import { Paciente } from 'src/app/models/Paciente';
-import {Atencion} from 'src/app/models/Atencion';
+import { Atencion } from 'src/app/models/Atencion';
 import { Recepcion } from 'src/app/models/Recepcion'
 import { ExamenGeneralRecepcion } from 'src/app/models/ExamenGeneralRecepcion';
 
@@ -28,7 +28,7 @@ import Swal from 'sweetalert2';
   templateUrl: './resultado-edit.component.html',
   styleUrls: ['./resultado-edit.component.css'],
   providers: [
-    {provide: MAT_DATE_LOCALE, useValue: 'es-ES'}
+    { provide: MAT_DATE_LOCALE, useValue: 'es-ES' }
   ]
 })
 export class ResultadoEditComponent implements OnInit {
@@ -51,45 +51,48 @@ export class ResultadoEditComponent implements OnInit {
    * Inicia Reemplazos
    */
 
-    pacienteModel: Paciente = {
-      nombre:'',
-      apellidoPaterno:'',
-      apellidoMaterno:'',
-      fechaNacimiento:'',
-      sexo:false,
-      email:'',
-      telefono:''
-    }
+  usuarioRecepcion: string = "";
 
-    atencionModel: Atencion={
-      nombre:'',  
-      apellidoPaterno:'',
-      apellidoMaterno:''
-    }
+  pacienteModel: Paciente = {
+    nombre: '',
+    apellidoPaterno: '',
+    apellidoMaterno: '',
+    fechaNacimiento: '',
+    sexo: false,
+    email: '',
+    telefono: ''
+  }
 
-    recepcionModel: Recepcion = {
-      ficha: null,
-      horaIngreso: '',
-      fechaIngreso: ''
-    }
+  atencionModel: Atencion = {
+    nombre: '',
+    apellidoPaterno: '',
+    apellidoMaterno: ''
+  }
 
-    examenGenRecepcion: ExamenGeneralRecepcion = {
-      examenId:null,
-      recepcionId:null,
-      usuarioId:null,
-      realizado: false,
-      impreso: false,
-      entregado:false,
-      resultado: null
-    }
+  recepcionModel: Recepcion = {
+    ficha: null,
+    horaIngreso: '',
+    fechaIngreso: '',
+    finalizado: false,
+    impreso: false,
+    entregado: false
 
-    examenGeneralRecepcion: any = [];
+  }
 
-    
-   /*
-    Termina reemplazos
-   */
-    
+  examenGenRecepcion: ExamenGeneralRecepcion = {
+    examenId: null,
+    recepcionId: null,
+    usuarioId: null,
+    resultado: null
+  }
+
+  examenGeneralRecepcion: any = [];
+
+
+  /*
+   Termina reemplazos
+  */
+
 
   textCheked = 'Susceptibilidad';
   recepcionDatos: any = [];
@@ -118,16 +121,14 @@ export class ResultadoEditComponent implements OnInit {
           this.pacienteModel = res['paciente'];
           this.recepcionModel = res['recepcion'];
           this.atencionModel = res['medico'];
+          this.usuarioRecepcion = res['nombreUsuario'];
           //this.obtenerResultadoExamenGeneral(parametros.id);
           var examenRecepcion = res['recepcionExamen'];
-          for(var key in examenRecepcion){
+          for (var key in examenRecepcion) {
             this.examenGeneralRecepcion.push({
-              examenId:examenRecepcion[key].examenId,
-              recepcionId:examenRecepcion[key].recepcionId,
-              usuarioId:examenRecepcion[key].usuarioId,
-              realizado: examenRecepcion[key].realizado,
-              impreso: examenRecepcion[key].impreso,
-              entregado:examenRecepcion[key].entregado,
+              examenId: examenRecepcion[key].examenId,
+              recepcionId: examenRecepcion[key].recepcionId,
+              usuarioId: examenRecepcion[key].usuarioId,
               resultado: JSON.parse(examenRecepcion[key].resultado)
             });
 
@@ -174,12 +175,9 @@ export class ResultadoEditComponent implements OnInit {
 
   guardarResultados(examen) {
     this.examenGenRecepcion = {
-      examenId:examen.examenId,
-      recepcionId:examen.recepcionId,
-      usuarioId:examen.usuarioId,
-      realizado:examen.realizado,
-      impreso: examen.impreso,
-      entregado:examen.entregado,
+      examenId: examen.examenId,
+      recepcionId: examen.recepcionId,
+      usuarioId: examen.usuarioId,
       resultado: JSON.stringify(examen.resultado)
     }
     console.log(examen);
@@ -197,34 +195,45 @@ export class ResultadoEditComponent implements OnInit {
   }
 
 
-  realizado(realizado, examen, examen_gen_id){
-    var hecho = false;
-    if(!realizado){
-      hecho = true;
+  realizado(recepcionId: number, opcion: string): void {
+    var valor;
+
+    switch (opcion) {
+      case 'finalizado':
+        valor = !this.recepcionModel.finalizado;
+        break;
+      case 'impreso':
+        valor = !this.recepcionModel.impreso;
+        break;
+      case 'entregado':
+        valor = !this.recepcionModel.entregado;
+        break;
+      default:
+        console.log("Opcion invalida");
     }
-    examen.realizado = hecho;
-    this.examenGeneralRecepcionService.updateExGenRecepcion(examen).subscribe(
-      res=>{
-        //console.log('ok');
+
+    this.recepcionService.updateBandera(recepcionId, opcion, valor).subscribe(
+      res => {
+        console.log('res');
       },
-      err=>{
-        console.log();
+      err => {
+        console.log(err);
       }
     )
   }
 
-  impreso(impreso, examen, examen_gen_id){
+  impreso(impreso, examen, examen_gen_id) {
     var hecho = false;
-    if(!impreso){
+    if (!impreso) {
       hecho = true;
     }
     examen.impreso = hecho;
     this.examenGeneralRecepcionService.updateExGenRecepcion(examen).subscribe(
-      res=>{
+      res => {
         this.getResultado();
         //console.log('ok');
       },
-      err=>{
+      err => {
         console.log();
       }
     )
@@ -393,12 +402,12 @@ export class ResultadoEditComponent implements OnInit {
     return now;
   }
 
-  formatearHora(hora: string){
+  formatearHora(hora: string) {
     return hora.slice(0, -3);
   }
 
-  formatearFecha(fecha){
-    return formatDate(fecha,'dd/MM/yyyy','en-US');
+  formatearFecha(fecha) {
+    return formatDate(fecha, 'dd/MM/yyyy', 'en-US');
   }
 
   convertToUpper(word) {
@@ -421,14 +430,14 @@ export class ResultadoEditComponent implements OnInit {
       if (result.value) {
         var examen = this.examenGeneralRecepcion[indiceExamen].resultado;
         console.log(examen);
-          var seccion = examen.SECCION;
-          for (var keySeccion in seccion) {
-            if (seccion[keySeccion].seccion.seccionId == seccionId) {
-              var indexEstudio = this.examenGeneralRecepcion[indiceExamen].resultado.SECCION[keySeccion].estudio.map(function (sub) { return sub.estudioId; }).indexOf(estudioId);
-              this.examenGeneralRecepcion[indiceExamen].resultado.SECCION[keySeccion].estudio.splice(indexEstudio, 1);
-              break;
-            }
+        var seccion = examen.SECCION;
+        for (var keySeccion in seccion) {
+          if (seccion[keySeccion].seccion.seccionId == seccionId) {
+            var indexEstudio = this.examenGeneralRecepcion[indiceExamen].resultado.SECCION[keySeccion].estudio.map(function (sub) { return sub.estudioId; }).indexOf(estudioId);
+            this.examenGeneralRecepcion[indiceExamen].resultado.SECCION[keySeccion].estudio.splice(indexEstudio, 1);
+            break;
           }
+        }
         Swal.fire(
           'Removido!',
           'El estudio a sido removido.',
@@ -438,7 +447,7 @@ export class ResultadoEditComponent implements OnInit {
     })
   }
 
-  removerEstudioExamen(indiceEstudio: number, indiceGeneral: number):void{
+  removerEstudioExamen(indiceEstudio: number, indiceGeneral: number): void {
     Swal.fire({
       title: '¿Estas Seguro?',
       text: "¡Se removera el estudio!",

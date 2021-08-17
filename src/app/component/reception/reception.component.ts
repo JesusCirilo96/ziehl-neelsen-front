@@ -135,10 +135,7 @@ export class ReceptionComponent implements OnInit {
   examenGeneralRecepcion: ExamenGeneralRecepcion = {
     examenId: null,
     recepcionId: '',
-    usuarioId: null,
-    realizado: false,
-    impreso: false,
-    entregado: false,
+    usuarioId: null, 
     resultado: null
   }
 
@@ -244,8 +241,6 @@ export class ReceptionComponent implements OnInit {
         examenId: null,
         recepcionId: this.recepcion.recepcionId,
         usuarioId: null,
-        realizado: false,
-        impreso: false,
         resultado: null
       }
     }
@@ -271,10 +266,7 @@ export class ReceptionComponent implements OnInit {
     this.examenGeneralRecepcion = {
       examenId: null,
       recepcionId: '',
-      realizado: false,
       usuarioId: null,
-      impreso: false,
-      entregado: false,
       resultado: null
     }
 

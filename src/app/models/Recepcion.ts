@@ -8,6 +8,11 @@ export interface Recepcion{
     descuento?:number;
     anticipo?:number;
     restante?:number;
+    importe?: number,
+    pagado?: boolean,
+    finalizado?: boolean,
+    impreso?: boolean,
+    entregado?:boolean,
     muestras?:string;
     notas?:string;
     usuarioId?:number;

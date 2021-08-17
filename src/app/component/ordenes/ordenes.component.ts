@@ -7,16 +7,16 @@ import {MAT_MOMENT_DATE_FORMATS, MomentDateAdapter} from '@angular/material-mome
 import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material/core';
 
 @Component({
-  selector: 'app-resultado-view',
-  templateUrl: './resultado-view.component.html',
-  styleUrls: ['./resultado-view.component.css'],
+  selector: 'app-ordenes',
+  templateUrl: './ordenes.component.html',
+  styleUrls: ['./ordenes.component.css'],
   providers: [
     {provide: MAT_DATE_LOCALE, useValue: 'es-ES'},
     {provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE]},
     {provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS},
-  ],
+  ]
 })
-export class ResultadoViewComponent implements OnInit {
+export class OrdenesComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @HostBinding('class') classes = 'row';
 
@@ -30,7 +30,11 @@ export class ResultadoViewComponent implements OnInit {
   recepcionColumns: string[] = [
     'ficha',
     'paciente',
+    'total',
+    'restante',
     'finalizado',
+    'impreso',
+    'entregado',
     'horaIngreso',
     'accion'
   ];
@@ -47,6 +51,7 @@ export class ResultadoViewComponent implements OnInit {
     this.recepcionService.getRecepcionFecha(this.Fecha).subscribe(
       res => {
         this.recepcion = res;
+        console.log(this.recepcion)
         this.dataSource.data = this.recepcion;
       },
       err => console.error(err)

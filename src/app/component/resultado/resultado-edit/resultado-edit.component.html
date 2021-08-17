@@ -1,5 +1,5 @@
 <div class="container-fluid page">
-  <div class="d-flex page__box p-3 mt-2">Resultados</div>
+  <div class="d-flex page__box p-3 mt-2">Órden de trabajo</div>
   <div class="page__content shadow p-3 position-relative">
 
 
@@ -48,28 +48,43 @@
           </div>
         </mat-card>
 
+        <div class="row form-edit">
+          <div class="col-md-12">
+            Orden creada por: {{usuarioRecepcion}}
+          </div>
+        </div>
+
+        <div class="row form-edit">
+          <div class="col-md-2">
+            <p class="bold">Terminado:</p>
+            <mat-slide-toggle [color]="primary"
+              (change)="realizado(recepcionModel.recepcionId, 'finalizado')"
+              [checked]="recepcionModel.finalizado" matTooltip="Marcar como terminado">
+              {{recepcionModel.finalizado ? 'Si':'No'}}
+            </mat-slide-toggle>
+          </div>
+          <div class="col-md-2">
+            <p class="bold">Impreso:</p>
+            <mat-slide-toggle [color]="primary"
+              (change)="realizado(recepcionModel.recepcionId, 'impreso')"
+              [checked]="recepcionModel.impreso" matTooltip="Marcar como terminado">
+              {{recepcionModel.impreso ? 'Si':'No'}}
+            </mat-slide-toggle>
+          </div>
+          <div class="col-md-2">
+            <p class="bold">Entregado:</p>
+            <mat-slide-toggle [color]="primary"
+              (change)="realizado(recepcionModel.entregado, 'entregado')"
+              [checked]="recepcionModel.entregado" matTooltip="Marcar como terminado">
+              {{recepcionModel.entregado ? 'Si':'No'}}
+            </mat-slide-toggle>
+          </div>
+        </div>
+
+
         <mat-tab-group class="form-edit">
           <mat-tab *ngFor="let examenGeneral of examenGeneralRecepcion; index as indiceGeneral"
             label="{{examenGeneral.resultado.NOMBRE}}">
-            <div class="col-md-12 form-edit">
-              <div class="row">
-                <div class="col-md-2">
-                  <p class="bold">Terminado:</p>
-                  <mat-slide-toggle [color]="primary"
-                    (change)="realizado(examenGeneral.realizado,examenGeneral.resultado, examenGeneral.examen_gen_id)"
-                    [checked]="examenGeneral.realizado" matTooltip="Marcar como terminado">
-                    {{examenGeneral.realizado ? 'Si': 'No'}}
-                  </mat-slide-toggle>
-                </div>
-                <div class="col-md-2">
-                  <p class="bold">Impreso:</p> {{examenGeneral.impreso ? 'Si': 'No'}}
-                </div>
-                <div class="col-md-2">
-                  <p class="bold">Entregado:</p> {{examenGeneral.entregado ? 'Si': 'No'}}
-                </div>
-              </div>
-            </div>
-
             <div class="col-md-12 form-edit">
               <button mat-icon-button color="primary" matTooltip="Guardar Resultados" [swal]="guardarResultado">
                 <mat-icon>save</mat-icon>
@@ -528,7 +543,7 @@
                                 <div class="row" *ngIf="referencia.referenciaGeneral; else elseReferenciaRutinaImp">
                                   <div class="col-md-4 text-right ref-font" [innerHTML]="referencia.prefijo"></div>
                                   <div class="col-md-8 text-left ref-font" [innerHTML]="referencia.referenciaGeneral">
-                                </div>
+                                  </div>
                                 </div>
                                 <ng-template #elseReferenciaRutinaImp>
                                   <div class="row">
@@ -573,7 +588,8 @@
                                 <div *ngFor="let referencia of estudio.referencia">
                                   <div class="row" *ngIf="referencia.referenciaGeneral; else elseReferenciaRutImp">
                                     <div class="col-md-4 text-right ref-font" [innerHTML]="referencia.prefijo"></div>
-                                    <div class="col-md-8 text-left ref-font" [innerHTML]="referencia.referenciaGeneral"></div>
+                                    <div class="col-md-8 text-left ref-font" [innerHTML]="referencia.referenciaGeneral">
+                                    </div>
                                   </div>
                                   <ng-template #elseReferenciaRutImp>
                                     <div class="row">

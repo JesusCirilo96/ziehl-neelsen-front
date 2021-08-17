@@ -82,6 +82,10 @@ import { PerfilComponent } from './component/perfil/perfil.component';
 import { ConfiguracionComponent } from './component/configuracion/configuracion.component';
 import { PersonasComponent } from './component/catalogo/personas/personas.component';
 import { SubmenuComponent } from './component/catalogo/submenu/submenu.component';
+import { DescuentoVistaComponent } from './component/descuento-vista/descuento-vista.component';
+import { DescuentoComponent } from './component/descuento/descuento.component';
+import { OrdenesComponent } from './component/ordenes/ordenes.component';
+import { DialogoPerfilComponent } from './component/dialogo-perfil/dialogo-perfil.component';
 
 @NgModule({
   declarations: [
@@ -133,7 +137,11 @@ import { SubmenuComponent } from './component/catalogo/submenu/submenu.component
     PerfilComponent,
     ConfiguracionComponent,
     PersonasComponent,
-    SubmenuComponent
+    SubmenuComponent,
+    DescuentoVistaComponent,
+    DescuentoComponent,
+    OrdenesComponent,
+    DialogoPerfilComponent
   ],
   entryComponents: [
     DialogoComponent, 
@@ -141,6 +149,7 @@ import { SubmenuComponent } from './component/catalogo/submenu/submenu.component
     DialogoSeccionComponent, 
     DialogoEstudioComponent ,
     DialogoRespuestaComponent,
+    DialogoPerfilComponent,
     SubmenuComponent,
     ModalComponent
   ],

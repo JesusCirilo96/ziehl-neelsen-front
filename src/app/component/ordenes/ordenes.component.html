@@ -1,5 +1,5 @@
 <div class="container-fluid page vista-resultado">
-  <div class="d-flex page__box p-3 mt-2">Órdenes de trabajo</div>
+  <div class="d-flex page__box p-3 mt-2">Resultados</div>
   <div class="page__content shadow p-3 position-relative">
     
     <div class="row vista">
@@ -38,7 +38,19 @@
                 <td mat-cell class="width-30" *matCellDef="let element">{{element.paciente}} </td>
               </ng-container>
 
-               <!-- nombre-->
+               <!-- total-->
+               <ng-container matColumnDef="total">
+                <th mat-header-cell class="width-10 thead text-center" *matHeaderCellDef> Total </th>
+                <td mat-cell class="width-10 text-center" *matCellDef="let element">$ {{element.total}} </td>
+              </ng-container>
+
+               <!-- restante-->
+               <ng-container matColumnDef="restante">
+                <th mat-header-cell class="width-10 thead text-center" *matHeaderCellDef> Restante </th>
+                <td mat-cell class="width-10 text-center" *matCellDef="let element"> $ {{element.restante}} </td>
+              </ng-container>
+
+               <!-- finalizado-->
                <ng-container matColumnDef="finalizado">
                 <th mat-header-cell class="width-10 width-5 thead text-center" *matHeaderCellDef> Finalizado </th>
                 <td mat-cell class="width-10 width-5 text-center" *matCellDef="let element">
@@ -46,6 +58,32 @@
                     <i class="fas fa-check"></i>
                   </div>
                   <ng-template #elseFinalizado>
+                    <i class="fas fa-times"></i>
+                  </ng-template>
+                </td>
+              </ng-container>
+
+              <!-- impreso-->
+              <ng-container matColumnDef="impreso">
+                <th mat-header-cell class="width-10 width-5 thead text-center" *matHeaderCellDef> Impreso </th>
+                <td mat-cell class="width-10 width-5 text-center" *matCellDef="let element">
+                  <div *ngIf="element.impreso ; else elseImpreso">
+                    <i class="fas fa-check"></i>
+                  </div>
+                  <ng-template #elseImpreso>
+                    <i class="fas fa-times"></i>
+                  </ng-template>
+                </td>
+              </ng-container>
+
+              <!-- finalizado-->
+              <ng-container matColumnDef="entregado">
+                <th mat-header-cell class="width-10 width-5 thead text-center" *matHeaderCellDef> Entregado </th>
+                <td mat-cell class="width-10 width-5 text-center" *matCellDef="let element">
+                  <div *ngIf="element.entregado ; else elseEntregado">
+                    <i class="fas fa-check"></i>
+                  </div>
+                  <ng-template #elseEntregado>
                     <i class="fas fa-times"></i>
                   </ng-template>
                 </td>
@@ -61,8 +99,6 @@
               <ng-container matColumnDef="accion">
                 <th mat-header-cell class="width-10" *matHeaderCellDef></th>
                 <td mat-cell class="width-10" *matCellDef="let element">
-                  <a [routerLink]="['/ordenes/edit/', element.recepcionId]">ver</a>
-                  |
                   <a [routerLink]="['/paciente/historial/', element.pacienteId]">Historial</a>
                 </td>
               </ng-container>

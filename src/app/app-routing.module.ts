@@ -59,10 +59,14 @@ import { AdministracionComponent } from './component/administracion/administraci
 import { PerfilComponent } from './component/perfil/perfil.component';
 import { ConfiguracionComponent } from './component/configuracion/configuracion.component';
 import { PersonasComponent } from './component/catalogo/personas/personas.component';
+import { DescuentoVistaComponent } from './component/descuento-vista/descuento-vista.component';
+import { OrdenesComponent } from './component/ordenes/ordenes.component';
 
 var routes: Routes = [
   { path: '', redirectTo:'inicio', pathMatch:'full',canActivate: [AuthGuard] },
   { path: 'personas', component:PersonasComponent ,canActivate: [AuthGuard] },
+  { path: 'descuentos', component:DescuentoVistaComponent, canActivate:[AuthGuard] },
+  { path: 'resultado', component:OrdenesComponent, canActivate:[AuthGuard]},
   { path: 'inicio', component:HomeComponent},
   { path: 'dashboard', component:DashboardComponent},
   { path: 'examen', component:ExamenComponent},
@@ -91,8 +95,8 @@ var routes: Routes = [
   { path: 'examengeneral/add', component: ExamenGeneralEditComponent, canActivate: [AuthGuard] },
   { path: 'examengeneral/edit/:id', component: ExamenGeneralEditComponent, canActivate: [AuthGuard] },
   { path: 'cotizar', component: CotizarComponent, canActivate: [AuthGuard] },
-  { path: 'resultado', component: ResultadoViewComponent, canActivate: [AuthGuard] },
-  { path: 'resultado/edit/:id', component: ResultadoEditComponent, canActivate: [AuthGuard] },
+  { path: 'ordenes', component: ResultadoViewComponent, canActivate: [AuthGuard] },
+  { path: 'ordenes/edit/:id', component: ResultadoEditComponent, canActivate: [AuthGuard] },
   { path: 'descuento', component: DescuentoViewComponent, canActivate: [AuthGuard] },
   { path: 'descuento/add', component: DescuentoEditComponent, canActivate: [AuthGuard] },
   { path: 'descuento/edit/:id', component: DescuentoEditComponent, canActivate: [AuthGuard] },
@@ -108,7 +112,7 @@ var routes: Routes = [
   { path: 'seccion/add', component: SeccionEditComponent, canActivate: [AuthGuard] },
   { path: 'seccion/edit/:id', component: SeccionEditComponent, canActivate: [AuthGuard] },
   
-  { path: '**', redirectTo: '' }
+  { path: '**', redirectTo: 'inicio' }
 ];
 
 @NgModule({

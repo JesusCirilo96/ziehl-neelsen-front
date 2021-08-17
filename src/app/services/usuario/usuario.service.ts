@@ -37,4 +37,8 @@ export class UsuarioService {
   updateUsuario(updatedUsuario:Usuario): Observable<Usuario>{
     return this.http.post(`${this.API_URI}/usuario/save`, updatedUsuario);
   }
+
+  updateDatos(usuario: Usuario): Observable<Usuario>{
+    return this.http.put(`${this.API_URI}/usuario/update/datos`, usuario)
+  }
 }
