@@ -33,9 +33,6 @@ import { ResultadoEditComponent } from './component/resultado/resultado-edit/res
 import { ResultadoViewComponent } from './component/resultado/resultado-view/resultado-view.component';
 //Rutas para el historial del paciente
 import { HistorialPacienteComponent } from './component/catalogo/paciente/historial-paciente/historial-paciente.component';
-//Rutas para Descuentos
-import { DescuentoEditComponent } from './component/catalogo/descuento/descuento-edit/descuento-edit.component';
-import { DescuentoViewComponent } from './component/catalogo/descuento/descuento-view/descuento-view.component';
 //Rutas para el rol
 import { RolEditComponent } from "./component/catalogo/rol/rol-edit/rol-edit.component";
 import { RolViewComponent } from "./component/catalogo/rol/rol-view/rol-view.component";
@@ -97,9 +94,6 @@ var routes: Routes = [
   { path: 'cotizar', component: CotizarComponent, canActivate: [AuthGuard] },
   { path: 'ordenes', component: ResultadoViewComponent, canActivate: [AuthGuard] },
   { path: 'ordenes/edit/:id', component: ResultadoEditComponent, canActivate: [AuthGuard] },
-  { path: 'descuento', component: DescuentoViewComponent, canActivate: [AuthGuard] },
-  { path: 'descuento/add', component: DescuentoEditComponent, canActivate: [AuthGuard] },
-  { path: 'descuento/edit/:id', component: DescuentoEditComponent, canActivate: [AuthGuard] },
   { path: 'rol', component: RolViewComponent, canActivate: [AuthGuard] },
   { path: 'rol/add', component: RolEditComponent, canActivate: [AuthGuard] },
   { path: 'rol/edit/:id', component: RolEditComponent, canActivate: [AuthGuard] },

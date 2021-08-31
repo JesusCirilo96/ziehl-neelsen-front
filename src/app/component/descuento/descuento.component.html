@@ -1,3 +1,243 @@
-<p>
-  descuento works!
-</p>
+<div class="col-md-12">
+  <div class="row">
+    <form class="col-md-12" [formGroup]="formDescuento" (ngSubmit)="edit ? actualizarDescuento(): guardarDescuento()">
+
+      <div class="card width-100 margin-up">
+        <div class="card-body">
+          <h5 class="card-title">Datos del descuento</h5>
+          <div class="row margin-up">
+            <div class="col-md-4">
+              <mat-form-field class="input-full-width">
+                <mat-label>Nombre</mat-label>
+                <input matInput formControlName="nombre" required type="text">
+                <mat-error *ngIf="nombreCtrl.hasError('required')">
+                  El nombre es obligatorio
+                </mat-error>
+              </mat-form-field>
+            </div>
+
+            <div class="col-md-4">
+              <mat-form-field class="input-full-width">
+                <mat-label>Descripción</mat-label>
+                <input matInput formControlName="descripcion" type="text" maxlength="100">
+              </mat-form-field>
+            </div>
+
+            <div class="col-md-4">
+              <mat-form-field class="width-100" >
+                <mat-label>Dias aplicables</mat-label>
+                <mat-select formControlName="dias" multiple required>
+                  <mat-option [value]="1">Lunes</mat-option>
+                  <mat-option [value]="2">Martes</mat-option>
+                  <mat-option [value]="3">Miércoles</mat-option>
+                  <mat-option [value]="4">Jueves</mat-option>
+                  <mat-option [value]="5">Viernes</mat-option>
+                  <mat-option [value]="6">Sabado</mat-option>
+                  <mat-option [value]="7">Domingo</mat-option>
+                </mat-select>
+                <mat-error *ngIf="fechaFinCtrl.hasError('required')">
+                  Los dias en las que aplica es obligatorio
+                </mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+
+          <div class="row margin-up">
+            <div class="col-md-3">
+              <mat-form-field class="input-full-width">
+                <mat-label>Fecha inicio</mat-label>
+                <input matInput formControlName="fechaInicio" required type="date">
+                <mat-error *ngIf="fechaInicioCtrl.hasError('required')">
+                  La fecha de incio es obligatoria
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <div class="col-md-3"> 
+              <mat-form-field class="input-full-width">
+                <mat-label>Hora inicio</mat-label>
+                <input matInput formControlName="horaInicio" required type="time">
+                <mat-error *ngIf="horaInicioCtrl.hasError('required')">
+                  Hora de incio es obligatoria
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <div class="col-md-3">
+              <mat-form-field class="input-full-width">
+                <mat-label>Fecha de finalización</mat-label>
+                <input matInput formControlName="fechaFin" required type="date">
+                <mat-error *ngIf="fechaFinCtrl.hasError('required')">
+                  La fecha de finalización es obligatoria
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <div class="col-md-3">
+              <mat-form-field class="input-full-width">
+                <mat-label>Hora de finalización</mat-label>
+                <input matInput formControlName="horaFin" required type="time">
+                <mat-error *ngIf="horaFinCtrl.hasError('required')">
+                  Hora de finalización es obligatoria
+                </mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+
+      <div class="card width-100 margin-up">
+        <div class="card-body">
+          <h5 class="card-title">Examen a los que aplica</h5>
+
+          <form class="col-md-12" [formGroup]="formDescuentoExamen" (ngSubmit)="anadirExamenGeneral">
+            <div class="row margin-up">
+              <div class="col-md-4">
+                <mat-form-field class="input-full-width">
+                  <input type="text" placeholder="Selecciona el examen al que aplica" aria-label="Number" matInput
+                    required [formControl]="examenGeneralCtrl" [matAutocomplete]="auto">
+                  <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete"
+                    (optionSelected)="obtenerExamenGeneral($event.option.value)">
+                    <mat-option *ngFor="let optionGen of filteredOptionsGeneral | async" [value]="optionGen">
+                      {{optionGen}}
+                    </mat-option>
+                  </mat-autocomplete>
+                  <mat-error *ngIf="examenGeneralCtrl.hasError('required')">
+                    El examen es obligatorio
+                  </mat-error>
+                </mat-form-field>
+              </div>
+            </div>
+  
+            <div class="row margin-up">
+              <div class="col-md-4">
+                <mat-form-field class="input-full-width">
+                  <mat-label>Porcentaje de descuento</mat-label>
+                  <input matInput formControlName="porcentaje" required type="number">
+                  <mat-error *ngIf="porcentajeCtrl.hasError('required')">
+                    Porcentaje de descuento
+                  </mat-error>
+                </mat-form-field>
+              </div>
+              <div class="col-md-4">
+                <mat-form-field class="input-full-width">
+                  <mat-label>Porcentaje descuento texto</mat-label>
+                  <input matInput formControlName="porcentajeText" required type="text">
+                  <mat-error *ngIf="porcentajeTextCtrl.hasError('required')">
+                    Porcentaje de descuento en texto
+                  </mat-error>
+                </mat-form-field>
+              </div>
+              <div class="col-md-4">
+                <mat-form-field class="input-full-width">
+                  <mat-label>Descuento total</mat-label>
+                  <input matInput formControlName="descuento" required type="number">
+                  <mat-error *ngIf="descuentoCtrl.hasError('required')">
+                    Porcentaje de descuento en texto
+                  </mat-error>
+                </mat-form-field>
+              </div>
+            </div>
+  
+            <div class="row margin-up">
+              <div class="col-md-12 text-right buttons-catalogo">
+                <button mat-flat-button color="primary" type="submit" (click)="anadirExamenGeneral()">Añadir</button>
+              </div>
+            </div>
+          </form>
+
+          <div class="row margin-up">
+            <table class="width-100 table table-bordered">
+              <thead>
+                <tr>
+                  <th>Examen</th>
+                  <th>% Descuento</th>
+                  <th>% En texto</th>
+                  <th>$ Descuento</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let examen of ExamenesSeleccionados">
+                  <td>{{examen.nombreEstudio}}</td>
+                  <td>{{examen.porcentajeDescuento}}</td>
+                  <td>{{examen.porcentajeDescuentoText}}</td>
+                  <td>{{examen.descuento}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="row margin-up">
+        <div class="col-md-12 text-right buttons-catalogo">
+          <button mat-button id="atencionEstado" (click)="activarInactivar()"></button>
+          <button mat-flat-button color="primary" id="atencionGuardar"
+            [disabled]="!descuentoModel.estado || !formDescuento.valid" type="submit">Guardar</button>
+          <button mat-flat-button color="warn" (click)="cancelarEdicion()">Cancelar</button>
+        </div>
+      </div>
+
+    </form>
+  </div>
+
+  <div class="row margin-up margin-left-right margin-down">
+    <div class="col-md-12">
+      <div class="row mat-elevation-z8">
+        <div class="col-md-12 text-right">
+          <mat-form-field class="table-filter">
+            <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filtrar">
+          </mat-form-field>
+        </div>
+        <div class="col-md-12">
+          <table mat-table [dataSource]="dataSourceDescuentos" class="input-full-width">
+            <!-- nombre-->
+            <ng-container matColumnDef="nombre">
+              <th mat-header-cell class="width-15 thead" *matHeaderCellDef> Nombre </th>
+              <td mat-cell class="width-15" *matCellDef="let element"> {{element.nombre}} </td>
+            </ng-container>
+
+            <!-- Descripcion-->
+            <ng-container matColumnDef="descripcion">
+              <th mat-header-cell class="width-20 thead" *matHeaderCellDef> Descrip. </th>
+              <td mat-cell class="width-20" *matCellDef="let element"> {{element.descripcion}} </td>
+            </ng-container>
+
+            <!-- Fecha inicio-->
+            <ng-container matColumnDef="fechaInicio">
+              <th mat-header-cell class="width-20 thead" *matHeaderCellDef> Fech. Ini. </th>
+              <td mat-cell class="width-20" *matCellDef="let element"> {{element.fechaInicio}} </td>
+            </ng-container>
+
+            <!-- Fecha fin-->
+            <ng-container matColumnDef="fechaFin">
+              <th mat-header-cell class="width-20 thead" *matHeaderCellDef> Fech. Fin. </th>
+              <td mat-cell class="width-20" *matCellDef="let element"> {{element.fechaFin}} </td>
+            </ng-container>
+
+            <!-- dias aplicables-->
+            <ng-container matColumnDef="dias">
+              <th mat-header-cell class="width-10 thead" *matHeaderCellDef> Dias. Desc </th>
+              <td mat-cell class="width-10" *matCellDef="let element"> {{element.dias}} </td>
+            </ng-container>
+
+            <!-- accion -->
+            <ng-container matColumnDef="accion" class="width-10">
+              <th mat-header-cell class="width-5" *matHeaderCellDef></th>
+              <td mat-cell class="width-5" *matCellDef="let element">
+                <a [routerLink]="['/metodo/edit/', element.metodoId]">Detalles</a>
+              </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;" [ngClass]="{'table-danger': row.estado == 0}">
+            </tr>
+          </table>
+        </div>
+        <div class="col-md-12">
+          <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

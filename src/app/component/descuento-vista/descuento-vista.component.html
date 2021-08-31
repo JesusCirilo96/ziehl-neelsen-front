@@ -1,6 +1,9 @@
 <div class="container-fluid page">
   <div class="d-flex page__box p-3 mt-2">Descuentos y promociones</div>
   <div class="page__content shadow p-3 position-relative">
-    <app-descuento></app-descuento>
+    <mat-tab-group mat-align-tabs="start">
+      <mat-tab label="Descuentos"><app-descuento></app-descuento></mat-tab>
+      <mat-tab label="Second">Content 2</mat-tab>
+    </mat-tab-group>   
   </div>
 </div>

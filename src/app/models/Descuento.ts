@@ -1,7 +1,11 @@
 export interface Descuento{
-    descuento_id?:number;
-    descuento?:number;    
+    descuentoId?:number;
+    nombre?:string;
+    descripcion?:string;
+    fechaInicio?:string;
+    fechaFin?:string;
+    dias?:string;
     estado?:boolean;
-    createdAt?:string;
-    updatedAt?:string;
+    fechaCreacion?:string;
+    fechaActualizacion?:string;
 }

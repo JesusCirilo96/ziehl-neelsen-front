@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { DescuentoEditComponent } from './descuento-edit.component';
+import { DescuentoDialogoComponent } from './descuento-dialogo.component';
 
-describe('DescuentoEditComponent', () => {
-  let component: DescuentoEditComponent;
-  let fixture: ComponentFixture<DescuentoEditComponent>;
+describe('DescuentoDialogoComponent', () => {
+  let component: DescuentoDialogoComponent;
+  let fixture: ComponentFixture<DescuentoDialogoComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ DescuentoEditComponent ]
+      declarations: [ DescuentoDialogoComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(DescuentoEditComponent);
+    fixture = TestBed.createComponent(DescuentoDialogoComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

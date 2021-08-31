@@ -60,10 +60,7 @@ import { LayoutModule } from '@angular/cdk/layout';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule, MatButtonModule, MatIconModule, MatListModule, MatMenuModule, MatDividerModule } from '@angular/material';
 import { LoginComponent } from './component/login/login.component';
-import { DescuentoViewComponent } from './component/catalogo/descuento/descuento-view/descuento-view.component';
-import { DescuentoEditComponent } from './component/catalogo/descuento/descuento-edit/descuento-edit.component';
 import { MenuComponent } from './component/catalogo/menu/menu.component';
-import { ModalComponent } from './component/catalogo/descuento/modal/modal.component';
 import { RolViewComponent } from './component/catalogo/rol/rol-view/rol-view.component';
 import { RolEditComponent } from './component/catalogo/rol/rol-edit/rol-edit.component';
 import { CategoriaEditComponent } from './component/catalogo/categoria/categoria-edit/categoria-edit.component';
@@ -86,6 +83,7 @@ import { DescuentoVistaComponent } from './component/descuento-vista/descuento-v
 import { DescuentoComponent } from './component/descuento/descuento.component';
 import { OrdenesComponent } from './component/ordenes/ordenes.component';
 import { DialogoPerfilComponent } from './component/dialogo-perfil/dialogo-perfil.component';
+import { DescuentoDialogoComponent } from './component/descuento-dialogo/descuento-dialogo.component';
 
 @NgModule({
   declarations: [
@@ -115,11 +113,8 @@ import { DialogoPerfilComponent } from './component/dialogo-perfil/dialogo-perfi
     HematicaComponent, 
     MainNavComponent, 
     LoginComponent, 
-    DescuentoViewComponent, 
-    DescuentoEditComponent, 
     MenuComponent,
     AlertComponent,
-    ModalComponent,
     RolViewComponent,
     RolEditComponent,
     CategoriaEditComponent,
@@ -141,7 +136,8 @@ import { DialogoPerfilComponent } from './component/dialogo-perfil/dialogo-perfi
     DescuentoVistaComponent,
     DescuentoComponent,
     OrdenesComponent,
-    DialogoPerfilComponent
+    DialogoPerfilComponent,
+    DescuentoDialogoComponent
   ],
   entryComponents: [
     DialogoComponent, 
@@ -150,8 +146,7 @@ import { DialogoPerfilComponent } from './component/dialogo-perfil/dialogo-perfi
     DialogoEstudioComponent ,
     DialogoRespuestaComponent,
     DialogoPerfilComponent,
-    SubmenuComponent,
-    ModalComponent
+    SubmenuComponent
   ],
   imports: [
     BrowserModule,    
