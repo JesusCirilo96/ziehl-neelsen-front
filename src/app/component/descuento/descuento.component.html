@@ -146,21 +146,26 @@
           </form>
 
           <div class="row margin-up">
-            <table class="width-100 table table-bordered">
+            <table class="width-100 table">
               <thead>
                 <tr>
                   <th>Examen</th>
                   <th>% Descuento</th>
                   <th>% En texto</th>
                   <th>$ Descuento</th>
+                  <th></th>
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let examen of ExamenesSeleccionados">
+                <tr *ngFor="let examen of ExamenesSeleccionados; index as indexSeleccion" [ngClass]="{'table-danger': examen.accion == 'eliminar'}">
                   <td>{{examen.nombreEstudio}}</td>
                   <td>{{examen.porcentajeDescuento}}</td>
                   <td>{{examen.porcentajeDescuentoText}}</td>
                   <td>{{examen.descuento}}</td>
+                  <td>
+                    <button type="button" [disabled]="examen.accion == 'eliminar'" (click)="editarDescExamen(indexSeleccion)" matTooltip="Editar"><i class="far fa-edit"></i></button>
+                    <button type="button" [disabled]="examen.accion == 'eliminar'" (click)="eliminarExamen(indexSeleccion)" matTooltip="Eliminar"><i class="far fa-trash-alt"></i></button>
+                  </td>
                 </tr>
               </tbody>
             </table>
@@ -171,9 +176,8 @@
 
       <div class="row margin-up">
         <div class="col-md-12 text-right buttons-catalogo">
-          <button mat-button id="atencionEstado" (click)="activarInactivar()"></button>
           <button mat-flat-button color="primary" id="atencionGuardar"
-            [disabled]="!descuentoModel.estado || !formDescuento.valid" type="submit">Guardar</button>
+            [disabled]="!descuentoModel.estado || !formDescuento.valid" type="submit">{{edit ? 'Actualizar' : 'Guardar'}}</button>
           <button mat-flat-button color="warn" (click)="cancelarEdicion()">Cancelar</button>
         </div>
       </div>
@@ -225,7 +229,7 @@
             <ng-container matColumnDef="accion" class="width-10">
               <th mat-header-cell class="width-5" *matHeaderCellDef></th>
               <td mat-cell class="width-5" *matCellDef="let element">
-                <a [routerLink]="['/metodo/edit/', element.metodoId]">Detalles</a>
+                <button matTooltip="Ver detalles" (click)="getDescuentoExamen(element.descuentoId)"><i class="fas fa-eye"></i></button>
               </td>
             </ng-container>
 

@@ -48,4 +48,14 @@ export class DescuentoService {
   saveDescuentoExamen(descuentoExamen: any) {
     return this.http.post(`${this.API_URI}/descuento/examen/save`, descuentoExamen);
   }
+
+
+  /**
+   * Obtenemos los examenes por descuento
+   * @param id El id del descuento
+   * @returns Objeto con el descuento y el los estudios
+   */
+  getDescuentoExamen(id: number) {
+    return this.http.get(`${this.API_URI}/descuento/examen/get/${id}`);
+  }
 }

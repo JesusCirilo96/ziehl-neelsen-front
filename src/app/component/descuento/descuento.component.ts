@@ -54,6 +54,7 @@ export class DescuentoComponent implements OnInit {
   ExamenesSeleccionados: any = [];
 
   edit: boolean = false;
+  editarExamen: boolean = false;
 
   //autocomplete examen general
   ExamenGeneral: any = [];
@@ -138,7 +139,93 @@ export class DescuentoComponent implements OnInit {
   }
 
   actualizarDescuento(): void {
+    console.log(this.formDescuento.value);
 
+    var saveDescuento = [];
+
+    saveDescuento.push({
+      descuentoId: this.descuentoIdCtrl.value,
+      operacion:"editar",
+      nombre: this.nombreCtrl.value,
+      descripcion: this.descripcionCtrl.value,
+      fechaInicio: this.fechaInicioCtrl.value + " " + this.horaInicioCtrl.value + ":00",
+      fechaFin: this.fechaFinCtrl.value + " " + this.horaFinCtrl.value + ":00",
+      dias: this.diasCtrl.value,
+      estado: this.estadoCtrl.value,
+      examen: this.ExamenesSeleccionados
+    });
+
+    this.descuentoService.saveDescuentoExamen(saveDescuento[0]).subscribe(
+      respuesta=>{
+        console.log(respuesta);
+      },error=>{
+        console.log(error);
+      }
+    )
+
+    console.log(saveDescuento);
+  }
+
+  getDescuentoExamen(idDescuento: number): void{
+    this.descuentoService.getDescuentoExamen(idDescuento).subscribe(
+      respuesta=>{
+
+        var dias = [];
+        var diaStr = new String (respuesta['descuento'].dias);
+        for(var llave = 0; llave < diaStr.length; llave++){
+          dias.push(parseInt(diaStr.charAt(llave)));
+        }
+
+        this.formDescuento.patchValue({
+          descuentoId: respuesta['descuento'].descuentoId,
+          nombre: respuesta['descuento'].nombre,
+          descripcion: respuesta['descuento'].descripcion,
+          fechaInicio: this.convertirFecha(respuesta['descuento'].fechaInicio.substring(0,10)),
+          horaInicio: respuesta['descuento'].fechaInicio.substring(11,16),
+          fechaFin: this.convertirFecha(respuesta['descuento'].fechaFin.substring(0,10)),
+          horaFin: respuesta['descuento'].fechaFin.substring(11,16),
+          dias: dias,
+          estado: this.estadoCtrl.value
+        });
+
+        this.ExamenesSeleccionados= respuesta['examen'];
+
+        this.edit = true;
+
+        console.log(respuesta);
+
+      },error=>{
+        console.log(error);
+      }
+    )
+  }
+
+  editarDescExamen(indexSeleccion: number): void{
+    this.formDescuentoExamen.patchValue({
+      examenId: this.ExamenesSeleccionados[indexSeleccion].nombreEstudio,
+      porcentaje: this.ExamenesSeleccionados[indexSeleccion].porcentajeDescuento,
+      porcentajeText: this.ExamenesSeleccionados[indexSeleccion].porcentajeDescuentoText,
+      descuento: this.ExamenesSeleccionados[indexSeleccion].descuento
+    });
+
+    this.ExamenesSeleccionados.splice(indexSeleccion);
+  }
+
+  eliminarExamen(index): void{
+    if(this.ExamenesSeleccionados[index].examenDescuentoId != null){
+      this.ExamenesSeleccionados[index].accion = "eliminar";
+    }else{
+      this.ExamenesSeleccionados.splice(index);
+    }
+  }
+
+  convertirFecha(fecha: string): string{
+    var values = fecha.split("-");
+    var dia = values[2];
+    var mes = values[1];
+    var ano = values[0];
+
+    return ano + "-" + mes + "-" + dia;
   }
 
   private getDescuentos():void{
@@ -185,18 +272,26 @@ export class DescuentoComponent implements OnInit {
    * Añadimos el examen al la lista de examenes para el descuento
    */
   anadirExamenGeneral(): void{
+
+    var accion = "agregar";
+
+    if(this.editarExamen){
+      accion="editar"
+    }
     this.ExamenesSeleccionados.push({
+      examenDescuentoId: null,
       examenId:this.examenSeleccionado,
       nombreEstudio: this.examenGeneralCtrl.value,
       porcentajeDescuento: this.porcentajeCtrl.value,
       porcentajeDescuentoText: this.porcentajeTextCtrl.value,
       descuento: this.descuentoCtrl.value,
-      accion:"agregar"
+      accion:accion
     });
     this.examenGeneralCtrl.setValue("");
     this.porcentajeCtrl.setValue("");
     this.porcentajeTextCtrl.setValue("");
     this.descuentoCtrl.setValue("");
+    this.editarExamen = false;
     
   }
 
