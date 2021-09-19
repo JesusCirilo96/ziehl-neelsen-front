@@ -58,4 +58,8 @@ export class DescuentoService {
   getDescuentoExamen(id: number) {
     return this.http.get(`${this.API_URI}/descuento/examen/get/${id}`);
   }
+
+  deleteDescuento(descuentoId:number){
+    return this.http.delete(`${this.API_URI}/descuento/delete/${descuentoId}`);
+  }
 }

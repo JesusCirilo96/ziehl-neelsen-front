@@ -140,7 +140,7 @@
   
             <div class="row margin-up">
               <div class="col-md-12 text-right buttons-catalogo">
-                <button mat-flat-button color="primary" type="submit" (click)="anadirExamenGeneral()">Añadir</button>
+                <button mat-flat-button color="primary" type="submit" [disabled]="!formDescuentoExamen.valid" (click)="anadirExamenGeneral()">Añadir</button>
               </div>
             </div>
           </form>
@@ -178,7 +178,7 @@
         <div class="col-md-12 text-right buttons-catalogo">
           <button mat-flat-button color="primary" id="atencionGuardar"
             [disabled]="!descuentoModel.estado || !formDescuento.valid" type="submit">{{edit ? 'Actualizar' : 'Guardar'}}</button>
-          <button mat-flat-button color="warn" (click)="cancelarEdicion()">Cancelar</button>
+          <button mat-flat-button type="button" color="warn" (click)="cancelarEdicion()">Cancelar</button>
         </div>
       </div>
 
@@ -230,6 +230,8 @@
               <th mat-header-cell class="width-5" *matHeaderCellDef></th>
               <td mat-cell class="width-5" *matCellDef="let element">
                 <button matTooltip="Ver detalles" (click)="getDescuentoExamen(element.descuentoId)"><i class="fas fa-eye"></i></button>
+                &nbsp;&nbsp;
+                <button type="button" (click)="eliminarDescuento(element.descuentoId)" matTooltip="Eliminar"><i class="far fa-trash-alt"></i></button>
               </td>
             </ng-container>
 

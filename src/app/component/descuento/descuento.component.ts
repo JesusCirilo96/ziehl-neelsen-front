@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import {MatPaginator, MatTableDataSource} from '@angular/material';
+import { MatPaginator, MatTableDataSource } from '@angular/material';
 import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Descuento } from 'src/app/models/Descuento';
 import { Observable } from 'rxjs';
@@ -24,10 +24,10 @@ export class DescuentoComponent implements OnInit {
     private descuentoService: DescuentoService,
   ) { }
 
-  Descuentos : any = [];
+  Descuentos: any = [];
 
   displayedColumns: string[] = [
-    'nombre', 
+    'nombre',
     'descripcion',
     'fechaInicio',
     'fechaFin',
@@ -72,13 +72,13 @@ export class DescuentoComponent implements OnInit {
   diasCtrl = new FormControl('', [Validators.required]);
   estadoCtrl = new FormControl(true);
 
-  examenGeneralCtrl = new FormControl('',[Validators.required]);
+  examenGeneralCtrl = new FormControl('', [Validators.required]);
   porcentajeCtrl = new FormControl('', [Validators.required]);
   porcentajeTextCtrl = new FormControl('');
   descuentoCtrl = new FormControl(0, [Validators.required]);
 
   formDescuento: FormGroup;
-  formDescuentoExamen : FormGroup;
+  formDescuentoExamen: FormGroup;
 
 
   ngOnInit() {
@@ -117,7 +117,7 @@ export class DescuentoComponent implements OnInit {
 
     saveDescuento.push({
       descuentoId: this.descuentoIdCtrl.value,
-      operacion:"agregar",
+      operacion: "agregar",
       nombre: this.nombreCtrl.value,
       descripcion: this.descripcionCtrl.value,
       fechaInicio: this.fechaInicioCtrl.value + " " + this.horaInicioCtrl.value + ":00",
@@ -128,24 +128,24 @@ export class DescuentoComponent implements OnInit {
     });
 
     this.descuentoService.saveDescuentoExamen(saveDescuento[0]).subscribe(
-      respuesta=>{
+      respuesta => {
         console.log(respuesta);
-      },error=>{
+        this.getDescuentos();
+      }, error => {
         console.log(error);
       }
     )
-
+    
+    this.cancelarEdicion();
     console.log(saveDescuento);
   }
 
   actualizarDescuento(): void {
-    console.log(this.formDescuento.value);
-
     var saveDescuento = [];
 
     saveDescuento.push({
       descuentoId: this.descuentoIdCtrl.value,
-      operacion:"editar",
+      operacion: "editar",
       nombre: this.nombreCtrl.value,
       descripcion: this.descripcionCtrl.value,
       fechaInicio: this.fechaInicioCtrl.value + " " + this.horaInicioCtrl.value + ":00",
@@ -156,51 +156,80 @@ export class DescuentoComponent implements OnInit {
     });
 
     this.descuentoService.saveDescuentoExamen(saveDescuento[0]).subscribe(
-      respuesta=>{
+      respuesta => {
+        this.getDescuentos();
         console.log(respuesta);
-      },error=>{
+      }, error => {
         console.log(error);
       }
     )
 
-    console.log(saveDescuento);
+    this.cancelarEdicion();
+    console.log(saveDescuento[0]);
   }
 
-  getDescuentoExamen(idDescuento: number): void{
+  getDescuentoExamen(idDescuento: number): void {
     this.descuentoService.getDescuentoExamen(idDescuento).subscribe(
-      respuesta=>{
+      respuesta => {
 
-        var dias = [];
-        var diaStr = new String (respuesta['descuento'].dias);
-        for(var llave = 0; llave < diaStr.length; llave++){
-          dias.push(parseInt(diaStr.charAt(llave)));
+        if (respuesta['descuento'].descuentoId !== null) {
+          var dias = [];
+          var diaStr = new String(respuesta['descuento'].dias);
+          for (var llave = 0; llave < diaStr.length; llave++) {
+            dias.push(parseInt(diaStr.charAt(llave)));
+          }
+
+          this.formDescuento.patchValue({
+            descuentoId: respuesta['descuento'].descuentoId,
+            nombre: respuesta['descuento'].nombre,
+            descripcion: respuesta['descuento'].descripcion,
+            fechaInicio: this.convertirFecha(respuesta['descuento'].fechaInicio.substring(0, 10)),
+            horaInicio: respuesta['descuento'].fechaInicio.substring(11, 16),
+            fechaFin: this.convertirFecha(respuesta['descuento'].fechaFin.substring(0, 10)),
+            horaFin: respuesta['descuento'].fechaFin.substring(11, 16),
+            dias: dias,
+            estado: this.estadoCtrl.value
+          });
+
+          this.ExamenesSeleccionados = respuesta['examen'];
+          console.log(respuesta);
+        }else{
+
+          for(var key in this.Descuentos){
+            if(this.Descuentos[key].descuentoId == idDescuento){
+
+              var dias = [];
+              var diaStr = new String(this.Descuentos[key].dias);
+              for (var llave = 0; llave < diaStr.length; llave++) {
+                dias.push(parseInt(diaStr.charAt(llave)));
+              }
+
+              this.formDescuento.patchValue({
+                descuentoId: this.Descuentos[key].descuentoId,
+                nombre: this.Descuentos[key].nombre,
+                descripcion: this.Descuentos[key].descripcion,
+                fechaInicio: this.convertirFecha(this.Descuentos[key].fechaInicio.substring(0, 10)),
+                horaInicio: this.Descuentos[key].fechaInicio.substring(11, 16),
+                fechaFin: this.convertirFecha(this.Descuentos[key].fechaFin.substring(0, 10)),
+                horaFin: this.Descuentos[key].fechaFin.substring(11, 16),
+                dias: dias,
+                estado: this.Descuentos[key].estado
+              });
+            }
+          }
+          console.log(this.Descuentos);
+        
         }
-
-        this.formDescuento.patchValue({
-          descuentoId: respuesta['descuento'].descuentoId,
-          nombre: respuesta['descuento'].nombre,
-          descripcion: respuesta['descuento'].descripcion,
-          fechaInicio: this.convertirFecha(respuesta['descuento'].fechaInicio.substring(0,10)),
-          horaInicio: respuesta['descuento'].fechaInicio.substring(11,16),
-          fechaFin: this.convertirFecha(respuesta['descuento'].fechaFin.substring(0,10)),
-          horaFin: respuesta['descuento'].fechaFin.substring(11,16),
-          dias: dias,
-          estado: this.estadoCtrl.value
-        });
-
-        this.ExamenesSeleccionados= respuesta['examen'];
 
         this.edit = true;
 
-        console.log(respuesta);
-
-      },error=>{
+      }, error => {
         console.log(error);
       }
     )
   }
 
-  editarDescExamen(indexSeleccion: number): void{
+  editarDescExamen(indexSeleccion: number): void {
     this.formDescuentoExamen.patchValue({
       examenId: this.ExamenesSeleccionados[indexSeleccion].nombreEstudio,
       porcentaje: this.ExamenesSeleccionados[indexSeleccion].porcentajeDescuento,
@@ -211,15 +240,29 @@ export class DescuentoComponent implements OnInit {
     this.ExamenesSeleccionados.splice(indexSeleccion);
   }
 
-  eliminarExamen(index): void{
-    if(this.ExamenesSeleccionados[index].examenDescuentoId != null){
+  cancelarEdicion():void{
+    
+    if(this.edit){
+      this.edit = false;
+    }
+
+    this.ExamenesSeleccionados = [];
+    this.formDescuento.reset();
+    this.examenGeneralCtrl.setValue("");
+    this.porcentajeCtrl.setValue("");
+    this.porcentajeTextCtrl.setValue("");
+    this.descuentoCtrl.setValue("");
+  }
+
+  eliminarExamen(index): void {
+    if (this.ExamenesSeleccionados[index].examenDescuentoId != null) {
       this.ExamenesSeleccionados[index].accion = "eliminar";
-    }else{
+    } else {
       this.ExamenesSeleccionados.splice(index);
     }
   }
 
-  convertirFecha(fecha: string): string{
+  convertirFecha(fecha: string): string {
     var values = fecha.split("-");
     var dia = values[2];
     var mes = values[1];
@@ -228,12 +271,12 @@ export class DescuentoComponent implements OnInit {
     return ano + "-" + mes + "-" + dia;
   }
 
-  private getDescuentos():void{
+  private getDescuentos(): void {
     this.descuentoService.getDescuentos().subscribe(
-      response =>{
+      response => {
         this.Descuentos = response;
         this.dataSourceDescuentos.data = this.Descuentos;
-      },err=>{
+      }, err => {
         console.log(err);
       });
   }
@@ -259,40 +302,50 @@ export class DescuentoComponent implements OnInit {
 
   //obtenemos el examen general buscando por el nombre
   obtenerExamenGeneral(name): void {
-    for(var key in this.ExamenGeneral){
-      if(this.ExamenGeneral[key].nombre == name){
+    for (var key in this.ExamenGeneral) {
+      if (this.ExamenGeneral[key].nombre == name) {
         this.examenSeleccionado = this.ExamenGeneral[key].examenGeneralId;
         break;
       }
     }
-    console.log("El ID del examen " +  this.examenSeleccionado);
+    console.log("El ID del examen " + this.examenSeleccionado);
   }
 
   /**
    * Añadimos el examen al la lista de examenes para el descuento
    */
-  anadirExamenGeneral(): void{
+  anadirExamenGeneral(): void {
 
     var accion = "agregar";
 
-    if(this.editarExamen){
-      accion="editar"
+    if (this.editarExamen) {
+      accion = "editar"
     }
     this.ExamenesSeleccionados.push({
       examenDescuentoId: null,
-      examenId:this.examenSeleccionado,
+      examenId: this.examenSeleccionado,
       nombreEstudio: this.examenGeneralCtrl.value,
       porcentajeDescuento: this.porcentajeCtrl.value,
       porcentajeDescuentoText: this.porcentajeTextCtrl.value,
       descuento: this.descuentoCtrl.value,
-      accion:accion
+      accion: accion
     });
     this.examenGeneralCtrl.setValue("");
     this.porcentajeCtrl.setValue("");
     this.porcentajeTextCtrl.setValue("");
     this.descuentoCtrl.setValue("");
     this.editarExamen = false;
-    
+
+  }
+
+  eliminarDescuento(descuentoId):void{
+    this.descuentoService.deleteDescuento(descuentoId).subscribe(
+      res => {
+        this.getDescuentos();
+      }, error => {
+        console.log(error);
+      }
+    );
   }
 
 
