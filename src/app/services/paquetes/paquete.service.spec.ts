@@ -1,12 +1,12 @@
 import { TestBed } from '@angular/core/testing';
 
-import { DiasDescuentoService } from './dias-descuento.service';
+import { PaqueteService } from './paquete.service';
 
-describe('DiasDescuentoService', () => {
+describe('PaqueteService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
 
   it('should be created', () => {
-    const service: DiasDescuentoService = TestBed.get(DiasDescuentoService);
+    const service: PaqueteService = TestBed.get(PaqueteService);
     expect(service).toBeTruthy();
   });
 });

@@ -1,9 +1,5 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-
-import { Descuento } from '../../models/Descuento';
-import { Observable } from 'rxjs';
-import { AppSettings } from 'src/assets/js/messages';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
@@ -17,20 +13,12 @@ export class DescuentoService {
 
   }
 
+  /**
+   * Obtenemos los descuentos
+   * @returns Lista con los descuentos
+   */
   getDescuentos() {
     return this.http.get(`${this.API_URI}/descuento/get/all`);
-  }
-
-  getDescuento(id: number) {
-    return this.http.get(`${this.API_URI}/descuento/${id}`);
-  }
-
-  saveDescuento(descuento: Descuento) {
-    return this.http.post(`${this.API_URI}/descuento`, descuento);
-  }
-
-  updateDescuento(descuento_id: number, updateDescuento: Descuento): Observable<Descuento> {
-    return this.http.put(`${this.API_URI}/descuento/${descuento_id}`, updateDescuento);
   }
 
   /**
@@ -41,10 +29,11 @@ export class DescuentoService {
     return this.http.get(`${this.API_URI}/examen/descuento/${id}`);
   }
 
-  descuentoPaquete() {
-    return this.http.get(`${this.API_URI}/paquete/descuento/all`);
-  }
-
+  /**
+   * Guarda el descuento y los examenes relacionados
+   * @param descuentoExamen El descuento con los examenes relacionados
+   * @returns 
+   */
   saveDescuentoExamen(descuentoExamen: any) {
     return this.http.post(`${this.API_URI}/descuento/examen/save`, descuentoExamen);
   }
@@ -59,6 +48,11 @@ export class DescuentoService {
     return this.http.get(`${this.API_URI}/descuento/examen/get/${id}`);
   }
 
+  /**
+   * Elimina el descuento y sus examenes relacionados
+   * @param descuentoId El id del descuento
+   * @returns 
+   */
   deleteDescuento(descuentoId:number){
     return this.http.delete(`${this.API_URI}/descuento/delete/${descuentoId}`);
   }

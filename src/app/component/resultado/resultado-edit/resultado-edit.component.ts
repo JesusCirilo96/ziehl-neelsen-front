@@ -195,7 +195,7 @@ export class ResultadoEditComponent implements OnInit {
   }
 
 
-  realizado(recepcionId: number, opcion: string): void {
+  realizado(recepcionId, opcion): void {
     var valor;
 
     switch (opcion) {

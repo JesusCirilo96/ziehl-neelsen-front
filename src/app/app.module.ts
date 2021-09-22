@@ -83,6 +83,7 @@ import { DescuentoVistaComponent } from './component/descuento-vista/descuento-v
 import { DescuentoComponent } from './component/descuento/descuento.component';
 import { OrdenesComponent } from './component/ordenes/ordenes.component';
 import { DialogoPerfilComponent } from './component/dialogo-perfil/dialogo-perfil.component';
+import { PaqueteComponent } from './component/paquete/paquete.component';
 
 @NgModule({
   declarations: [
@@ -135,7 +136,8 @@ import { DialogoPerfilComponent } from './component/dialogo-perfil/dialogo-perfi
     DescuentoVistaComponent,
     DescuentoComponent,
     OrdenesComponent,
-    DialogoPerfilComponent
+    DialogoPerfilComponent,
+    PaqueteComponent
   ],
   entryComponents: [
     DialogoComponent, 

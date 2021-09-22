@@ -1,27 +1,28 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator, MatTableDataSource } from '@angular/material';
 import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { Descuento } from 'src/app/models/Descuento';
+import { Paquete } from 'src/app/models/Paquete';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import Swal from 'sweetalert2'
 
 import { ExamenGeneralService } from '../../services/examenGeneral/examen-general.service';
-import { DescuentoService } from '../../services/descuento/descuento.service';
+import { PaqueteService } from '../../services/paquetes/paquete.service';
+
 
 @Component({
-  selector: 'app-descuento',
-  templateUrl: './descuento.component.html',
-  styleUrls: ['./descuento.component.css']
+  selector: 'app-paquete',
+  templateUrl: './paquete.component.html',
+  styleUrls: ['./paquete.component.css']
 })
-export class DescuentoComponent implements OnInit {
+export class PaqueteComponent implements OnInit {
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   constructor(
     private _formBuilder: FormBuilder,
     private examenGeneralService: ExamenGeneralService,
-    private descuentoService: DescuentoService,
+    private paqueteService: PaqueteService,
   ) { }
 
   Descuentos: any = [];
@@ -36,13 +37,17 @@ export class DescuentoComponent implements OnInit {
   ];
   dataSourceDescuentos = new MatTableDataSource<Element>();
 
-  descuentoModel: Descuento = {
-    descuentoId: null,
+  paqueteModel: Paquete = {
+    paqueteId: null,
     nombre: '',
     descripcion: '',
     fechaInicio: '',
     fechaFin: '',
     dias: '',
+    precio: 0,
+    porcentaje:0,
+    porcentajeDescuentoTexto:'',
+    descuento:0,
     estado: true,
     fechaCreacion: '',
     fechaActualizacion: ''
@@ -62,7 +67,7 @@ export class DescuentoComponent implements OnInit {
   optionsGeneral: string[] = this.examenGeneral;
   filteredOptionsGeneral: Observable<string[]>;
 
-  descuentoIdCtrl = new FormControl(null);
+  paqueteIdCtrl = new FormControl(null);
   nombreCtrl = new FormControl('', [Validators.required]);
   descripcionCtrl = new FormControl('');
   fechaInicioCtrl = new FormControl('', [Validators.required]);
@@ -70,12 +75,14 @@ export class DescuentoComponent implements OnInit {
   fechaFinCtrl = new FormControl('', [Validators.required]);
   horaFinCtrl = new FormControl('', [Validators.required]);
   diasCtrl = new FormControl('', [Validators.required]);
-  estadoCtrl = new FormControl(true);
-
-  examenGeneralCtrl = new FormControl('', [Validators.required]);
+  precioCtrl = new FormControl(0, [Validators.required]);
   porcentajeCtrl = new FormControl('', [Validators.required]);
   porcentajeTextCtrl = new FormControl('');
   descuentoCtrl = new FormControl(0, [Validators.required]);
+  estadoCtrl = new FormControl(true);
+
+  examenGeneralCtrl = new FormControl('', [Validators.required]);
+  
 
   formDescuento: FormGroup;
   formDescuentoExamen: FormGroup;
@@ -83,21 +90,22 @@ export class DescuentoComponent implements OnInit {
 
   ngOnInit() {
     this.formDescuentoExamen = this._formBuilder.group({
-      examenId: this.examenGeneralCtrl,
-      porcentaje: this.porcentajeCtrl,
-      porcentajeText: this.porcentajeTextCtrl,
-      descuento: this.descuentoCtrl,
+      examenId: this.examenGeneralCtrl
     });
 
     this.formDescuento = this._formBuilder.group({
-      descuentoId: this.descuentoIdCtrl,
+      paqueteId: this.paqueteIdCtrl,
       nombre: this.nombreCtrl,
       descripcion: this.descripcionCtrl,
       fechaInicio: this.fechaInicioCtrl,
       horaInicio: this.horaInicioCtrl,
       fechaFin: this.fechaFinCtrl,
       horaFin: this.horaFinCtrl,
+      precio: this.precioCtrl,
       dias: this.diasCtrl,
+      porcentaje: this.porcentajeCtrl,
+      porcentajeDescuentoTexto: this.porcentajeTextCtrl,
+      descuento: this.descuentoCtrl,
       estado: this.estadoCtrl
     });
 
@@ -116,26 +124,30 @@ export class DescuentoComponent implements OnInit {
     var saveDescuento = [];
 
     saveDescuento.push({
-      descuentoId: this.descuentoIdCtrl.value,
+      paqueteId: this.paqueteIdCtrl.value,
       operacion: "agregar",
       nombre: this.nombreCtrl.value,
       descripcion: this.descripcionCtrl.value,
       fechaInicio: this.fechaInicioCtrl.value + " " + this.horaInicioCtrl.value + ":00",
       fechaFin: this.fechaFinCtrl.value + " " + this.horaFinCtrl.value + ":00",
       dias: this.diasCtrl.value,
+      precio: this.precioCtrl.value,
+      porcentaje: this.porcentajeCtrl.value,
+      porcentajeDescuentoTexto: this.porcentajeTextCtrl.value,
+      descuento: this.descuentoCtrl.value,
       estado: this.estadoCtrl.value,
       examen: this.ExamenesSeleccionados
     });
-
-    this.descuentoService.saveDescuentoExamen(saveDescuento[0]).subscribe(
+/*
+    this.paqueteService.savePaqueteExamen(saveDescuento[0]).subscribe(
       respuesta => {
         console.log(respuesta);
         this.getDescuentos();
       }, error => {
         console.log(error);
       }
-    )
-    
+    )¨
+    */    
     this.cancelarEdicion();
     console.log(saveDescuento);
   }
@@ -144,18 +156,22 @@ export class DescuentoComponent implements OnInit {
     var saveDescuento = [];
 
     saveDescuento.push({
-      descuentoId: this.descuentoIdCtrl.value,
+      descuentoId: this.paqueteIdCtrl.value,
       operacion: "editar",
       nombre: this.nombreCtrl.value,
       descripcion: this.descripcionCtrl.value,
       fechaInicio: this.fechaInicioCtrl.value + " " + this.horaInicioCtrl.value + ":00",
       fechaFin: this.fechaFinCtrl.value + " " + this.horaFinCtrl.value + ":00",
       dias: this.diasCtrl.value,
+      precio: this.precioCtrl.value,
+      porcentaje: this.porcentajeCtrl.value,
+      porcentajeDescuentoTexto: this.porcentajeTextCtrl.value,
+      descuento: this.descuentoCtrl.value,
       estado: this.estadoCtrl.value,
       examen: this.ExamenesSeleccionados
     });
 
-    this.descuentoService.saveDescuentoExamen(saveDescuento[0]).subscribe(
+    this.paqueteService.savePaqueteExamen(saveDescuento[0]).subscribe(
       respuesta => {
         this.getDescuentos();
         console.log(respuesta);
@@ -169,25 +185,29 @@ export class DescuentoComponent implements OnInit {
   }
 
   getDescuentoExamen(idDescuento: number): void {
-    this.descuentoService.getDescuentoExamen(idDescuento).subscribe(
+    this.paqueteService.paqueteExamen(idDescuento).subscribe(
       respuesta => {
 
-        if (respuesta['descuento'].descuentoId !== null) {
+        if (respuesta['paquete'].paqueteId !== null) {
           var dias = [];
-          var diaStr = new String(respuesta['descuento'].dias);
+          var diaStr = new String(respuesta['paquete'].dias);
           for (var llave = 0; llave < diaStr.length; llave++) {
             dias.push(parseInt(diaStr.charAt(llave)));
           }
 
           this.formDescuento.patchValue({
-            descuentoId: respuesta['descuento'].descuentoId,
-            nombre: respuesta['descuento'].nombre,
-            descripcion: respuesta['descuento'].descripcion,
-            fechaInicio: this.convertirFecha(respuesta['descuento'].fechaInicio.substring(0, 10)),
-            horaInicio: respuesta['descuento'].fechaInicio.substring(11, 16),
-            fechaFin: this.convertirFecha(respuesta['descuento'].fechaFin.substring(0, 10)),
-            horaFin: respuesta['descuento'].fechaFin.substring(11, 16),
+            paqueteId: respuesta['paquete'].paqueteId,
+            nombre: respuesta['paquete'].nombre,
+            descripcion: respuesta['paquete'].descripcion,
+            fechaInicio: this.convertirFecha(respuesta['paquete'].fechaInicio.substring(0, 10)),
+            horaInicio: respuesta['paquete'].fechaInicio.substring(11, 16),
+            fechaFin: this.convertirFecha(respuesta['paquete'].fechaFin.substring(0, 10)),
+            horaFin: respuesta['paquete'].fechaFin.substring(11, 16),
             dias: dias,
+            precio: respuesta['paquete'].precio,
+            porcentaje: respuesta['paquete'].porcentaje,
+            porcentajeDescuentoTexto: respuesta['paquete'].porcentajeDescuentoTexto,
+            descuento: respuesta['paquete'].descuento,
             estado: this.estadoCtrl.value
           });
 
@@ -213,6 +233,10 @@ export class DescuentoComponent implements OnInit {
                 fechaFin: this.convertirFecha(this.Descuentos[key].fechaFin.substring(0, 10)),
                 horaFin: this.Descuentos[key].fechaFin.substring(11, 16),
                 dias: dias,
+                precio:  this.Descuentos[key].precio,
+                porcentaje:  this.Descuentos[key].porcentaje,
+                porcentajeDescuentoTexto:  this.Descuentos[key].porcentajeDescuentoTexto,
+                descuento:  this.Descuentos[key].descuento,
                 estado: this.Descuentos[key].estado
               });
             }
@@ -232,9 +256,6 @@ export class DescuentoComponent implements OnInit {
   editarDescExamen(indexSeleccion: number): void {
     this.formDescuentoExamen.patchValue({
       examenId: this.ExamenesSeleccionados[indexSeleccion].nombre,
-      porcentaje: this.ExamenesSeleccionados[indexSeleccion].porcentajeDescuento,
-      porcentajeText: this.ExamenesSeleccionados[indexSeleccion].porcentajeDescuentoText,
-      descuento: this.ExamenesSeleccionados[indexSeleccion].descuento
     });
 
     this.ExamenesSeleccionados.splice(indexSeleccion);
@@ -249,9 +270,6 @@ export class DescuentoComponent implements OnInit {
     this.ExamenesSeleccionados = [];
     this.formDescuento.reset();
     this.examenGeneralCtrl.setValue("");
-    this.porcentajeCtrl.setValue("");
-    this.porcentajeTextCtrl.setValue("");
-    this.descuentoCtrl.setValue("");
   }
 
   eliminarExamen(index): void {
@@ -272,7 +290,7 @@ export class DescuentoComponent implements OnInit {
   }
 
   private getDescuentos(): void {
-    this.descuentoService.getDescuentos().subscribe(
+    this.paqueteService.getPaquetes().subscribe(
       response => {
         this.Descuentos = response;
         this.dataSourceDescuentos.data = this.Descuentos;
@@ -325,21 +343,15 @@ export class DescuentoComponent implements OnInit {
       examenDescuentoId: null,
       examenId: this.examenSeleccionado,
       nombre: this.examenGeneralCtrl.value,
-      porcentajeDescuento: this.porcentajeCtrl.value,
-      porcentajeDescuentoText: this.porcentajeTextCtrl.value,
-      descuento: this.descuentoCtrl.value,
       accion: accion
     });
-    this.examenGeneralCtrl.setValue("");
-    this.porcentajeCtrl.setValue("");
-    this.porcentajeTextCtrl.setValue("");
     this.descuentoCtrl.setValue("");
     this.editarExamen = false;
 
   }
 
   eliminarDescuento(descuentoId):void{
-    this.descuentoService.deleteDescuento(descuentoId).subscribe(
+    this.paqueteService.deletePaquete(descuentoId).subscribe(
       res => {
         this.getDescuentos();
       }, error => {

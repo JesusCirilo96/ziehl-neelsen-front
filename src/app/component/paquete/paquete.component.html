@@ -81,6 +81,45 @@
             </div>
           </div>
 
+          <div class="row margin-up">
+            <div class="col-md-3">
+              <mat-form-field class="input-full-width">
+                <mat-label>Precio del paquete</mat-label>
+                <input matInput formControlName="precio" required type="number">
+                <mat-error *ngIf="precioCtrl.hasError('required')">
+                  El precio del paquete es requerido
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <div class="col-md-3">
+              <mat-form-field class="input-full-width">
+                <mat-label>Porcentaje de descuento</mat-label>
+                <input matInput formControlName="porcentaje" required type="number">
+                <mat-error *ngIf="porcentajeCtrl.hasError('required')">
+                  Porcentaje de descuento
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <div class="col-md-3">
+              <mat-form-field class="input-full-width">
+                <mat-label>Porcentaje descuento texto</mat-label>
+                <input matInput formControlName="porcentajeDescuentoTexto" required type="text">
+                <mat-error *ngIf="porcentajeTextCtrl.hasError('required')">
+                  Porcentaje de descuento en texto
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <div class="col-md-3">
+              <mat-form-field class="input-full-width">
+                <mat-label>Descuento total</mat-label>
+                <input matInput formControlName="descuento" required type="number">
+                <mat-error *ngIf="descuentoCtrl.hasError('required')">
+                  Descuento total
+                </mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+
         </div>
       </div>
 
@@ -109,36 +148,6 @@
             </div>
   
             <div class="row margin-up">
-              <div class="col-md-4">
-                <mat-form-field class="input-full-width">
-                  <mat-label>Porcentaje de descuento</mat-label>
-                  <input matInput formControlName="porcentaje" required type="number">
-                  <mat-error *ngIf="porcentajeCtrl.hasError('required')">
-                    Porcentaje de descuento requerido
-                  </mat-error>
-                </mat-form-field>
-              </div>
-              <div class="col-md-4">
-                <mat-form-field class="input-full-width">
-                  <mat-label>Porcentaje descuento texto</mat-label>
-                  <input matInput formControlName="porcentajeText" required type="text">
-                  <mat-error *ngIf="porcentajeTextCtrl.hasError('required')">
-                    Porcentaje de descuento en texto
-                  </mat-error>
-                </mat-form-field>
-              </div>
-              <div class="col-md-4">
-                <mat-form-field class="input-full-width">
-                  <mat-label>Descuento total</mat-label>
-                  <input matInput formControlName="descuento" required type="number">
-                  <mat-error *ngIf="descuentoCtrl.hasError('required')">
-                    El descuento es requerido
-                  </mat-error>
-                </mat-form-field>
-              </div>
-            </div>
-  
-            <div class="row margin-up">
               <div class="col-md-12 text-right buttons-catalogo">
                 <button mat-flat-button color="primary" type="submit" [disabled]="!formDescuentoExamen.valid" (click)="anadirExamenGeneral()">Añadir</button>
               </div>
@@ -150,18 +159,12 @@
               <thead>
                 <tr>
                   <th>Examen</th>
-                  <th>% Descuento</th>
-                  <th>% En texto</th>
-                  <th>$ Descuento</th>
                   <th></th>
                 </tr>
               </thead>
               <tbody>
                 <tr *ngFor="let examen of ExamenesSeleccionados; index as indexSeleccion" [ngClass]="{'table-danger': examen.accion == 'eliminar'}">
                   <td>{{examen.nombre}}</td>
-                  <td>{{examen.porcentajeDescuento}}</td>
-                  <td>{{examen.porcentajeDescuentoText}}</td>
-                  <td>{{examen.descuento}}</td>
                   <td>
                     <button type="button" [disabled]="examen.accion == 'eliminar'" (click)="editarDescExamen(indexSeleccion)" matTooltip="Editar"><i class="far fa-edit"></i></button>
                     <button type="button" [disabled]="examen.accion == 'eliminar'" (click)="eliminarExamen(indexSeleccion)" matTooltip="Eliminar"><i class="far fa-trash-alt"></i></button>
@@ -177,7 +180,7 @@
       <div class="row margin-up">
         <div class="col-md-12 text-right buttons-catalogo">
           <button mat-flat-button color="primary" id="atencionGuardar"
-            [disabled]="!descuentoModel.estado || !formDescuento.valid" type="submit">{{edit ? 'Actualizar' : 'Guardar'}}</button>
+            [disabled]="!paqueteModel.estado || !formDescuento.valid" type="submit">{{edit ? 'Actualizar' : 'Guardar'}}</button>
           <button mat-flat-button type="button" color="warn" (click)="cancelarEdicion()">Cancelar</button>
         </div>
       </div>
@@ -229,9 +232,9 @@
             <ng-container matColumnDef="accion" class="width-10">
               <th mat-header-cell class="width-5" *matHeaderCellDef></th>
               <td mat-cell class="width-5" *matCellDef="let element">
-                <button matTooltip="Ver detalles" (click)="getDescuentoExamen(element.descuentoId)"><i class="fas fa-eye"></i></button>
+                <button matTooltip="Ver detalles" (click)="getDescuentoExamen(element.paqueteId)"><i class="fas fa-eye"></i></button>
                 &nbsp;&nbsp;
-                <button type="button" (click)="eliminarDescuento(element.descuentoId)" matTooltip="Eliminar"><i class="far fa-trash-alt"></i></button>
+                <button type="button" (click)="eliminarDescuento(element.paqueteId)" matTooltip="Eliminar"><i class="far fa-trash-alt"></i></button>
               </td>
             </ng-container>
 

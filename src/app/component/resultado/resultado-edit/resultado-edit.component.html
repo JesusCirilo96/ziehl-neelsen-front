@@ -57,7 +57,7 @@
         <div class="row form-edit">
           <div class="col-md-2">
             <p class="bold">Terminado:</p>
-            <mat-slide-toggle [color]="primary"
+            <mat-slide-toggle
               (change)="realizado(recepcionModel.recepcionId, 'finalizado')"
               [checked]="recepcionModel.finalizado" matTooltip="Marcar como terminado">
               {{recepcionModel.finalizado ? 'Si':'No'}}
@@ -65,7 +65,7 @@
           </div>
           <div class="col-md-2">
             <p class="bold">Impreso:</p>
-            <mat-slide-toggle [color]="primary"
+            <mat-slide-toggle
               (change)="realizado(recepcionModel.recepcionId, 'impreso')"
               [checked]="recepcionModel.impreso" matTooltip="Marcar como terminado">
               {{recepcionModel.impreso ? 'Si':'No'}}
@@ -73,7 +73,7 @@
           </div>
           <div class="col-md-2">
             <p class="bold">Entregado:</p>
-            <mat-slide-toggle [color]="primary"
+            <mat-slide-toggle
               (change)="realizado(recepcionModel.entregado, 'entregado')"
               [checked]="recepcionModel.entregado" matTooltip="Marcar como terminado">
               {{recepcionModel.entregado ? 'Si':'No'}}
