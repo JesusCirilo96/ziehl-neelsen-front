@@ -138,7 +138,7 @@ export class PaqueteComponent implements OnInit {
       estado: this.estadoCtrl.value,
       examen: this.ExamenesSeleccionados
     });
-/*
+
     this.paqueteService.savePaqueteExamen(saveDescuento[0]).subscribe(
       respuesta => {
         console.log(respuesta);
@@ -146,8 +146,7 @@ export class PaqueteComponent implements OnInit {
       }, error => {
         console.log(error);
       }
-    )¨
-    */    
+    )    
     this.cancelarEdicion();
     console.log(saveDescuento);
   }
@@ -345,7 +344,7 @@ export class PaqueteComponent implements OnInit {
       nombre: this.examenGeneralCtrl.value,
       accion: accion
     });
-    this.descuentoCtrl.setValue("");
+    
     this.editarExamen = false;
 
   }

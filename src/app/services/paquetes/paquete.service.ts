@@ -54,6 +54,6 @@ export class PaqueteService {
    * @returns 
    */
    deletePaquete(paqueteId:number){
-    return this.http.delete(`${this.API_URI}/descuento/delete/${paqueteId}`);
+    return this.http.delete(`${this.API_URI}/paquete/delete/${paqueteId}`);
   }
 }
